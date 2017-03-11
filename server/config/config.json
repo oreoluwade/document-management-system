@@ -1,20 +1,20 @@
 {
   "development": {
-    "username": "oreoluwa",
+    "username": "oreoluwade",
     "password": null,
     "database": "doc-manager-development",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "oreoluwa",
+    "username": "oreoluwade",
     "password": null,
     "database": "doc-manager-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "oreoluwa",
+    "username": "oreoluwade",
     "password": null,
     "database": "doc-manager-production",
     "host": "127.0.0.1",
