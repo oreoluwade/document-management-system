@@ -1,0 +1,32 @@
+{
+  "name": "document-management-system",
+  "version": "1.0.0",
+  "description": "A document management system that defines roles, privileges and access rights of users",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-oaboluwarin/document-management-system.git"
+  },
+  "keywords": [
+    "babel",
+    "document",
+    "management",
+    "eslint"
+  ],
+  "author": "oreoluwa aboluwarin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-oaboluwarin/document-management-system/issues"
+  },
+  "homepage": "https://github.com/andela-oaboluwarin/document-management-system#readme",
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0"
+  }
+}
