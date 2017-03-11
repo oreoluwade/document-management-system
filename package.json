@@ -4,6 +4,7 @@
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "server.js",
   "scripts": {
+    "start:dev": "babel-watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,10 +24,21 @@
   },
   "homepage": "https://github.com/andela-oaboluwarin/document-management-system#readme",
   "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.23.0",
+    "babel-watch": "^2.0.6",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "sequelize": "^3.30.2"
   }
 }
