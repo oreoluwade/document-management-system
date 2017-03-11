@@ -39,6 +39,8 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "morgan": "^1.8.1",
+    "pg": "^6.1.4",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.30.2"
   }
 }
