@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'roleId'
         });
       }
-    }
+    },
+    freezeTableName: true
   });
   return Role;
 };

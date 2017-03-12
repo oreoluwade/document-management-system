@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 2
+      defaultValue: 1
     }
   }, {
     classMethods: {
@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         });
       }
     },
+    freezeTableName: true,
 
     instanceMethods: {
       /**
