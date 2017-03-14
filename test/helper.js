@@ -9,7 +9,7 @@ module.exports = {
       lastName: faker.name.lastName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      RoleId: roleId
+      roleId
     };
     return fakeUser;
   },
@@ -22,7 +22,7 @@ module.exports = {
       lastName: faker.name.lastName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      RoleId: roleId
+      roleId
     };
     return fakeUser;
   },
@@ -34,16 +34,16 @@ module.exports = {
     return fakeRole;
   },
 
-  createDocument: () => {
-    const fakeDocument = {
-      published: Date(),
-      title: faker.lorem.word(),
-      access: 'public',
-      content: faker.lorem.sentences(),
-      ownerId: 2,
-      ownerRoleId: 2
-    };
-    return fakeDocument;
-  }
+  // createDocument: () => {
+  //   const fakeDocument = {
+  //     published: Date(),
+  //     title: faker.lorem.word(),
+  //     access: 'public',
+  //     content: faker.lorem.sentences(),
+  //     ownerId: 2,
+  //     ownerRoleId: 2
+  //   };
+  //   return fakeDocument;
+  // }
 };
 
