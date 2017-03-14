@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "babel-watch server.js",
-    "test": "babel-node ./node_modules/mocha/bin/_mocha -- test/models"
+    "test": "babel-node ./node_modules/mocha/bin/_mocha -- test/models/"
   },
   "repository": {
     "type": "git",

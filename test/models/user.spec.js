@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-expressions */
 
-const expect = require('chai').expect;
-const model = require('../../server/models');
-const helper = require('../helper');
+import bcrypt from 'bcrypt-nodejs';
+import { expect } from 'chai';
+import model from '../../server/models';
+import helper from '../helper';
 
 const fakeRole = helper.createRole();
 const fakeUser = helper.createUser();
@@ -10,7 +11,6 @@ const fakeUser = helper.createUser();
 const requiredFields = ['userName', 'firstName', 'lastName', 'email',
   'password', 'roleId'];
 const uniqueFields = ['userName', 'email'];
-
 describe('USER MODEL', () => {
   before((done) => {
     model.sequelize.sync({ force: true })
@@ -52,6 +52,8 @@ describe('USER MODEL', () => {
       expect(user.email).to.equal(fakeUser.email);
     });
     it('should create a user with hashed password', () => {
+      expect(bcrypt.compareSync(fakeUser.password,
+        user.dataValues.password)).to.be.true;
       expect(user.password).to.not.equal(fakeUser.password);
     });
     it('should create a user with a defined Role', () =>
@@ -120,7 +122,6 @@ describe('USER MODEL', () => {
         user.email = 'lagbaja tamedo';
         user.save()
           .catch((error) => {
-            console.log('This is the last error', error);
             expect(/isEmail failed/.test(error.message)).to.be.true;
             expect(/SequelizeValidationError/.test(error.name)).to.be.true;
             done();
