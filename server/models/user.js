@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         User.hasMany(models.Document, {
           onDelete: 'CASCADE',
-          foreignKey: 'userId'
+          foreignKey: 'ownerId'
         });
       }
     },

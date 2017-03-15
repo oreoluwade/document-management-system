@@ -34,16 +34,16 @@ module.exports = {
     return fakeRole;
   },
 
-  // createDocument: () => {
-  //   const fakeDocument = {
-  //     published: Date(),
-  //     title: faker.lorem.word(),
-  //     access: 'public',
-  //     content: faker.lorem.sentences(),
-  //     ownerId: 2,
-  //     ownerRoleId: 2
-  //   };
-  //   return fakeDocument;
-  // }
+  createDocument: () => {
+    const fakeDocument = {
+      published: Date(),
+      title: faker.lorem.word(),
+      content: faker.lorem.sentences(),
+      access: 'public',
+      ownerId: 2,
+      ownerRoleId: 2
+    };
+    return fakeDocument;
+  }
 };
 

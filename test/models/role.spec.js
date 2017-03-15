@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
+import helper from '../helper';
+import model from '../../server/models';
 
-const fakeRole = require('../helper').createRole();
-const model = require('../../server/models');
+const fakeRole = helper.createRole();
 
 describe('Role Model', () => {
   before(() => model.sequelize.sync({ force: true }));
-  describe('Create Role', () => {
+  describe('Process of creation of a Role', () => {
     let role;
     before((done) => {
       model.Role.create(fakeRole)

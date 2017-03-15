@@ -21,11 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     access: {
       type: DataTypes.STRING,
       defaultValue: 'public',
-      validate: {
-        isIn: ['private', 'public', 'role']
-      }
+      allowNull: false
+      // validate: {
+      //   isIn: ['private', 'public', 'role']
+      // }
     },
-    userId: {
+    ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -40,11 +41,12 @@ module.exports = (sequelize, DataTypes) => {
       associate(models) {
           // associations can be defined here
         Document.belongsTo(models.User, {
-          foreignKey: 'userId',
+          foreignKey: 'ownerId',
           onDelete: 'CASCADE'
         });
       }
-    }
+    },
+    freezeTableName: true
   });
   return Document;
 };
