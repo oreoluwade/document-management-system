@@ -4,8 +4,8 @@
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "server.js",
   "scripts": {
-    "start:dev": "babel-watch server.js",
-    "test": "babel-node ./node_modules/mocha/bin/_mocha -- test/models/"
+    "start": "babel-watch server.js",
+    "test": "babel-node ./node_modules/mocha/bin/_mocha -- test/server/role.spec"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,9 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "jsonwebtoken": "^7.3.0",
     "morgan": "^1.8.1",
     "pg": "^6.1.4",
     "pg-hstore": "^2.3.2",

@@ -398,7 +398,7 @@ describe('DOCUMENT REQUESTS', () => {
       });
     });
 
-    describe('making a POSt request to search for documents', () => {
+    describe('making a POST request to search for documents', () => {
       it('should carry out a search and return the correct document',
         (done) => {
           const query = documentsBundleParams[10].content.substr(5, 13);

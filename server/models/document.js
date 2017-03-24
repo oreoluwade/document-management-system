@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
 
     content: {
-      type: DataTypes.STRING(1000),
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notEmpty: {

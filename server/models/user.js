@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: { min: 6 }
+      validate: { len: 6 }
     },
     roleId: {
       type: DataTypes.INTEGER,
