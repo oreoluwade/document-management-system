@@ -4,26 +4,32 @@ import { expect } from 'chai';
 import model from '../../server/models';
 import helper from '../helper';
 
-const fakeRole = helper.createRole();
+const Role = model.Role;
+const User = model.User;
+
+const fakeRole = helper.createAdminRole();
 const fakeUser = helper.createUser();
 
-const requiredFields = ['userName', 'firstName', 'lastName', 'email',
+const requiredParams = ['userName', 'firstName', 'lastName', 'email',
   'password', 'roleId'];
-const uniqueFields = ['userName', 'email'];
-describe('User Model', () => {
+
+const uniqueParams = ['userName', 'email'];
+
+describe('The User Model Test Suite', () => {
   before((done) => {
     model.sequelize.sync({ force: true })
       .then(() => {
         done();
       });
   });
-  describe('Process of creation of the User', () => {
+
+  describe('The Process of creation of a User', () => {
     let user;
     before((done) => {
-      model.Role.create(fakeRole)
+      Role.create(fakeRole)
         .then((createdRole) => {
           fakeUser.roleId = createdRole.id;
-          return model.User.create(fakeUser);
+          return User.create(fakeUser);
         })
         .then((createdUser) => {
           user = createdUser;
@@ -38,34 +44,40 @@ describe('User Model', () => {
         });
     });
 
-    it('should be able to create a user', () => {
+    it('should allow the creation of a user', () => {
       expect(user).to.exist;
       expect(typeof user).to.equal('object');
     });
+
     it('should ensure that a created user has a userName', () => {
       expect(user.userName).to.equal(fakeUser.userName);
     });
+
     it('should ensure that a created user has a firstName', () => {
       expect(user.firstName).to.equal(fakeUser.firstName);
     });
+
     it('should ensure that a created user has a lastName', () => {
       expect(user.lastName).to.equal(fakeUser.lastName);
     });
-    it('should ensure that a user has a valid email address', () => {
+
+    it('should ensure that a created user has a valid email address', () => {
       expect(user.email).to.equal(fakeUser.email);
     });
-    it('should create a user with hashed password', () => {
+
+    it('should hash the password of the created user', () => {
       expect(user.password).to.not.equal(fakeUser.password);
     });
-    it('should create a user with a defined Role', () =>
-      model.User.findById(user.id, { include: [model.Role] })
-        .then((foundUser) => {
-          expect(foundUser.Role.title).to.equal(fakeRole.title);
+
+    it('should ensure that a created user has a defined role', () =>
+      User.findById(user.id, { include: [Role] })
+        .then((createdUser) => {
+          expect(createdUser.Role.title).to.equal(fakeRole.title);
         }));
 
-    it('should allow updating a user details', (done) => {
-      model.User.findById(user.id)
-        .then(foundUser => foundUser.update({ userName: 'oreoluwade' }))
+    it('should allow for the updating of the details of a user', (done) => {
+      User.findById(user.id)
+        .then(createdUser => createdUser.update({ userName: 'oreoluwade' }))
         .then((updatedUser) => {
           expect(updatedUser.userName).to.equal('oreoluwade');
           done();
@@ -73,13 +85,13 @@ describe('User Model', () => {
     });
   });
 
-  describe('How User model Validation works', () => {
+  describe('The working of the Validation of the User model', () => {
     let user;
     beforeEach((done) => {
-      model.Role.create(fakeRole)
+      Role.create(fakeRole)
         .then((role) => {
           fakeUser.roleId = role.id;
-          user = model.User.build(fakeUser);
+          user = User.build(fakeUser);
           done();
         });
     });
@@ -89,8 +101,8 @@ describe('User Model', () => {
         .then(() => done());
     });
 
-    describe('the required fields for user creation', () => {
-      requiredFields.forEach((field) => {
+    describe('the fields necessary before a user can be created', () => {
+      requiredParams.forEach((field) => {
         it(`requires ${field} to create a user`, (done) => {
           user[field] = null;
           user.save()
@@ -102,14 +114,14 @@ describe('User Model', () => {
       });
     });
 
-    describe('Unique Fields', () => {
-      uniqueFields.forEach((field) => {
+    describe('Fields that have to be unique in the creation of users', () => {
+      uniqueParams.forEach((field) => {
         it(`requires ${field} field to be Unique`, () => {
           user.save()
             .then((firstUser) => {
               fakeUser.roleId = firstUser.roleId;
               // attempt to create another user with same parameters
-              return model.User.build(fakeUser).save();
+              return User.build(fakeUser).save();
             })
             .catch((error) => {
               expect(/UniqueConstraintError/.test(error.name)).to.be.true;
@@ -131,10 +143,11 @@ describe('User Model', () => {
     });
 
     describe('Password Validation', () => {
-      it('should be valid if compared', () => user.save()
-        .then((createdUser) => {
-          expect(createdUser.validPassword(fakeUser.password)).to.be.true;
-        }));
+      it('should be valid when passed into the password validation function',
+        () => user.save()
+          .then((createdUser) => {
+            expect(createdUser.validPassword(fakeUser.password)).to.be.true;
+          }));
     });
   });
 });

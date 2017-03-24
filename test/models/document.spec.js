@@ -4,21 +4,25 @@ import { expect } from 'chai';
 import model from '../../server/models';
 import helper from '../helper';
 
+const Role = model.Role;
+const User = model.User;
+const Document = model.Document;
+
 const fakeUser = helper.createUser();
 const fakeDocument = helper.createDocument();
 
-const requiredFields = ['title', 'content', 'ownerId', 'access'];
+const requiredFields = ['title', 'content', 'access'];
 
-describe('Document Model', () => {
-  describe('How Document Model Works', () => {
+describe('The Document Model Test Suite', () => {
+  describe('How The Document Model Works', () => {
     let document;
     let owner;
 
     before((done) => {
-      model.Role.create(helper.createRole())
+      Role.create(helper.createAdminRole())
         .then((createdRole) => {
           fakeUser.roleId = createdRole.id;
-          return model.User.create(fakeUser);
+          return User.create(fakeUser);
         })
         .then((createdUser) => {
           owner = createdUser;
@@ -28,14 +32,14 @@ describe('Document Model', () => {
     });
 
     beforeEach(() => {
-      document = model.Document.build(fakeDocument);
+      document = Document.build(fakeDocument);
     });
 
-    afterEach(() => model.Document.destroy({ where: {} }));
+    afterEach(() => Document.destroy({ where: {} }));
 
     after(() => model.sequelize.sync({ force: true }));
 
-    it('should be able to create a document', (done) => {
+    it('should be allow for the creation of a document', (done) => {
       document.save()
         .then((createdDocument) => {
           expect(createdDocument).to.exist;
@@ -43,7 +47,8 @@ describe('Document Model', () => {
           done();
         });
     });
-    it('should create a document with title and content', (done) => {
+
+    it('should create a document that has both title and content', (done) => {
       document.save()
         .then((createdDocument) => {
           expect(createdDocument.title).to.equal(fakeDocument.title);
@@ -51,30 +56,26 @@ describe('Document Model', () => {
           done();
         });
     });
-    it('should create a document with correct OwnerId', (done) => {
+
+    it('should not the time the document was created', (done) => {
       document.save()
         .then((createdDocument) => {
-          expect(createdDocument.ownerId).to.equal(owner.id);
-          done();
-        });
-    });
-    it('should create a document with publish date', (done) => {
-      document.save()
-      .then((createdDocument) => {
-        expect(createdDocument.createdAt).to.exist;
-        done();
-      });
-    });
-    it('should create a document with access set to public', (done) => {
-      document.save()
-        .then((createdDocument) => {
-          expect(createdDocument.access).to.equal('public');
+          expect(createdDocument.createdAt).to.exist;
           done();
         });
     });
 
+    it('should have the access privilege of a created document specified',
+      (done) => {
+        document.save()
+          .then((createdDocument) => {
+            expect(createdDocument.access).to.equal('public');
+            done();
+          });
+      });
+
     describe('Document Model Validations', () => {
-      describe('Required Fields Validation', () => {
+      describe('The validation of the required fields for doc creation', () => {
         requiredFields.forEach((field) => {
           it(`requires a ${field} field to create a document`, () => {
             document[field] = null;

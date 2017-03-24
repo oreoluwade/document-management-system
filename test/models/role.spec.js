@@ -1,57 +1,64 @@
 /* eslint-disable no-unused-expressions */
+
 import { expect } from 'chai';
 import helper from '../helper';
 import model from '../../server/models';
 
-const fakeRole = helper.createRole();
+const Role = model.Role;
 
-describe('Role Model', () => {
+const firstRole = helper.createAdminRole();
+
+describe('The Role Model Test Suite', () => {
   before(() => model.sequelize.sync({ force: true }));
-  describe('Process of creation of a Role', () => {
+  describe('The Process of creation of a Role', () => {
     let role;
     before((done) => {
-      model.Role.create(fakeRole)
+      Role.create(firstRole)
         .then((createdRole) => {
           role = createdRole;
           done();
         });
     });
+
     after(() => model.sequelize.sync({ force: true }));
 
-    it('should be able to create a role', () => {
+    it('should allow the creation of a role to be possible', () => {
       expect(role).to.exist;
       expect(typeof role).to.equal('object');
     });
 
-    it('should allow title to be added to role created', () => {
-      expect(fakeRole).to.include.keys('title');
-      expect(role.title).to.equal(fakeRole.title);
+    it('should allow a creator to define the title of role created', () => {
+      expect(firstRole).to.include.keys('title');
+      expect(role.title).to.equal(firstRole.title);
     });
   });
 
-  describe('Role Model Validations', () => {
+  describe('Role Model Validations Test Suite', () => {
     after(() => model.sequelize.sync({ force: true }));
 
-    describe('Validation for Title field', () => {
-      it('should require a title before a role can be created', (done) => {
-        model.Role.create()
-          .catch((error) => {
-            expect(/notNull Violation/.test(error.message)).to.be.true;
-            done();
-          });
-      });
+    describe('Validation for the Title field', () => {
+      it('should ensure that a title is given before a role can be created',
+        (done) => {
+          Role.create()
+            .catch((error) => {
+              expect(/notNull Violation/.test(error.message)).to.be.true;
+              done();
+            });
+        });
 
-      it('should ensure that no two roles have the same title', (done) => {
-        model.Role.create(fakeRole)
-          .then(() => {
-            // attempt to create a second role with same title
-            model.Role.create(fakeRole)
-              .catch((error) => {
-                expect(/UniqueConstraintError/.test(error.name)).to.be.true;
-                done();
-              });
-          });
-      });
+      it(`should ensure that it is impossible
+      to create two roles with the same title`,
+        (done) => {
+          Role.create(firstRole)
+            .then(() => {
+              // attempt to create a second role with same title
+              Role.create(firstRole)
+                .catch((error) => {
+                  expect(/UniqueConstraintError/.test(error.name)).to.be.true;
+                  done();
+                });
+            });
+        });
     });
   });
 });
