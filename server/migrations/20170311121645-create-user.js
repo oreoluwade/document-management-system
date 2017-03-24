@@ -22,19 +22,18 @@ module.exports = {
     email: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: { isEmail: true }
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: { min: 6 }
     },
     roleId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Role',
-        key: 'id'
-      }
+      defaultValue: 2
     },
     createdAt: {
       allowNull: false,

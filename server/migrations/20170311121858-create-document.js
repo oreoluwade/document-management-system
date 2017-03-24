@@ -27,10 +27,10 @@ module.exports = {
     access: {
       type: Sequelize.STRING,
       defaultValue: 'public',
-      allowNull: false
-      // validate: {
-      //   isIn: ['private', 'public', 'role']
-      // }
+      allowNull: false,
+      validate: {
+        isIn: [['private', 'public', 'role']]
+      }
     },
     ownerId: {
       type: Sequelize.INTEGER,

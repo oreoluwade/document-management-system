@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1000),
       allowNull: false,
       validate: {
         notEmpty: {
@@ -18,21 +19,21 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+
     access: {
       type: DataTypes.STRING,
       defaultValue: 'public',
-      allowNull: false
-      // validate: {
-      //   isIn: ['private', 'public', 'role']
-      // }
+      allowNull: false,
+      validate: {
+        isIn: [['private', 'public', 'role']]
+      }
     },
+
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isInt: {
-          msg: 'User ID must be an integer'
-        }
+        isInt: { msg: 'owner ID must be an integer' }
       }
     }
 
@@ -41,8 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       associate(models) {
           // associations can be defined here
         Document.belongsTo(models.User, {
-          foreignKey: 'ownerId',
-          onDelete: 'CASCADE'
+          as: 'owner',
+          onDelete: 'CASCADE',
+          foreignKey: { allowNull: true }
         });
       }
     },
