@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "prestart": "babel-node tools/startLog.js",
-    "start": "babel-node tools/srcServer.js"
+    "start": "babel-node tools/srcServer.js",
+    "lint": "node_modules/.bin/esw webpack.config.* client tools"
   },
   "repository": {
     "type": "git",
