@@ -1,23 +1,15 @@
 {
   "development": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-development",
-    "host": "127.0.0.1",
+    "url": "process.env.URL",
     "dialect": "postgres"
   },
   "test": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-test",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "url": "process.env.URL_TEST",
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-production",
-    "host": "127.0.0.1",
+    "url": "process.env.URL_PRODUCTION",
     "dialect": "postgres"
   }
 }
