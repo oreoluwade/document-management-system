@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import app from '../../server';
-import model from '../../server/models';
+import app from '../../app';
+import model from '../../models';
 import helper from '../helper';
 
 const request = require('supertest')(app);
@@ -25,11 +25,11 @@ describe('User Authorization', () => {
         request.post('/user')
           .send(adminUser)
           .end((error, response) => {
-            adminToken = response.body.userToken;
+            adminToken = response.body.token;
             request.post('/user')
               .send(regularUser)
               .end((err, res) => {
-                regularToken = res.body.userToken;
+                regularToken = res.body.token;
                 done();
               });
           });
@@ -45,6 +45,7 @@ describe('User Authorization', () => {
         done();
       });
   });
+
   it('should not authorize a user who supplies invalid token', (done) => {
     request.get('/user')
       .set({ Authorization: 'trinity' })
@@ -53,11 +54,13 @@ describe('User Authorization', () => {
         done();
       });
   });
+
   it('should not return users if the user is not admin', (done) => {
     request.get('/user')
       .set({ Authorization: regularToken })
       .expect(403, done);
   });
+
   it('should correctly return all users with valid token and access',
     (done) => {
       request.get('/user')

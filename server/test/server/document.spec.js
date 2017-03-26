@@ -2,8 +2,8 @@
 
 import { expect } from 'chai';
 import supertest from 'supertest';
-import app from '../../server';
-import models from '../../server/models';
+import app from '../../app';
+import models from '../../models';
 import helper from '../helper';
 
 const request = supertest(app);
