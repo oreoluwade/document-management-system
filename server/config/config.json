@@ -1,15 +1,15 @@
 {
   "development": {
-    "url": "process.env.URL",
+    "use_env_variable": "DEV_DATABASE_URL",
     "dialect": "postgres"
   },
-  "test": {
-    "url": "process.env.URL_TEST",
+  "travis": {
+    "use_env_variable": "TRAVIS_DATABASE_URL",
     "dialect": "postgres",
     "logging": false
   },
   "production": {
-    "url": "process.env.URL_PRODUCTION",
+    "use_env_variable": "PRODUCTION_DATABASE_URL",
     "dialect": "postgres"
   }
 }

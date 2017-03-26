@@ -6,7 +6,7 @@ export default {
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true', // note that it reloads the page if hot module reloading fails.
-    path.resolve(__dirname, 'client/src/index')
+    path.resolve(__dirname, 'client/index')
   ],
   target: 'web',
   output: {
@@ -24,7 +24,7 @@ export default {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NoErrorsPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -32,6 +32,7 @@ export default {
       Hammer: 'hammerjs/hammer'
     }),
   ],
+
   module: {
     loaders: [
       {
@@ -43,11 +44,11 @@ export default {
         loaders: ['babel-loader'] },
       {
         test: /(\.css)$/,
-        loaders: ['style', 'css']
+        loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
+        loader: 'file-loader'
       },
       {
         test: /\.(woff|woff2)$/,
@@ -60,7 +61,15 @@ export default {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url?limit=10000&mimetype=image/svg+xml'
-      }
+      }, {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 25000,
+        },
+      }, {
+        test: /materialize-css\/bin\//,
+        loader: 'imports?jQuery=jquery,$=jquery,hammerjs' },
     ]
   }
 };

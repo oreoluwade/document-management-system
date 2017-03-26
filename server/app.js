@@ -11,8 +11,6 @@ require('dotenv').config();
 
 const secret = process.env.SECRET || 'secretconfirmation';
 
-// const port = parseInt(process.env.PORT, 10) || 9000;
-
 // Set up the express app
 const app = express();
 
