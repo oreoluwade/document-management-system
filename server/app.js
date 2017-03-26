@@ -2,7 +2,7 @@
 
 import express from 'express';
 import parser from 'body-parser';
-import homeRoute from './routes/index';
+import Routes from './routes';
 
 require('dotenv').config();
 
@@ -17,7 +17,7 @@ app.set('hiddenDetails', secret);
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 
-// Specifying the routes the app should use for different purposes
-app.use('/', homeRoute);
+// Requiring the routes into the application
+Routes(app);
 
 export default app;
