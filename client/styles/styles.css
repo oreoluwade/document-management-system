@@ -8,9 +8,10 @@
 }
 
 a.active {
-  color: orange;
+  color: saddlebrown;
 }
 
 nav {
-  padding-top: 20px;
+  padding-top: 5px;
+  padding-left: 30px;
 }
