@@ -16,7 +16,8 @@ class SignupForm extends React.Component {
       passwordConfirmation: '',
       roleId: 2,
       errors: {},
-      isLoading: false
+      isLoading: false,
+      invalid: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -46,7 +47,7 @@ class SignupForm extends React.Component {
         () => {
           this.props.addFlashMessage({
             type: 'success',
-            text: 'Welcome! You  have signed up successfully'
+            text: 'Welcome! You have signed up successfully'
           });
           this.context.router.push('/');
         },
@@ -112,7 +113,8 @@ class SignupForm extends React.Component {
         />
 
         <div className="form-group">
-          <button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
+          <button disabled={this.state.isLoading || this.state.invalid}
+            className="btn btn-primary btn-lg">
             Sign up
           </button>
         </div>
