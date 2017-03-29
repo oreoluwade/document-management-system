@@ -137,7 +137,7 @@ class SignupForm extends React.Component {
 
         <div className="form-group">
           <button disabled={this.state.isLoading || this.state.invalid}
-            className="btn waves-effect waves-light" type="submit" name="action">
+            className="btn waves-effect waves-light blue" type="submit" name="action">
             Sign Up<i className="material-icons right">send</i>
           </button>
         </div>
