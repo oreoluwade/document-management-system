@@ -4,14 +4,22 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
+import jwt from 'jsonwebtoken';
+import { setCurrentUser } from './actions/authenticationAction';
 import configureStore from './store/configureStore';
 import routes from './routes';
+import setAuthorizationToken from './utils/setAuthorizationToken';
 import './styles/styles.css';
 import '../node_modules/materialize-css/dist/js/materialize.min';
 import '../node_modules/materialize-css/dist/css/materialize.min.css';
 import '../node_modules/material-icons/css/material-icons.css';
 
 const store = configureStore();
+
+if (localStorage.jwtToken) {
+  setAuthorizationToken(localStorage.jwtToken);
+  store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
+}
 
 render(
   <Provider store={store}>
