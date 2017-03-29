@@ -113,40 +113,48 @@ module.exports = {
   },
 
   userLogin: (request, response) => {
-    if (!request.body.userName || !request.body.password) {
-      return response.status(401).send({
-        message: 'Invalid request, specify userName and password'
-      });
-    }
+    const { identifier, password } = request.body;
+    // if (!request.body.userName || !request.body.password) {
+    //   return response.status(401).send({
+    //     message: 'Invalid request, specify userName and password'
+    //   });
+    // }
     User.find({
       where: {
-        userName: request.body.userName
+        $or: [
+          { email: identifier },
+          { userName: identifier }
+        ]
       }
+      // where: {
+      //   userName: request.body.userName
+      // }
     })
-      .then((userFound) => {
-        if (!userFound) {
-          return response.status(404)
-            .send({ message: 'User does not exist. Login Failed!' });
+      .then((user) => {
+        if (!user) {
+          return response.status(401)
+            .json({ errors: 'Invalid Credentials' });
         }
-        if (!userFound.validPassword(request.body.password)) {
-          return response.status(404)
-            .send({ message: 'Invalid userName or password' });
+        if (!user.validPassword(password)) {
+          return response.status(401)
+            .json({ errors: 'Invalid Credentials' });
         }
         const token = jwt.sign({
-          userId: userFound.id,
-          userName: userFound.userName,
-          userRoleId: userFound.roleId
-        }, secret, { expiresIn: '1 day' });
-        return response.status(200).send({
-          user: {
-            userName: userFound.userName,
-            userId: userFound.id,
-            userRoleId: userFound.roleId,
-            email: userFound.email
-          },
-          token,
-          message: 'Login Successful! Token expires in one day.'
-        });
+          userId: user.id,
+          userName: user.userName,
+          userRoleId: user.roleId
+        }, secret);
+        // return response.status(200).send({
+        //   user: {
+        //     userName: user.userName,
+        //     userId: user.id,
+        //     userRoleId: user.roleId,
+        //     email: user.email
+        //   },
+        //   token,
+        //   message: 'Login Successful! Token expires in one day.'
+        // });
+        response.json({ token });
       });
   },
 

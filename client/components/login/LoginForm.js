@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
     const { errors, isValid } = validateInput(this.state);
 
     if (!isValid) {
-      this.setState({ errors });
+      return this.setState({ errors });
     }
     return isValid;
   }
@@ -31,8 +31,8 @@ class LoginForm extends React.Component {
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
       this.props.login(this.state).then(
-        (res) => this.context.router.push('/'),
-        (err) => this.setState({ errors: err.data.errors, isLoading: false })
+        res => this.context.router.push('/'),
+        err => this.setState({ errors: err.data.errors, isLoading: false })
       );
     }
   }
@@ -63,7 +63,10 @@ class LoginForm extends React.Component {
           onChange={this.onChange}
           type="password"
         />
-        <button disabled={isLoading} className="btn waves-effect waves-light">Login</button>
+        <button disabled={isLoading} className="btn waves-effect waves-light light-blue"
+          type="submit" name="action">
+            Login<i className="material-icons right">send</i></button>
+        {errors.form && <div className="alert alert-danger">{errors.form}</div>}
       </form>
     );
   }
