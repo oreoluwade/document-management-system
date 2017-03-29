@@ -6,7 +6,7 @@ import FlashMessagesList from './flash/FlashMessagesList';
 class App extends React.Component {
   render() {
     return (
-      <div className="container-fluid">
+      <div className="col s12 m4 l2">
         <Header />
         <FlashMessagesList />
         {this.props.children}

@@ -13,7 +13,7 @@ module.exports = {
       .then((userFound) => {
         if (!userFound) {
           return response.status(400)
-            .send({ message: 'Invalid roleId specified' }); // TODO: How possible?
+            .send({ message: 'Invalid roleId specified' });
         }
         User.findOrCreate({
           where: {
@@ -98,7 +98,7 @@ module.exports = {
       });
   },
 
-  deleteUser: (request, response) => { // TODO: refactor delete user
+  deleteUser: (request, response) => {
     User.destroy({
       where: {
         id: request.params.id
@@ -152,5 +152,25 @@ module.exports = {
 
   userLogout: (request, response) => {
     response.status(200).send({ message: 'User Successfully logged out!' });
-  }
+  },
+
+  fetchExistingUser: (request, response) =>
+    User
+      .find({
+        where: {
+          $or: [
+            { email: request.params.identifier },
+            { userName: request.params.identifier }
+          ]
+        }
+      })
+      .then((user) => {
+        if (!user) {
+          return response.status(200).send({ message: 'User can be created' });
+        }
+        return response.status(400).send({ message: 'User already exists' });
+      })
+      .catch(error => response.status(501).send({
+        error, message: 'An error occurred while retrieving the user'
+      }))
 };

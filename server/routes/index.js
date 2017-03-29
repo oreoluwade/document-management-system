@@ -26,6 +26,10 @@ const Routes = (app) => {
     .get(authorization.validateToken, authorization.validateAdmin, userController.getAllUsers)
     .post(userController.createUser);
 
+  // Route for early information that user exists
+  app.route('/user/findUser/:identifier')
+    .get(userController.fetchExistingUser);
+
   // Route for single user
   app.route('/user/:id')
     .get(authorization.validateToken, userController.getUser)

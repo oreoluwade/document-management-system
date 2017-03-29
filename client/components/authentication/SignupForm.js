@@ -22,6 +22,9 @@ class SignupForm extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.checkUserExists = this.checkUserExists.bind(this);
+    this.handleOnBlurFailure = this.handleOnBlurFailure.bind(this);
+    this.handleOnBlurSuccess = this.handleOnBlurSuccess.bind(this);
   }
 
   onChange(e) {
@@ -36,6 +39,24 @@ class SignupForm extends React.Component {
     }
 
     return isValid;
+  }
+
+  handleOnBlurSuccess(response) {
+    this.setState({ invalid: false });
+  }
+
+  handleOnBlurFailure(error) {
+    const { errors } = this.state;
+    errors.userName = error.data.message;
+    errors.email = error.data.message;
+    this.setState({ invalid: true, errors });
+  }
+
+  checkUserExists(e) {
+    const val = e.target.value;
+    if (val !== '') {
+      this.props.isUserExists(val).then(this.handleOnBlurSuccess, this.handleOnBlurFailure);
+    }
   }
 
   onSubmit(e) {
@@ -66,6 +87,7 @@ class SignupForm extends React.Component {
           error={errors.userName}
           label="Username"
           onChange={this.onChange}
+          checkUserExists={this.checkUserExists}
           value={this.state.userName}
           field="userName"
         />
@@ -90,6 +112,7 @@ class SignupForm extends React.Component {
           error={errors.email}
           label="Email"
           onChange={this.onChange}
+          checkUserExists={this.checkUserExists}
           value={this.state.email}
           field="email"
         />
@@ -125,7 +148,8 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
   userSignupRequest: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired
+  addFlashMessage: React.PropTypes.func.isRequired,
+  isUserExists: React.PropTypes.func.isRequired
 };
 
 SignupForm.contextTypes = {
