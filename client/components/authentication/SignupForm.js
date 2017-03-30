@@ -23,8 +23,6 @@ class SignupForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.checkUserExists = this.checkUserExists.bind(this);
-    this.handleOnBlurFailure = this.handleOnBlurFailure.bind(this);
-    this.handleOnBlurSuccess = this.handleOnBlurSuccess.bind(this);
   }
 
   onChange(e) {
@@ -41,21 +39,22 @@ class SignupForm extends React.Component {
     return isValid;
   }
 
-  handleOnBlurSuccess(response) {
-    this.setState({ invalid: false });
-  }
-
-  handleOnBlurFailure(error) {
-    const { errors } = this.state;
-    errors.userName = error.data.message;
-    errors.email = error.data.message;
-    this.setState({ invalid: true, errors });
-  }
-
   checkUserExists(e) {
+    const field = e.target.name;
     const val = e.target.value;
     if (val !== '') {
-      this.props.isUserExists(val).then(this.handleOnBlurSuccess, this.handleOnBlurFailure);
+      this.props.isUserExists(val).then((response) => {
+        const errors = this.state.errors;
+        let invalid;
+        if (response.data.user) {
+          errors[field] = `A user already exists with that ${field}`;
+          invalid = true;
+        } else {
+          errors[field] = '';
+          invalid = false;
+        }
+        this.setState({ errors, invalid });
+      });
     }
   }
 
@@ -68,80 +67,100 @@ class SignupForm extends React.Component {
         () => {
           this.props.addFlashMessage({
             type: 'success',
-            text: 'Welcome! You have signed up successfully'
+            text: 'Welcome! You have successfully signed up.'
           });
           this.context.router.push('/');
         },
-        ({ data }) => this.setState({ errors: data, isLoading: false })
+        err => this.setState({ errors: err.response.data, isLoading: false })
       );
     }
   }
 
   render() {
     const { errors } = this.state;
+    const form = (
+      <div className="col s12 z-depth-5 card-panel">
+        <form className="login-form" onSubmit={this.onSubmit}>
+          <h1><strong>Sign up here!</strong></h1>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.userName}
+              label="Username"
+              onChange={this.onChange}
+              checkUserExists={this.checkUserExists}
+              value={this.state.userName}
+              field="userName"
+            />
+          </div>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.firstName}
+              label="First Name"
+              onChange={this.onChange}
+              value={this.state.firstName}
+              field="firstName"
+            />
+          </div>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.lastName}
+              label="Last Name"
+              onChange={this.onChange}
+              value={this.state.lastName}
+              field="lastName"
+            />
+          </div>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.email}
+              label="Email"
+              onChange={this.onChange}
+              checkUserExists={this.checkUserExists}
+              value={this.state.email}
+              field="email"
+            />
+          </div>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.password}
+              label="Password"
+              onChange={this.onChange}
+              value={this.state.password}
+              field="password"
+              type="password"
+            />
+          </div>
+
+          <div className="row margin">
+            <TextFieldGroup
+              error={errors.passwordConfirmation}
+              label="Password Confirmation"
+              onChange={this.onChange}
+              value={this.state.passwordConfirmation}
+              field="passwordConfirmation"
+              type="password"
+            />
+          </div>
+
+          <div className="form-group">
+            <button disabled={this.state.isLoading || this.state.invalid}
+              className="btn waves-effect waves-light blue" type="submit" name="action">
+              Sign Up<i className="material-icons right">send</i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    );
     return (
-      <form onSubmit={this.onSubmit}>
-        <h1><strong>Sign up here</strong></h1>
-
-        <TextFieldGroup
-          error={errors.userName}
-          label="Username"
-          onChange={this.onChange}
-          checkUserExists={this.checkUserExists}
-          value={this.state.userName}
-          field="userName"
-        />
-
-        <TextFieldGroup
-          error={errors.firstName}
-          label="First Name"
-          onChange={this.onChange}
-          value={this.state.firstName}
-          field="firstName"
-        />
-
-        <TextFieldGroup
-          error={errors.lastName}
-          label="Last Name"
-          onChange={this.onChange}
-          value={this.state.lastName}
-          field="lastName"
-        />
-
-        <TextFieldGroup
-          error={errors.email}
-          label="Email"
-          onChange={this.onChange}
-          checkUserExists={this.checkUserExists}
-          value={this.state.email}
-          field="email"
-        />
-
-        <TextFieldGroup
-          error={errors.password}
-          label="Password"
-          onChange={this.onChange}
-          value={this.state.password}
-          field="password"
-          type="password"
-        />
-
-        <TextFieldGroup
-          error={errors.passwordConfirmation}
-          label="Password Confirmation"
-          onChange={this.onChange}
-          value={this.state.passwordConfirmation}
-          field="passwordConfirmation"
-          type="password"
-        />
-
-        <div className="form-group">
-          <button disabled={this.state.isLoading || this.state.invalid}
-            className="btn waves-effect waves-light blue" type="submit" name="action">
-            Sign Up<i className="material-icons right">send</i>
-          </button>
-        </div>
-      </form>
+      <div>
+        {form}
+      </div>
     );
   }
 }
