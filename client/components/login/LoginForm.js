@@ -44,30 +44,34 @@ class LoginForm extends React.Component {
   render() {
     const { errors, identifier, password, isLoading } = this.state;
     return (
-      <form className="center-align" onSubmit={this.onSubmit}>
-        <h1>Login</h1>
+      <div className="card-panel" id="logincard">
 
-        <TextFieldGroup
-          field="identifier"
-          label="Username / Email"
-          value={identifier}
-          error={errors.identifier}
-          onChange={this.onChange}
-        />
+        <form className="center-align" id="loginform" onSubmit={this.onSubmit}>
+          {errors.form && <div className="alert alert-danger">{errors.form}</div>}
 
-        <TextFieldGroup
-          field="password"
-          label="Password"
-          value={password}
-          error={errors.password}
-          onChange={this.onChange}
-          type="password"
-        />
-        <button disabled={isLoading} className="btn waves-effect waves-light light-blue"
-          type="submit" name="action">
-            Login<i className="material-icons right">send</i></button>
-        {errors.form && <div className="alert alert-danger">{errors.form}</div>}
-      </form>
+          <TextFieldGroup
+            field="identifier"
+            label="Username / Email"
+            value={identifier}
+            error={errors.identifier}
+            onChange={this.onChange}
+          />
+
+          <TextFieldGroup
+            field="password"
+            label="Password"
+            value={password}
+            error={errors.password}
+            onChange={this.onChange}
+            type="password"
+          />
+          <div className="form-group">
+            <button disabled={isLoading} className="btn waves-effect waves-light light-blue">
+              Login<i className="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

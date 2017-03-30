@@ -5,7 +5,7 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col s10">
+        <div className="col s12">
           <LoginForm />
         </div>
       </div>

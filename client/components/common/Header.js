@@ -25,7 +25,7 @@ class Header extends React.Component {
     );
 
     return (
-      <nav className="darken-3 red">
+      <nav className="blue">
         <div className="nav-wrapper">
           <IndexLink to="/" activeClassName="active">Home</IndexLink>
           <a href="#" data-activates="mobile-demo" className="button-collapse">

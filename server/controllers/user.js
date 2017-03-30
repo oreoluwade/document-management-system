@@ -1,6 +1,7 @@
 // import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import models from '../models';
+import validateInput from '../shared/validations/signup';
 
 const Role = models.Role;
 const User = models.User;
@@ -9,12 +10,20 @@ const secret = process.env.SECRET || 'secretconfirmation';
 module.exports = {
   createUser: (request, response) => {
     const newUser = request.body;
+
+
+
     Role.find({ where: { id: newUser.roleId } })
       .then((userFound) => {
         if (!userFound) {
-          return response.status(400)
-            .send({ message: 'Invalid roleId specified' });
+          response.status(400).json({ error: 'The role ID is invalid' });
         }
+        const { errors, isValid } = validateInput(newUser);
+
+        if (!isValid) {
+          response.status(400).json(errors);
+        }
+
         User.findOrCreate({
           where: {
             email: newUser.email
@@ -34,20 +43,18 @@ module.exports = {
                 userId: user.id,
                 userName: user.userName,
                 userRoleId: user.roleId
-              }, secret, { expiresIn: '1 day' });
-              return response.status(201).send({
+              }, secret);
+              response.status(201).json({
                 user: {
                   id: user.id,
                   userName: user.userName,
                   userRoleId: user.roleId,
                   email: user.email
                 },
-                token,
-                message: 'New User Created! Token expires in one day.'
+                token
               });
             }
-            return response.status(400)
-              .send({ message: 'User Already Exists!' });
+            response.status(400).json({ error: 'User Already Exists!' });
           });
       });
   },
@@ -56,18 +63,18 @@ module.exports = {
     User.findById(request.params.id)
       .then((userFound) => {
         if (userFound) {
-          return response.status(200).send(userFound);
+          response.status(200).json(userFound);
         }
-        return response.status(404).send({ message: 'User Not Found' });
+        response.status(404).json({ error: 'User Not Found' });
       });
   },
 
   getAllUsers: (request, response) => {
     User.findAll({}).then((usersFound) => {
       if (usersFound) {
-        return response.status(200).send({ usersFound });
+        response.status(200).json({ usersFound });
       }
-      return response.status(404).send({ message: 'No Users Found' });
+      response.status(404).json({ message: 'No Users Found' });
     });
   },
 
@@ -75,7 +82,7 @@ module.exports = {
     User.findById(request.params.id)
       .then((user) => {
         if (!user) {
-          return response.status(404).send({ message: 'User not found' });
+          response.status(404).json({ error: 'User not found' });
         }
         user.update(request.body)
           .then((updatedUser) => {
@@ -83,16 +90,15 @@ module.exports = {
               userId: updatedUser.id,
               userName: updatedUser.userName,
               userRoleId: updatedUser.roleId
-            }, secret, { expiresIn: '1 day' });
-            return response.status(200).send({
+            }, secret);
+            return response.status(200).json({
               user: {
                 userId: updatedUser.id,
                 userName: updatedUser.userName,
                 userRoleId: updatedUser.userId,
                 email: updatedUser.email
               },
-              token,
-              message: 'Update Successful! Token expires in one day.'
+              token
             });
           });
       });
@@ -174,11 +180,11 @@ module.exports = {
       })
       .then((user) => {
         if (!user) {
-          return response.status(200).send({ message: 'User can be created' });
+          response.status(200).json({ error: 'User can be created' });
         }
-        return response.status(400).send({ message: 'User already exists' });
+        response.status(400).json({ error: 'User already exists' });
       })
-      .catch(error => response.status(501).send({
-        error, message: 'An error occurred while retrieving the user'
+      .catch(error => response.status(501).json({
+        error, err: 'An error occurred while retrieving the user'
       }))
 };

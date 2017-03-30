@@ -23,11 +23,11 @@ class FlashMessage extends React.Component {
             red: type === 'error'
           })}>
             <div className="card-content white-text">
-              <p>{text}</p>
-              <button type="button"
+              <button type="button" id="dismissSignup"
                 onClick={this.onClick} className="close right">
                 <span>&times;</span>
               </button>
+              <p>{text}</p>
             </div>
           </div>
         </div>

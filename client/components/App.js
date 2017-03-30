@@ -6,7 +6,7 @@ import FlashMessagesList from './flash/FlashMessagesList';
 class App extends React.Component {
   render() {
     return (
-      <div className="col s12 m4 l2">
+      <div>
         <Header />
         <FlashMessagesList />
         {this.props.children}

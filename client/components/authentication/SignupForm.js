@@ -79,9 +79,8 @@ class SignupForm extends React.Component {
   render() {
     const { errors } = this.state;
     const form = (
-      <div className="col s12 z-depth-5 card-panel">
-        <form className="login-form" onSubmit={this.onSubmit}>
-          <h1><strong>Sign up here!</strong></h1>
+      <div className="card-panel" id="signupcard">
+        <form className="center-align" id="signupform" onSubmit={this.onSubmit}>
 
           <div className="row margin">
             <TextFieldGroup
@@ -149,7 +148,7 @@ class SignupForm extends React.Component {
 
           <div className="form-group">
             <button disabled={this.state.isLoading || this.state.invalid}
-              className="btn waves-effect waves-light blue" type="submit" name="action">
+              className="btn waves-effect waves-light blue">
               Sign Up<i className="material-icons right">send</i>
             </button>
           </div>
