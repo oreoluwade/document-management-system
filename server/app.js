@@ -20,4 +20,6 @@ app.use(parser.urlencoded({ extended: false }));
 // Requiring the routes into the application
 Routes(app);
 
+app.listen(4000, () => console.log('Running on localhost:4000'));
+
 export default app;

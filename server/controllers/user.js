@@ -139,11 +139,11 @@ module.exports = {
       .then((user) => {
         if (!user) {
           return response.status(401)
-            .json({ errors: 'Invalid Credentials' });
+            .json({ errors: { form: 'Invalid Credentials' } });
         }
         if (!user.validPassword(password)) {
           return response.status(401)
-            .json({ errors: 'Invalid Credentials' });
+            .json({ errors: { form: 'Invalid Credentials' } });
         }
         const token = jwt.sign({
           userId: user.id,

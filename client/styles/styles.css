@@ -20,14 +20,6 @@ body {
   width: 100%
 }
 
-.card-panel {
-    transition: box-shadow .25s;
-    padding: 24px;
-    border-radius: 2px;
-    background-color: skyblue;
-    width: 50%;
-    margin: 0 auto;
-}
 
 html {
     line-height: 0.8;
@@ -75,15 +67,18 @@ html {
   text-align: center;
   height: 240px;
   margin-top: 5px;
+  margin: 0 auto
 }
 
-/*#signupcard {
-  background-color: lightskyblue;
+#signupcard {
+  width: 50%;
+  margin: 0 auto;
 }
 
 #logincard {
-  background-color: lightskyblue;
-}*/
+  width: 50%;
+  margin: 0 auto
+}
 
 #card-alert {
   width: 50%;
@@ -92,4 +87,11 @@ html {
 
 #dismissSignup {
   background-color: black;
+}
+
+#loginError {
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 20px;
+  color: red
 }

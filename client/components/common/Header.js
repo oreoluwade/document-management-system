@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 import { logout } from '../../actions/authenticationAction';
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+    this.logout.bind = this.logout.bind(this);
+  }
   logout(e) {
     e.preventDefault();
     this.props.logout();
@@ -13,7 +20,7 @@ class Header extends React.Component {
 
     const userLinks = (
       <ul>
-        <li><a href="#" activeClassName="active" onClick={this.logout.bind(this)}>Logout</a></li>
+        <li><a href="#" activeClassName="active" onClick={this.logout.bind}>Logout</a></li>
       </ul>
     );
 

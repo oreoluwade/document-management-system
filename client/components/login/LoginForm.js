@@ -32,7 +32,9 @@ class LoginForm extends React.Component {
       this.setState({ errors: {}, isLoading: true });
       this.props.login(this.state).then(
         res => this.context.router.push('/'),
-        err => this.setState({ errors: err.response.data.errors, isLoading: false })
+        (err) => {
+          this.setState({ errors: err.response.data.errors, isLoading: false });
+        }
       );
     }
   }
@@ -47,7 +49,6 @@ class LoginForm extends React.Component {
       <div className="card-panel" id="logincard">
 
         <form className="center-align" id="loginform" onSubmit={this.onSubmit}>
-          {errors.form && <div className="alert alert-danger">{errors.form}</div>}
 
           <TextFieldGroup
             field="identifier"
@@ -69,6 +70,7 @@ class LoginForm extends React.Component {
             <button disabled={isLoading} className="btn waves-effect waves-light light-blue">
               Login<i className="material-icons right">send</i>
             </button>
+          {errors.form && <div className="card" id="loginError">{errors.form}</div>}
           </div>
         </form>
       </div>
