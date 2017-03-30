@@ -5,6 +5,9 @@ import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import SignupPage from './components/authentication/SignupPage';
 import LoginPage from './components/login/LoginPage';
+import DocumentPage from './components/document/DocumentPage';
+
+import requireAuth from './utils/requireAuth';
 
 export default (
   <Route path="/" component={App}>
@@ -12,5 +15,6 @@ export default (
     <Route path="about" component={AboutPage} />
     <Route path="signup" component={SignupPage} />
     <Route path="login" component={LoginPage} />
+    <Route path="document" component={requireAuth(DocumentPage)} />
   </Route>
 );

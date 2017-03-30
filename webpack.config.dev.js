@@ -22,10 +22,6 @@ export default {
       jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
     }
   },
-  node: {
-    net: 'empty',
-    dns: 'empty'
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
