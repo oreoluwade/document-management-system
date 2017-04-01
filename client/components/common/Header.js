@@ -40,7 +40,7 @@ class Header extends React.Component {
           <a href="#" data-activates="mobile-demo" className="button-collapse">
             <i className="material-icons">menu</i>
           </a>
-          <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <ul id="nav-mobile" className="right">
             <li>
               {isAuthenticated ? userLinks : guestLinks}
             </li>

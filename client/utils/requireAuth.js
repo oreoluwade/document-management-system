@@ -30,7 +30,7 @@ export default function (ComposedComponent) {
     router: React.PropTypes.object.isRequired
   };
 
-  Authenticate.proptypes = {
+  Authenticate.propTypes = {
     isAuthenticated: React.PropTypes.bool.isRequired,
     addFlashMessage: React.PropTypes.bool.isRequired
   };

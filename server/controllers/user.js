@@ -44,7 +44,7 @@ module.exports = {
                 userName: user.userName,
                 userRoleId: user.roleId
               }, secret);
-              response.status(201).json({
+              return response.status(201).json({
                 user: {
                   id: user.id,
                   userName: user.userName,
@@ -54,7 +54,7 @@ module.exports = {
                 token
               });
             }
-            response.status(400).json({ error: 'User Already Exists!' });
+            return response.status(400).send({ message: 'User Already Exists!' });
           });
       });
   },
@@ -180,11 +180,11 @@ module.exports = {
       })
       .then((user) => {
         if (!user) {
-          response.status(200).json({ error: 'User can be created' });
+          return response.status(200).json({ message: 'User can be created' });
         }
-        response.status(400).json({ error: 'User already exists' });
+        return response.status(400).json({ error: 'User already exists' });
       })
-      .catch(error => response.status(501).json({
-        error, err: 'An error occurred while retrieving the user'
-      }))
+      // .catch(error => response.status(501).json({
+      //   error, err: 'An error occurred while retrieving the user'
+      // }))
 };
