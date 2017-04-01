@@ -17,49 +17,20 @@ nav {
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
+  background-color: lightgray;
   width: 100%
 }
 
 
-html {
-    line-height: 0.8;
-    font-family: "Roboto", sans-serif;
-    font-weight: normal;
-    color: rgba(0,0,0,0.87);
-}
-
-.control-label {
-    font-size: 0.9rem;
-    color: #0089ec;
-    width: 50%;
-}
-
-.help-block {
-  font-size: 0.6rem;
-  color: red;
-}
-
-.login-form {
+/*.login-form {
     transition: box-shadow .25s;
     padding: 20px;
     border-radius: 2px;
     background-color: white;
     width: 75%;
     margin: 0 auto;
-}
-
-.form-control {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #9e9e9e;
-    border-radius: 0;
-    outline: none;
-    height: 3rem;
-    width: 100%;
-    font-size: 1rem;
-    box-shadow: none;
-    transition: all 0.3s;
-}
+}*/
 
 #homecard {
   width: 80%;
@@ -75,11 +46,6 @@ html {
   margin: 0 auto;
 }
 
-#logincard {
-  width: 50%;
-  margin: 0 auto
-}
-
 #card-alert {
   width: 50%;
   margin: 0 auto;
@@ -89,9 +55,4 @@ html {
   background-color: black;
 }
 
-#loginError {
-  width: 40%;
-  margin: 0 auto;
-  margin-top: 20px;
-  color: red
-}
+

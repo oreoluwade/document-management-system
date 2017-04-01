@@ -45,7 +45,7 @@
     "colors": "1.1.2",
     "compression": "1.6.1",
     "cross-env": "1.0.7",
-    "css-loader": "0.23.1",
+    "css-loader": "0.27.3",
     "enzyme": "2.2.0",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.0",
@@ -80,6 +80,7 @@
   },
   "dependencies": {
     "axios": "0.13.1",
+    "babel-eslint": "^7.2.1",
     "babel-polyfill": "6.8.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",

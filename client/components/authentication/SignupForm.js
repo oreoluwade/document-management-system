@@ -84,6 +84,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="person_outline"
               error={errors.userName}
               label="Username"
               onChange={this.onChange}
@@ -95,6 +96,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="person"
               error={errors.firstName}
               label="First Name"
               onChange={this.onChange}
@@ -105,6 +107,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="person"
               error={errors.lastName}
               label="Last Name"
               onChange={this.onChange}
@@ -115,6 +118,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="email"
               error={errors.email}
               label="Email"
               onChange={this.onChange}
@@ -126,6 +130,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="lock"
               error={errors.password}
               label="Password"
               onChange={this.onChange}
@@ -137,6 +142,7 @@ class SignupForm extends React.Component {
 
           <div className="row margin">
             <TextFieldGroup
+              icon="lock"
               error={errors.passwordConfirmation}
               label="Password Confirmation"
               onChange={this.onChange}
@@ -148,7 +154,7 @@ class SignupForm extends React.Component {
 
           <div className="form-group">
             <button disabled={this.state.isLoading || this.state.invalid}
-              className="btn waves-effect waves-light blue">
+              className="btn blue-grey">
               Sign Up<i className="material-icons right">send</i>
             </button>
           </div>

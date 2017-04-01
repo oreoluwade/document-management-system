@@ -1,21 +1,29 @@
-/* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-import classnames from 'classnames';
+import React, { PropTypes } from 'react';
 
-const TextFieldGroup = ({ field, value, label, error, type, onChange, checkUserExists }) => {
+const TextFieldGroup = ({ field, value, label, error, type, onChange,
+  checkUserExists, clearError, placeholder, icon }) => {
+  let errorClass = 'input-field col s12';
+  if (error && error.length > 0) {
+    errorClass += 'red-text';
+  }
   return (
-    <div className={classnames('form-group', { 'has-error': error })}>
-      <label className="control-label">{label}</label>
+    <div className={errorClass}>
+      <i className="material-icons prefix">{icon}</i>
       <input
         value={value}
         onChange={onChange}
         onBlur={checkUserExists}
         type={type}
         name={field}
-        className="form-control"
+        placeholder={placeholder}
+        icon={icon}
+        className="validate"
+        onFocus={clearError}
       />
-      {error && <span className="help-block">{error}</span>}
+      {error && <span className="red-text">
+        <i className="material-icons">error_outline</i>{error}</span>}
+      <label htmlFor={field} classnames="active">{label}</label>
     </div>
   );
 };
@@ -23,11 +31,14 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange, checkUserE
 TextFieldGroup.propTypes = {
   field: React.PropTypes.string.isRequired,
   value: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  error: React.PropTypes.string,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+  error: PropTypes.string,
   type: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  checkUserExists: React.PropTypes.func
+  onChange: PropTypes.func.isRequired,
+  checkUserExists: React.PropTypes.func,
+  clearError: React.PropTypes.func,
+  placeholder: React.PropTypes.string,
 };
 
 TextFieldGroup.defaultProps = {

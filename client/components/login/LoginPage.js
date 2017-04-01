@@ -4,8 +4,8 @@ import LoginForm from './LoginForm';
 class LoginPage extends React.Component {
   render() {
     return (
-      <div className="row">
-        <div className="col s12">
+      <div className="container">
+        <div className="col s5">
           <LoginForm />
         </div>
       </div>

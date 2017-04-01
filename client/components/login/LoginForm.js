@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import toastr from 'toastr';
 import TextFieldGroup from '../common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
 import { login } from '../../actions/authenticationAction';
@@ -31,11 +32,16 @@ class LoginForm extends React.Component {
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
       this.props.login(this.state).then(
-        res => this.context.router.push('/'),
-        (err) => {
-          this.setState({ errors: err.response.data.errors, isLoading: false });
+        res => {
+          this.context.router.push('/');
+          toastr.success('Logged in Successfully');
         }
-      );
+      ).catch((err) => {
+        this.setState({
+          errors: err.response.data.errors,
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -46,32 +52,40 @@ class LoginForm extends React.Component {
   render() {
     const { errors, identifier, password, isLoading } = this.state;
     return (
-      <div className="card-panel" id="logincard">
+      <div className="col s8 z-depth-8 card-panel">
 
-        <form className="center-align" id="loginform" onSubmit={this.onSubmit}>
+        <form className="login-form" onSubmit={this.onSubmit}>
 
+          <div className="row margin">
           <TextFieldGroup
+            icon="person_outline"
             field="identifier"
             label="Username / Email"
             value={identifier}
             error={errors.identifier}
             onChange={this.onChange}
-          />
+            />
+          </div>
 
+          <div className="row margin">
           <TextFieldGroup
+            icon="lock"
             field="password"
             label="Password"
             value={password}
             error={errors.password}
             onChange={this.onChange}
             type="password"
-          />
-          <div className="form-group">
-            <button disabled={isLoading} className="btn waves-effect waves-light light-blue">
+            />
+          </div>
+
+          <div className="row">
+            <button disabled={isLoading} className="btn blue-grey center">
               Login<i className="material-icons right">send</i>
             </button>
-          {errors.form && <div className="card" id="loginError">{errors.form}</div>}
+          {errors.form && toastr.error('Invalid Credentials!')}
           </div>
+
         </form>
       </div>
     );

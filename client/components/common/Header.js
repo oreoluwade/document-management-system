@@ -11,10 +11,12 @@ class Header extends React.Component {
     };
     this.logout.bind = this.logout.bind(this);
   }
+
   logout(e) {
     e.preventDefault();
     this.props.logout();
   }
+
   render() {
     const { isAuthenticated } = this.props.auth;
 
@@ -32,7 +34,7 @@ class Header extends React.Component {
     );
 
     return (
-      <nav className="blue">
+      <nav className="blue-grey">
         <div className="nav-wrapper">
           <IndexLink to="/" activeClassName="active">Home</IndexLink>
           <a href="#" data-activates="mobile-demo" className="button-collapse">
@@ -54,7 +56,7 @@ class Header extends React.Component {
   }
 }
 
-Header.proptypes = {
+Header.propTypes = {
   auth: React.PropTypes.object.isRequired,
   logout: React.PropTypes.func.isRequired
 };
