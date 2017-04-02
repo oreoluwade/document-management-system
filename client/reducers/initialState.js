@@ -1,4 +1,14 @@
 export default {
+  isAuthenticated: false,
   user: {},
-  isAuthenticated: false
+  handleUsers: {
+    allUsers: [],
+    userDetails: false
+  },
+  handleDocuments: {
+    documents: []
+  },
+  manageRoles: {
+    roles: []
+  }
 };
