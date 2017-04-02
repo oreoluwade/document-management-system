@@ -1,7 +1,7 @@
 // import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import models from '../models';
-import validateInput from '../shared/validations/signup';
+// import validateInput from '../shared/validations/signup';
 
 const Role = models.Role;
 const User = models.User;
@@ -18,11 +18,11 @@ module.exports = {
         if (!userFound) {
           response.status(400).json({ error: 'The role ID is invalid' });
         }
-        const { errors, isValid } = validateInput(newUser);
+        // const { errors, isValid } = validateInput(newUser);
 
-        if (!isValid) {
-          response.status(400).json(errors);
-        }
+        // if (!isValid) {
+        //   response.status(400).json(errors);
+        // }
 
         User.findOrCreate({
           where: {
@@ -150,17 +150,17 @@ module.exports = {
           userName: user.userName,
           userRoleId: user.roleId
         }, secret);
-        // return response.status(200).send({
-        //   user: {
-        //     userName: user.userName,
-        //     userId: user.id,
-        //     userRoleId: user.roleId,
-        //     email: user.email
-        //   },
-        //   token,
-        //   message: 'Login Successful! Token expires in one day.'
-        // });
-        response.json({ token });
+        return response.status(200).send({
+          user: {
+            userName: user.userName,
+            userId: user.id,
+            userRoleId: user.roleId,
+            email: user.email
+          },
+          token,
+          message: 'Login Successful! Token expires in one day.'
+        });
+        // response.json({ token });
       });
   },
 

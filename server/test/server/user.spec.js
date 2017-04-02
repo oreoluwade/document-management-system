@@ -56,7 +56,7 @@ describe('User API', () => {
         request.get('/user')
           .set({ Authorization: 'incredibleHawk' })
           .end((error, response) => {
-            expect(response.status).to.equal(401);
+            expect(response.status).to.equal(403);
             done();
           });
       });
@@ -147,7 +147,7 @@ describe('User API', () => {
               done();
             });
         });
-      it('should allow login when valid email & password are supplied',
+      it('should allow login when valid credentials are supplied',
         (done) => {
           request.post('/user/login')
             .send(fakeUser)
