@@ -4,6 +4,12 @@ import * as types from './actionTypes';
 
 // import setAuthorizationToken from '../utils/setAuthorizationToken';
 
+/**
+ * action to successfully get a user
+ * @export
+ * @param {any} user
+ * @returns  {object} user
+ */
 export function retrieveUserSuccess(user) {
   return {
     type: types.RETRIEVE_USERS_SUCCESS,
@@ -11,6 +17,13 @@ export function retrieveUserSuccess(user) {
   };
 }
 
+
+/**
+ * action to get a user, given the ID
+ * @export
+ * @param {any} name
+ * @returns {string} name
+ */
 export function getUserByIdSuccess(name) {
   return {
     type: types.GET_USER_SUCCESSS,
@@ -18,6 +31,14 @@ export function getUserByIdSuccess(name) {
   };
 }
 
+
+
+/**
+ * action to select any particular user
+ * @export
+ * @param {any} id
+ * @returns {number}
+ */
 export function setChosenUser(id) {
   return {
     type: types.SET_CHOSEN_USER,
@@ -25,6 +46,14 @@ export function setChosenUser(id) {
   };
 }
 
+
+
+/**
+ * action to show a selected user
+ * @export
+ * @param {any} id
+ * @returns {number}
+ */
 export function displayChosenUser(id) {
   return {
     type: types.DISPLAY_CHOSEN_USER,
@@ -32,13 +61,25 @@ export function displayChosenUser(id) {
   };
 }
 
+
+
+/**
+ * action to delete a user
+ * @export
+ * @returns {any}
+ */
 export function deleteChosenUser() {
   return {
     type: types.DELETE_CHOSEN_USER
   };
 }
 
-// action for getting existing users
+
+/**
+ * dispatching the action to get users
+ * @export
+ * @returns {object}
+ */
 export function retrieveUsers() {
   return (dispatch) => {
     return axios.get('/user').then((response) => {
@@ -49,7 +90,13 @@ export function retrieveUsers() {
   };
 }
 
-// action for getting a particular based on id
+
+/**
+ * dispatching the action to get a particular user
+ * @export
+ * @param {any} id
+ * @returns {object}
+ */
 export function getUserById(id) {
   return (dispatch) => {
     return axios.get(`/user/${id}`)
@@ -61,24 +108,37 @@ export function getUserById(id) {
   };
 }
 
-// admin user action (updating a user details)
+
+/**
+ * dispatching the action to update a user details
+ * @export
+ * @param {any} user
+ * @returns {object}
+ */
 export function updateUserAdmin(user) {
   return (dispatch, getState) => {
     const userId = getState().handleUsers.chosenUser;
-    return axios.put(`/user/${userId}`, user).then(() => {
-      dispatch(retrieveUsers());
-    }).catch((err) => {
-      throw (err);
-    });
+    return axios.put(`/user/${userId}`, user)
+      .then(() => {
+        dispatch(retrieveUsers());
+      }).catch((error) => {
+        throw (error);
+      });
   };
 }
 
-// admin user action (saving a user as an admin)
+
+/**
+ * dispatching the action to save a user
+ * @export
+ * @param {any} user
+ * @returns {object}
+ */
 export function saveUserAdmin(user) {
   return (dispatch) => {
     return axios.post('/user', user)
-    .then(() => {
-      dispatch(retrieveUsers());
-    }).catch((error) => { throw (error); });
+      .then(() => {
+        dispatch(retrieveUsers());
+      }).catch((error) => { throw (error); });
   };
 }
