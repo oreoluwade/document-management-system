@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
 
@@ -31,11 +31,9 @@ class SignupForm extends React.Component {
 
   isValid() {
     const { errors, isValid } = validateInput(this.state);
-
     if (!isValid) {
       this.setState({ errors });
     }
-
     return isValid;
   }
 
@@ -177,7 +175,7 @@ SignupForm.propTypes = {
 };
 
 SignupForm.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object
 };
 
 export default SignupForm;

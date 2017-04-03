@@ -67,7 +67,7 @@ export function deleteCurrentDocument() {
 export function loadUserDocuments() {
   return (dispatch, getState) => {
     return axios.get(
-      `user/${getState().auth.user.data.id}/document`)
+      `user/${getState().auth.user.userId}/document`)
       .then((response) => {
         dispatch(loadDocumentSuccess(response.data));
       });
@@ -80,7 +80,7 @@ export function loadUserDocuments() {
  */
 export function loadAllDocuments() {
   return (dispatch) => {
-    return axios.get('document')
+    return axios.get('/document')
       .then((response) => {
         dispatch(loadDocumentSuccess(response.data));
       }).catch((error) => {
@@ -96,7 +96,7 @@ export function loadAllDocuments() {
  */
 export function saveDocument(document) {
   return (dispatch) => {
-    return axios.post('/document/', document)
+    return axios.post('/document', document)
       .then(() => {
         dispatch(loadUserDocuments());
       }).catch((error) => {
@@ -112,8 +112,8 @@ export function saveDocument(document) {
  */
 export function updateDocument(document) {
   return (dispatch, getState) => {
-    const documentId = getState().handleDocuments.chosenDocument;
-    return axios.put(`/document/${documentId}`, document)
+    const ownerId = getState().handleDocuments.chosenDocument;
+    return axios.put(`/document/${ownerId}`, document)
       .then(() => {
         dispatch(loadUserDocuments());
       }).catch((error) => {

@@ -19,10 +19,11 @@ export function logout() {
 }
 
 export function login(data) {
-  return dispatch => axios.post('/user/login', data).then((response) => {
-    const token = response.data.token;
-    localStorage.setItem('jwtToken', token);
-    setAuthorizationToken(token);
-    dispatch(setCurrentUser(jwtDecode(token)));
-  });
+  return dispatch => axios.post('/user/login', data)
+    .then((response) => {
+      const token = response.data.token;
+      localStorage.setItem('jwtToken', token);
+      setAuthorizationToken(token);
+      dispatch(setCurrentUser(jwtDecode(token)));
+    });
 }

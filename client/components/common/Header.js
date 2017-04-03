@@ -9,7 +9,7 @@ class Header extends React.Component {
     this.state = {
 
     };
-    this.logout.bind = this.logout.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   logout(e) {
@@ -22,7 +22,7 @@ class Header extends React.Component {
 
     const userLinks = (
       <ul>
-        <li><a href="#" activeClassName="active" onClick={this.logout.bind}>Logout</a></li>
+        <li><a href="#" activeClassName="active" onClick={this.logout}>Logout</a></li>
       </ul>
     );
 
@@ -58,7 +58,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   auth: React.PropTypes.object.isRequired,
-  logout: React.PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

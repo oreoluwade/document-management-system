@@ -31,8 +31,6 @@ export function getUserByIdSuccess(name) {
   };
 }
 
-
-
 /**
  * action to select any particular user
  * @export
@@ -82,11 +80,12 @@ export function deleteChosenUser() {
  */
 export function retrieveUsers() {
   return (dispatch) => {
-    return axios.get('/user').then((response) => {
-      dispatch(retrieveUserSuccess(response.data.user));
-    }).catch((error) => {
-      throw (error);
-    });
+    return axios.get('/user')
+      .then((response) => {
+        dispatch(retrieveUserSuccess(response.data.user));
+      }).catch((error) => {
+        throw (error);
+      });
   };
 }
 
