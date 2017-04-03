@@ -11,8 +11,6 @@ module.exports = {
   createUser: (request, response) => {
     const newUser = request.body;
 
-
-
     Role.find({ where: { id: newUser.roleId } })
       .then((userFound) => {
         if (!userFound) {

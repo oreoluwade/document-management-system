@@ -55,7 +55,6 @@ module.exports = {
   validateAdmin: (request, response, next) => {
     Role.findById(request.decoded.userRoleId)
       .then((role) => {
-        console.log('>>>>>>>>>>>>>>>>>>', request.user);
         if (role.title.toLowerCase() === 'admin') {
           next();
         } else {
