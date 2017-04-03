@@ -8,7 +8,7 @@ class SignupPage extends React.Component {
   render() {
     const { userSignupRequest, addFlashMessage, isUserExists } = this.props;
     return (
-      <div>
+      <div className="card" id="signupcard">
         <div>
           <SignupForm
             isUserExists={isUserExists}

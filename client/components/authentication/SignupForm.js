@@ -77,88 +77,86 @@ class SignupForm extends React.Component {
   render() {
     const { errors } = this.state;
     const form = (
-      <div className="card-panel" id="signupcard">
-        <form className="center-align" id="signupform" onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit}>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="person_outline"
-              error={errors.userName}
-              label="Username"
-              onChange={this.onChange}
-              checkUserExists={this.checkUserExists}
-              value={this.state.userName}
-              field="userName"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="perm_identity"
+            error={errors.userName}
+            label="Username"
+            onChange={this.onChange}
+            checkUserExists={this.checkUserExists}
+            value={this.state.userName}
+            field="userName"
+          />
+        </div>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="person"
-              error={errors.firstName}
-              label="First Name"
-              onChange={this.onChange}
-              value={this.state.firstName}
-              field="firstName"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="person"
+            error={errors.firstName}
+            label="First Name"
+            onChange={this.onChange}
+            value={this.state.firstName}
+            field="firstName"
+          />
+        </div>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="person"
-              error={errors.lastName}
-              label="Last Name"
-              onChange={this.onChange}
-              value={this.state.lastName}
-              field="lastName"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="person_outline"
+            error={errors.lastName}
+            label="Last Name"
+            onChange={this.onChange}
+            value={this.state.lastName}
+            field="lastName"
+          />
+        </div>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="email"
-              error={errors.email}
-              label="Email"
-              onChange={this.onChange}
-              checkUserExists={this.checkUserExists}
-              value={this.state.email}
-              field="email"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="email"
+            error={errors.email}
+            label="Email"
+            onChange={this.onChange}
+            checkUserExists={this.checkUserExists}
+            value={this.state.email}
+            field="email"
+          />
+        </div>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="lock"
-              error={errors.password}
-              label="Password"
-              onChange={this.onChange}
-              value={this.state.password}
-              field="password"
-              type="password"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="lock"
+            error={errors.password}
+            label="Password"
+            onChange={this.onChange}
+            value={this.state.password}
+            field="password"
+            type="password"
+          />
+        </div>
 
-          <div className="row margin">
-            <TextFieldGroup
-              icon="lock"
-              error={errors.passwordConfirmation}
-              label="Password Confirmation"
-              onChange={this.onChange}
-              value={this.state.passwordConfirmation}
-              field="passwordConfirmation"
-              type="password"
-            />
-          </div>
+        <div className="row margin">
+          <TextFieldGroup
+            icon="lock"
+            error={errors.passwordConfirmation}
+            label="Password Confirmation"
+            onChange={this.onChange}
+            value={this.state.passwordConfirmation}
+            field="passwordConfirmation"
+            type="password"
+          />
+        </div>
 
-          <div className="form-group">
-            <button disabled={this.state.isLoading || this.state.invalid}
-              className="btn blue-grey">
-              Sign Up<i className="material-icons right">thumb_up</i>
-            </button>
-          </div>
+        <div className="center-align">
+          <button disabled={this.state.isLoading || this.state.invalid}
+            className="btn blue-grey">
+            Sign Up<i className="material-icons right">thumb_up</i>
+          </button>
+        </div>
 
-        </form>
-      </div>
+      </form>
     );
     return (
       <div>

@@ -22,8 +22,9 @@ class Header extends React.Component {
 
     const userLinks = (
       <ul>
+        <li><Link to="/dashboard" activeClassName="active">
+          <i className="material-icons left">dashboard</i>Dashboard</Link></li>
         <li><a href="#" activeClassName="active" onClick={this.logout}>Logout</a></li>
-        <li><Link to="/dashboard" activeClassName="active">Dashboard</Link></li>
       </ul>
     );
 
@@ -37,10 +38,11 @@ class Header extends React.Component {
     return (
       <nav className="blue-grey">
         <div className="nav-wrapper">
-          <IndexLink to="/" activeClassName="active">Home</IndexLink>
-          <a href="#" data-activates="mobile-demo" className="button-collapse">
+          <IndexLink to="/" activeClassName="active">
+            <i className="material-icons left">home</i>Home</IndexLink>
+          {/* <a href="#" data-activates="mobile-demo" className="button-collapse">
             <i className="material-icons">menu</i>
-          </a>
+          </a>*/}
           <ul id="nav-mobile" className="right">
             <li>
               {isAuthenticated ? userLinks : guestLinks}

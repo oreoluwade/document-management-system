@@ -49,7 +49,6 @@ class LoginForm extends React.Component {
   render() {
     const { errors, identifier, password, isLoading } = this.state;
     return (
-      <div className="col s8 z-depth-8 card-panel">
 
         <form className="login-form" onSubmit={this.onSubmit}>
 
@@ -76,15 +75,14 @@ class LoginForm extends React.Component {
             />
           </div>
 
-          <div className="form-group">
-            <button disabled={this.state.isLoading} className="btn blue-grey">
+          <div className="center-align">
+            <button disabled={isLoading} className="btn blue-grey">
               Login<i className="material-icons right">thumb_up</i>
             </button>
-          {errors.form && toastr.error('Invalid Credentials!')}
-          </div>
+          {errors.form && <div className="card-panel red darken-1">{errors.form}</div>}
+         </div>
 
         </form>
-      </div>
     );
   }
 }

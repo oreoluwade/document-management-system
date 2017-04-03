@@ -8,7 +8,7 @@
 }
 
 a.active {
-  color: darkblue;
+  color: black;
 }
 
 nav {
@@ -41,9 +41,19 @@ body {
   margin: 0 auto
 }
 
-#signupcard {
+#aboutcard {
   width: 50%;
+  background-color: lightblue;
+  text-align: center;
+  height: 260px;
+  margin-top: 7px;
+  margin: 0 auto
+}
+
+#signupcard {
+  width: 40%;
   margin: 0 auto;
+  margin-top: 7px;
 }
 
 #card-alert {
@@ -53,6 +63,13 @@ body {
 
 #dismissSignup {
   background-color: black;
+}
+
+#logincard {
+  width: 40%;
+  margin: 0 auto;
+  height: 250px;
+  margin-top: 100px
 }
 
 
