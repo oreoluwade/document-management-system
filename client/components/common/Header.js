@@ -23,6 +23,7 @@ class Header extends React.Component {
     const userLinks = (
       <ul>
         <li><a href="#" activeClassName="active" onClick={this.logout}>Logout</a></li>
+        <li><Link to="/dashboard" activeClassName="active">Dashboard</Link></li>
       </ul>
     );
 

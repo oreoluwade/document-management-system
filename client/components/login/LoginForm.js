@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import TextFieldGroup from '../common/TextFieldGroup';
@@ -35,7 +35,7 @@ class LoginForm extends React.Component {
       this.props.login(this.state).then(
         (res) => {
           this.context.router.push('/dashboard');
-          toastr.success('Logged in Successfully');
+          toastr.success('Logged in Successfully!');
         },
         err => this.setState({ errors: err.response.data.errors, isLoading: false })
       );
@@ -55,7 +55,7 @@ class LoginForm extends React.Component {
 
           <div className="row margin">
           <TextFieldGroup
-            icon="person_outline"
+            icon="contact_mail"
             field="identifier"
             label="Username / Email"
             value={identifier}
@@ -76,9 +76,9 @@ class LoginForm extends React.Component {
             />
           </div>
 
-          <div className="row">
-            <button disabled={isLoading} className="btn blue-grey center">
-              Login<i className="material-icons right">send</i>
+          <div className="form-group">
+            <button disabled={this.state.isLoading} className="btn blue-grey">
+              Login<i className="material-icons right">thumb_up</i>
             </button>
           {errors.form && toastr.error('Invalid Credentials!')}
           </div>
@@ -90,12 +90,12 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
-  login: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 LoginForm.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 };
 
 export default connect(null, { login, addFlashMessage })(LoginForm);

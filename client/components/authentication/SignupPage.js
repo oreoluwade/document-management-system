@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import SignupForm from './SignupForm';
 import { userSignupRequest, isUserExists } from '../../actions/signupActions';
@@ -21,9 +21,9 @@ class SignupPage extends React.Component {
 }
 
 SignupPage.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-  isUserExists: React.PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired
 };
 
 export default connect(null, { userSignupRequest, addFlashMessage, isUserExists })(SignupPage);

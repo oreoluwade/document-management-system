@@ -153,7 +153,7 @@ class SignupForm extends React.Component {
           <div className="form-group">
             <button disabled={this.state.isLoading || this.state.invalid}
               className="btn blue-grey">
-              Sign Up<i className="material-icons right">send</i>
+              Sign Up<i className="material-icons right">thumb_up</i>
             </button>
           </div>
 

@@ -1,4 +1,3 @@
-
 import React, { PropTypes } from 'react';
 
 const TextFieldGroup = ({ field, value, label, error, type, onChange,
@@ -7,6 +6,7 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange,
   if (error && error.length > 0) {
     errorClass += 'red-text';
   }
+
   return (
     <div className={errorClass}>
       <i className="material-icons prefix">{icon}</i>
@@ -29,16 +29,16 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange,
 };
 
 TextFieldGroup.propTypes = {
-  field: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   error: PropTypes.string,
-  type: React.PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  checkUserExists: React.PropTypes.func,
-  clearError: React.PropTypes.func,
-  placeholder: React.PropTypes.string,
+  checkUserExists: PropTypes.func,
+  clearError: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 TextFieldGroup.defaultProps = {
