@@ -40,7 +40,7 @@ class DashboardPage extends React.Component {
       <div className="row">
         <div className="col s12">
           <div id="dashboard" className="col s12 z-depth-5 card-panel">
-            <h5 className="center">USER PANEL</h5>
+            <h5 className="center">D A S H B O A R D</h5>
             <div className="container">
               <div className="row">
                 <div className="col s12">
@@ -48,15 +48,15 @@ class DashboardPage extends React.Component {
                     className="tabs tab-demo-active z-depth-1 blue-grey">
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light active"
-                        href="#public">Public</a>
+                        href="#public">P u b l i c</a>
                     </li>
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
-                        href="#role">Role</a>
+                        href="#role">R o l e</a>
                     </li>
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
-                        href="#private">Private</a>
+                        href="#private">P r i v a t e</a>
                     </li>
                   </ul>
                 </div>

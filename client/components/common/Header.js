@@ -23,15 +23,15 @@ class Header extends React.Component {
     const userLinks = (
       <ul>
         <li><Link to="/dashboard" activeClassName="active">
-          <i className="material-icons left">dashboard</i>Dashboard</Link></li>
-        <li><a href="#" activeClassName="active" onClick={this.logout}>Logout</a></li>
+          <i className="material-icons left">dashboard</i>D A S H B O A R D</Link></li>
+        <li><a href="#" activeClassName="active" onClick={this.logout}>L O G O U T</a></li>
       </ul>
     );
 
     const guestLinks = (
       <ul>
-        <li><Link to="/signup" activeClassName="active">SignUp</Link></li>
-        <li><Link to="/login" activeClassName="active">Login</Link></li>
+        <li><Link to="/signup" activeClassName="active">S I G N U P</Link></li>
+        <li><Link to="/login" activeClassName="active">L O G I N</Link></li>
       </ul>
     );
 
@@ -39,7 +39,7 @@ class Header extends React.Component {
       <nav className="blue-grey">
         <div className="nav-wrapper">
           <IndexLink to="/" activeClassName="active">
-            <i className="material-icons left">home</i>Home</IndexLink>
+            <i className="material-icons left">home</i>H O M E</IndexLink>
           {/* <a href="#" data-activates="mobile-demo" className="button-collapse">
             <i className="material-icons">menu</i>
           </a>*/}
