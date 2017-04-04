@@ -6,10 +6,8 @@ import { logout } from '../../actions/authenticationAction';
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
     this.logout = this.logout.bind(this);
+    // this.handleSearchModal = this.handleSearchModal.bind(this);
   }
 
   logout(e) {
@@ -24,7 +22,27 @@ class Header extends React.Component {
       <ul>
         <li><Link to="/dashboard" activeClassName="active">
           <i className="material-icons left">dashboard</i>D A S H B O A R D</Link></li>
-        <li><a href="#" activeClassName="active" onClick={this.logout}>L O G O U T</a></li>
+        <li activeClassName="active">
+          <a href="#">Hello, {
+              isAuthenticated ? this.props.auth.user.userName : 'Guest'
+            }!</a>
+        </li>
+        <li activeClassName="active" id="personalDocs">
+          <Link to="/document">Personal Documents</Link>
+        </li>
+          {this.props.isAdmin ?
+            <li className="admin">
+              <Link to="/admin/manageroles">Manage Roles</Link>
+            </li>
+             : ''}
+          {this.props.isAdmin ?
+            <li className="admin" id="adminTab">
+              <Link to="/admin/handleusers">Manage Users</Link>
+            </li>
+            : ''}
+          <li>
+          <a href="#" activeClassName="active" onClick={this.logout}>L O G O U T</a>
+        </li>
       </ul>
     );
 
@@ -61,13 +79,24 @@ class Header extends React.Component {
 
 Header.propTypes = {
   auth: React.PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  isAdmin: React.PropTypes.bool.isRequired
 };
 
+/**
+ * @param {object} state
+ * @returns {object} data
+ */
 function mapStateToProps(state) {
-  return {
-    auth: state.auth
-  };
+  let role;
+  if (state.auth.isAuthenticated) {
+    role = state.auth.user.userRoleId;
+  }
+  let isAdmin = false;
+  if (role === 1) {
+    isAdmin = true;
+  }
+  return { auth: state.auth, isAdmin };
 }
 
 export default connect(mapStateToProps, { logout })(Header);

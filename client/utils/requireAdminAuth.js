@@ -47,7 +47,7 @@ export default function (ComposedComponent) {
   function mapStateToProps(state) {
     let admin;
     if (state.auth.isAuthenticated) {
-      admin = state.auth.user.data.roleId;
+      admin = state.auth.user.userRoleId;
     }
     return {
       isAuthenticated: state.auth.isAuthenticated,

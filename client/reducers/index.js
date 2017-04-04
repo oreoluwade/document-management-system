@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer } from 'react-redux-sweetalert';
 import flashMessages from './flashMessages';
 import handleUsers from './userReducer';
 import handleDocuments from './documentReducer';
@@ -11,6 +12,7 @@ export const rootReducer = combineReducers({
   handleUsers,
   handleDocuments,
   manageRoles,
+  sweetalert: reducer
 });
 
 export default rootReducer;

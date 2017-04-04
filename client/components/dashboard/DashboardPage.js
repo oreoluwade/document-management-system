@@ -17,11 +17,12 @@ class DashboardPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.auth.user.userRoleId === 1) {
+    const { userRoleId } = this.props.auth.user;
+    if (userRoleId === 1) {
       this.props.loadAllDocuments();
       this.setState({ isPrivate: true });
     } else {
-      this.props.loadUserDocuments();
+      this.props.loadUserDocuments(userRoleId);
     }
   }
 

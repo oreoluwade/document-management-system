@@ -19,9 +19,9 @@ class DocumentForm extends React.Component {
     this.state = {
       document: {},
       errors: {},
-      select: Object.assign({}, props.docValue).access,
       documentTitle: Object.assign({}, props.docValue).title,
       model: Object.assign({}, props.docValue).content,
+      select: Object.assign({}, props.docValue).access,
       ownerId: Object.assign({}, props.docValue).ownerId,
       displaySaveButton: true
     };
@@ -80,16 +80,15 @@ class DocumentForm extends React.Component {
     this.props.actions.saveDocument(this.state.document)
       .then(() => {
         toastr.success('Document Successfully Saved');
-        $('#modal1').modal('close');
+        $('#docDisplayModal').modal('close');
       })
       .catch(() => {
         this.props.addFlashMessage({
           type: 'error',
-          text: 'Unable to add document, Confirm Document title conflict'
+          text: 'Unable to save document'
         });
-        toastr.error(
-          'Unable to save document');
-        $('#modal1').modal('close');
+        toastr.error('Unable to save document');
+        $('#docDisplayModal').modal('close');
       });
   }
 
@@ -98,23 +97,22 @@ class DocumentForm extends React.Component {
     this.props.actions.updateDocument(this.state.document)
       .then(() => {
         toastr.success('Document Successfully Saved');
-        $('#modal1').modal('close');
+        $('#docDisplayModal').modal('close');
       })
       .catch(() => {
         this.props.addFlashMessage({
           type: 'error',
-          text: 'Unable to update document, Confirm Document title conflict'
+          text: 'Unable to update document'
         });
-        toastr.error(
-          'Unable to update document');
-        $('#modal1').modal('close');
+        toastr.error('Unable to update document');
+        $('#docDisplayModal').modal('close');
       });
   }
 
   redirect() {
     toastr.success('Document Successfully Saved');
     this.context.router.push('/document');
-    $('#modal1').modal('close');
+    $('#docDisplayModal').modal('close');
   }
 
   render() {
@@ -167,7 +165,7 @@ class DocumentForm extends React.Component {
               id="saveButton"
               type="submit"
               value="Save"
-              className="btn waves-effect waves-light blue-grey darken-1"
+              className="btn waves-effect waves-light blue-grey"
               onClick={isValue ? this.updateDocument : this.saveDocument} />
 
           </div>
@@ -225,6 +223,7 @@ function mapStateToProps(state) {
   if (documentId > 0) {
     document = getDocumentById(currentState.documents, documentId);
   }
+
   return {
     documents: currentState.documents,
     currentDocument: currentState.chosenDocument,

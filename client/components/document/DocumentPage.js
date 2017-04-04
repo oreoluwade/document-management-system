@@ -10,11 +10,11 @@ class DocumentPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.clickToDelete = this.clickToDelete.bind(this);
+    this.deleteClick = this.deleteClick.bind(this);
   }
 
   componentWillMount() {
-    this.props.actions.loadUserDocument();
+    this.props.actions.loadUserDocuments();
   }
 
   componentDidMount() {
@@ -23,9 +23,9 @@ class DocumentPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  clickToDelete() {
+  deleteClick() {
     this.props.actions.deleteCurrentDocument();
-    $('#modal1').modal('open');
+    $('#docsDisplayModal').modal('open');
   }
 
   render() {
@@ -34,11 +34,11 @@ class DocumentPage extends React.Component {
     return (
       <div className="row">
         <div id="documentPage" className="col s12 z-depth-5 card-panel">
-          <h4>Personal Documents</h4>
+          <h4 className="center">MY DOCUMENTS</h4>
           <div id="addBtnDiv"
-            className="fixed-action-btn" onClick={this.clickToDelete}>
+            className="fixed-action-btn" onClick={this.deleteClick}>
             <a
-              className="btn-floating btn-large waves-effect waves-light red tooltipped"
+              className="btn-floating btn-large waves-effect waves-light darkblue tooltipped"
               data-position="left" data-delay="50"
               data-tooltip="create a new document">
               <i className="material-icons">create</i>
@@ -49,7 +49,7 @@ class DocumentPage extends React.Component {
               <div className="row">
                 <div className="col s5">
                   <div id="card-alert" className="card indigo lighten-5">
-                    <div className="card-content indigo-text">
+                    <div className="card-content black-text" id="documentCount">
                       <p>INFO : You have {count} Documents</p>
                     </div>
                   </div>

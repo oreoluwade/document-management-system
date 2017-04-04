@@ -14,7 +14,7 @@ class CommonModal extends React.Component {
     const { auth } = this.props;
     return (
       <div>
-        <div id="modal1" className="modal">
+        <div id="docDisplayModal" className="modal">
           <div>
             <a href="#"
               className="btn-floating btn-flat blue-grey closeModal modal-close">
