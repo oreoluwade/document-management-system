@@ -96,10 +96,10 @@ export function loadAllDocuments() {
  * @param {any} document
  * @returns {function}
  */
-export function saveDocument(document) {
+export function saveDocument(document, userId) {
   return dispatch => axios.post('/document/', document)
     .then(() => {
-      dispatch(loadUserDocuments());
+      dispatch(loadUserDocuments(userId));
     }).catch((error) => {
       throw (error);
     });
@@ -110,27 +110,13 @@ export function saveDocument(document) {
  * @param {object} document
  * @returns {function}
  */
-// export function updateDocument(id, document) {
-//   return (dispatch) => {
-//     return axios.put(`/document/${id}`, document)
-//       .then(() => {
-//         dispatch(loadUserDocuments());
-//       }).catch((error) => {
-//         throw (error);
-//       });
-//   };
-// }
-
-export function updateDocument(document) {
-  return (dispatch, getState) => {
-    const id = getState().handleDocuments.chosenDocument;
-    return axios.put(`/document/${id}`, document)
+export function updateDocument(document, userId) {
+  return dispatch => axios.put(`/document/${document.id}`, document)
       .then(() => {
-        dispatch(loadUserDocuments());
+        dispatch(loadUserDocuments(userId));
       }).catch((error) => {
         throw (error);
       });
-  };
 }
 
 /**

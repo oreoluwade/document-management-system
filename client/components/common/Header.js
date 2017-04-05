@@ -25,7 +25,7 @@ export class Header extends React.Component {
             <a href="#">Hello, {user.userName}!</a>
           </li>
           <li activeClassName="active" id="personalDocs">
-            <Link to="/documents">Personal Documents</Link>
+            <Link to="/documents">Saved Documents</Link>
           </li>
           {isAdmin &&
             <li className="admin">

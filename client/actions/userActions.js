@@ -45,7 +45,6 @@ export function setChosenUser(id) {
 }
 
 
-
 /**
  * action to show a selected user
  * @export
@@ -58,7 +57,6 @@ export function displayChosenUser(id) {
     id
   };
 }
-
 
 
 /**
@@ -79,14 +77,12 @@ export function deleteChosenUser() {
  * @returns {object}
  */
 export function retrieveUsers() {
-  return (dispatch) => {
-    return axios.get('/user')
+  return dispatch => axios.get('/user')
       .then((response) => {
         dispatch(retrieveUserSuccess(response.data.user));
       }).catch((error) => {
         throw (error);
       });
-  };
 }
 
 
@@ -97,14 +93,12 @@ export function retrieveUsers() {
  * @returns {object}
  */
 export function getUserById(id) {
-  return (dispatch) => {
-    return axios.get(`/user/${id}`)
+  return dispatch => axios.get(`/user/${id}`)
       .then((response) => {
         dispatch(getUserByIdSuccess(response.data.user.name));
       }).catch((error) => {
         throw (error);
       });
-  };
 }
 
 
@@ -134,10 +128,8 @@ export function updateUserAdmin(user) {
  * @returns {object}
  */
 export function saveUserAdmin(user) {
-  return (dispatch) => {
-    return axios.post('/user', user)
+  return dispatch => axios.post('/user', user)
       .then(() => {
         dispatch(retrieveUsers());
       }).catch((error) => { throw (error); });
-  };
 }

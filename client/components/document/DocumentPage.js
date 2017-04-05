@@ -14,7 +14,8 @@ class DocumentPage extends React.Component {
   }
 
   componentWillMount() {
-    this.props.actions.loadUserDocuments();
+    const { userId } = this.props.user;
+    this.props.actions.loadUserDocuments(userId);
   }
 
   componentDidMount() {
@@ -70,6 +71,9 @@ class DocumentPage extends React.Component {
 
 DocumentPage.propTypes = {
   personalDocuments: PropTypes.array.isRequired,
+  publicDocuments: PropTypes.array,
+  currentDocument: PropTypes.object,
+  user: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };
 

@@ -17,67 +17,61 @@ class DocumentForm extends React.Component {
     super(props);
 
     this.state = {
-      document: {},
       errors: {},
-      documentTitle: Object.assign({}, props.docValue).title,
-      model: Object.assign({}, props.docValue).content,
-      select: Object.assign({}, props.docValue).access,
-      ownerId: Object.assign({}, props.docValue).ownerId,
+      chosenDocument: props.chosenDocument,
       displaySaveButton: true
     };
     this.onChange = this.onChange.bind(this);
-    this.updateSelectState = this.updateSelectState.bind(this);
+    // this.updateSelectState = this.updateSelectState.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
     this.saveDocument = this.saveDocument.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
   }
 
   componentDidMount() {
-    $('#accessDropdown').on('change', this.updateSelectState);
+    $('#accessDropdown').on('change', this.onChange);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.docValue.id !== nextProps.docValue.id) {
+    const editable = nextProps.chosenDocument.ownerId === this.props.auth.user.userId || !nextProps.chosenDocument.id;
+    if (!editable) {
+      $('.fr-wrapper').froalaEditor('edit.off');
+    }
+    if (this.props.chosenDocument.id !== nextProps.chosenDocument.id) {
       // Necessary to populate form when existing documents loaded directly.
       this.setState({
-        documentTitle: Object.assign({}, nextProps.docValue).title,
-        model: Object.assign({}, nextProps.docValue).content,
-        select: Object.assign({}, nextProps.docValue).access,
-        ownerId: Object.assign({}, nextProps.docValue).ownerId,
+        chosenDocument: nextProps.chosenDocument,
+        displaySaveButton: editable
       });
-    }
-    this.setState({ displaySaveButton: true });
-    if (nextProps.docValue.ownerId !== this.props.auth.user.userId) {
-      $('.fr-wrapper').froalaEditor('edit.off');
-      this.setState({ displaySaveButton: false });
-    }
-    if (nextProps.docValue.id === '') {
-      this.setState({ displaySaveButton: true });
     }
   }
 
   onChange(event) {
-    const field = event.target.name;
-    const document = this.state.document;
-    document[field] = event.target.value;
-    document.ownerId = this.props.auth.user.userId;
-    document.role = String(this.props.auth.user.userRoleId);
-    this.setState({ document, documentTitle: event.target.value });
-  }
-
-  updateSelectState(event) {
-    this.setState({ select: event.target.value });
+    const { name: field, value } = event.target;
+    const ownerId = this.props.auth.user.userId;
+    const role = String(this.props.auth.user.userRoleId);
+    this.setState((state) => {
+      const chosenDocument = Object.assign({},
+        state.chosenDocument, {
+          [field]: value,
+          ownerId,
+          role
+        });
+      return { chosenDocument };
+    });
   }
 
   handleModelChange(model) {
-    const document = this.state.document;
-    document.content = model;
-    this.setState({ document, model });
+    this.setState((state) => {
+      const chosenDocument = Object.assign({},
+        state.chosenDocument, { content: model });
+      return { chosenDocument };
+    });
   }
 
   saveDocument(event) {
     event.preventDefault();
-    this.props.actions.saveDocument(this.state.document)
+    this.props.actions.saveDocument(this.state.chosenDocument, this.props.auth.user.userId)
       .then(() => {
         toastr.success('Document Successfully Saved');
         $('#docDisplayModal').modal('close');
@@ -94,9 +88,9 @@ class DocumentForm extends React.Component {
 
   updateDocument(event) {
     event.preventDefault();
-    this.props.actions.updateDocument(this.state.document)
+    this.props.actions.updateDocument(this.state.chosenDocument, this.props.auth.user.userId)
       .then(() => {
-        toastr.success('Document Successfully Saved');
+        toastr.success('Document Successfully Updated');
         $('#docDisplayModal').modal('close');
       })
       .catch(() => {
@@ -111,23 +105,23 @@ class DocumentForm extends React.Component {
 
   redirect() {
     toastr.success('Document Successfully Saved');
-    this.context.router.push('/document');
+    this.context.router.push('/documents');
     $('#docDisplayModal').modal('close');
   }
 
   render() {
-    const isValue = this.props.currentDocument;
-    const { displaySaveButton } = this.state;
+    const { displaySaveButton, chosenDocument } = this.state;
+    const { id, title = '', content = '', access } = chosenDocument;
     const form = (
       <form>
         <div className="row">
-          {displaySaveButton ? '' : 'View Only'}
+          {!displaySaveButton && 'View Only'}
           <div className="input-field col s12">
             <input
               icon="subject"
               id="title"
               type="text"
-              value={this.state.documentTitle}
+              value={title}
               name="title"
               placeholder="Enter a Title here!"
               className="validate"
@@ -140,7 +134,7 @@ class DocumentForm extends React.Component {
           <div className="input-field col s12">
             <FroalaEditor
               tag="textarea"
-              model={this.state.model}
+              model={content}
               onModelChange={this.handleModelChange} />
           </div>
 
@@ -148,8 +142,8 @@ class DocumentForm extends React.Component {
 
           <div className="input-field col s12">
             <select name="access" id="accessDropdown"
-              value={this.state.select}
-              className="browser-default" onChange={this.updateSelectState}>
+              value={access}
+              className="browser-default" onChange={this.onChange}>
               <option value="" disabled >Document Visibility Access</option>
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -166,7 +160,7 @@ class DocumentForm extends React.Component {
               type="submit"
               value="Save"
               className="btn waves-effect waves-light blue-grey"
-              onClick={isValue ? this.updateDocument : this.saveDocument} />
+              onClick={id ? this.updateDocument : this.saveDocument} />
 
           </div>
         </div>
@@ -183,48 +177,20 @@ class DocumentForm extends React.Component {
 DocumentForm.propTypes = {
   auth: PropTypes.object.isRequired,
   onChange: PropTypes.func,
-  docValue: PropTypes.object.isRequired,
+  chosenDocument: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  documents: PropTypes.array.isRequired,
-  currentDocument: PropTypes.string,
   addFlashMessage: PropTypes.func.isRequired
 };
-
-/**
- * @param {any} documents
- * @param {any} id
- * @returns {any} object
- */
-function getDocumentById(documents, id) {
-  const document = documents.filter(doc => String(doc.id) === id);
-  if (document) {
-    return document[0]; // The filter method returns an array
-  }
-  return null;
-}
-
 
 /**
  * @param {any} state
  * @returns {any}
  */
 function mapStateToProps(state) {
-  const docsInState = state.handleDocuments;
-  const id = docsInState.chosenDocument;
-  let document = {
-    id: '',
-    title: '',
-    content: '',
-    access: '',
-    ownerId: ''
-  };
-  if (id > 0) {
-    document = getDocumentById(docsInState.documents, id);
-  }
+  const { chosenDocument = {} } = state.handleDocuments;
+
   return {
-    documents: docsInState.documents,
-    currentDocument: docsInState.chosenDocument,
-    docValue: document,
+    chosenDocument,
     auth: state.auth
   };
 }

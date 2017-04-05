@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
-import PublicDocsCollection from '../document/PublicDocsCollection';
-import RoleDocsCollection from '../document/RoleDocsCollection';
-import PrivateDocsCollection from '../document/PrivateDocsCollection';
+import DocCollection from '../document/DocCollection';
 import CommonModal from '../common/CommonModal';
 
 
@@ -47,15 +45,15 @@ class DashboardPage extends React.Component {
                 <div className="col s12">
                   <ul
                     className="tabs tab-demo-active z-depth-1 blue-grey">
-                    <li className="tab col s4">
+                    <li className="tab col s3">
                       <a className="white-text waves-effect waves-light active"
                         href="#public">Public</a>
                     </li>
-                    <li className="tab col s4">
+                    <li className="tab col s3">
                       <a className="white-text waves-effect waves-light"
                         href="#role">Role</a>
                     </li>
-                    <li className="tab col s4">
+                    <li className="tab col s3">
                       <a className="white-text waves-effect waves-light"
                         href="#private">Private</a>
                     </li>
@@ -66,15 +64,15 @@ class DashboardPage extends React.Component {
                   <div id="private" className="col s12 tab-style">
                     {this.state.isPrivate ?
                       <h6>All Private Documents</h6> : ''}
-                    <PrivateDocsCollection privateDocuments={privateDocuments}/>
+                    <DocCollection documents={privateDocuments}/>
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6>All Public Documents</h6>
-                    <PublicDocsCollection publicDocuments={publicDocuments}/>
+                    <DocCollection documents={publicDocuments}/>
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6>All Accessible Role Documents</h6>
-                    <RoleDocsCollection roleDocuments={roleDocuments}/>
+                    <DocCollection documents={roleDocuments}/>
                   </div>
 
                 </div>
