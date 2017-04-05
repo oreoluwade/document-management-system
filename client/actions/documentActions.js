@@ -2,9 +2,10 @@ import axios from 'axios';
 import * as types from './actionTypes';
 
 /**
+ * Load document success action creator
  * @export
  * @param {any} document
- * @returns {any} document
+ * @returns {object} action
  */
 export function loadDocumentSuccess(document) {
   return {
@@ -14,9 +15,10 @@ export function loadDocumentSuccess(document) {
 }
 
 /**
+ * Create document success action creator
  * @export
  * @param {any} document
- * @returns {any} document
+ * @returns {object} action
  */
 export function createDocumentSuccess(document) {
   return {
@@ -26,9 +28,10 @@ export function createDocumentSuccess(document) {
 }
 
 /**
+ * Update document success action creator
  * @export
  * @param {any} document
- * @returns {any} document
+ * @returns {object} action
  */
 export function updateDocumentSuccess(document) {
   return {
@@ -38,10 +41,10 @@ export function updateDocumentSuccess(document) {
 }
 
 /**
- * set the chosen document in state
+ * Choose a dicument as the current document action creator
  * @export
- * @param {any} id
- * @returns {any} document id
+ * @param {number} id
+ * @returns {object} action
  */
 export function chooseAsCurrentDocument(id) {
   return {
@@ -51,8 +54,8 @@ export function chooseAsCurrentDocument(id) {
 }
 
 /**
- * delete from state the current selected document
- * @return {[type]} [description]
+ * Delete the current document action creator
+ * @return {object} actiontype
  */
 export function deleteCurrentDocument() {
   return {
@@ -60,60 +63,68 @@ export function deleteCurrentDocument() {
   };
 }
 
+
 /**
- * @export
- * @returns {object} documents
+ * action creator to get user documents
+ * @param {number} userId
+ * @returns {function} documents
  */
-export function loadUserDocuments() {
-  return (dispatch, getState) => {
-    return axios.get(
-      `user/${getState().auth.user.userId}/document`)
-      .then((response) => {
-        dispatch(loadDocumentSuccess(response.data));
-      });
-  };
+export function loadUserDocuments(userId) {
+  return dispatch => axios.get(`user/${userId}/document`)
+    .then((response) => {
+      dispatch(loadDocumentSuccess(response.data));
+    }).catch((error) => {
+      throw (error);
+    });
 }
 
 /**
- * @export
+ * Action creator to get all documents accessible to current user
  * @returns {object} documents
  */
 export function loadAllDocuments() {
-  return (dispatch) => {
-    return axios.get('/document')
-      .then((response) => {
-        dispatch(loadDocumentSuccess(response.data));
-      }).catch((error) => {
-        throw (error);
-      });
-  };
+  return dispatch => axios.get('/document')
+    .then((response) => {
+      dispatch(loadDocumentSuccess(response.data));
+    }).catch((error) => {
+      throw (error);
+    });
 }
 
 /**
- * @export
+ * Action creator to save a document after adding content and title
  * @param {any} document
- * @returns {object} documents
+ * @returns {function}
  */
 export function saveDocument(document) {
-  return (dispatch) => {
-    return axios.post('/document', document)
-      .then(() => {
-        dispatch(loadUserDocuments());
-      }).catch((error) => {
-        throw (error);
-      });
-  };
+  return dispatch => axios.post('/document/', document)
+    .then(() => {
+      dispatch(loadUserDocuments());
+    }).catch((error) => {
+      throw (error);
+    });
 }
 
 /**
- * @export
- * @param {any} document
- * @returns {object} documents
+ * Action creator to update details of a document
+ * @param {object} document
+ * @returns {function}
  */
+// export function updateDocument(id, document) {
+//   return (dispatch) => {
+//     return axios.put(`/document/${id}`, document)
+//       .then(() => {
+//         dispatch(loadUserDocuments());
+//       }).catch((error) => {
+//         throw (error);
+//       });
+//   };
+// }
+
 export function updateDocument(document) {
   return (dispatch, getState) => {
-    const ownerId = getState().handleDocuments.chosenDocument;
-    return axios.put(`/document/${ownerId}`, document)
+    const id = getState().handleDocuments.chosenDocument;
+    return axios.put(`/document/${id}`, document)
       .then(() => {
         dispatch(loadUserDocuments());
       }).catch((error) => {
@@ -128,12 +139,10 @@ export function updateDocument(document) {
  * @returns {object} documents
  */
 export function deleteDocument(id) {
-  return (dispatch) => {
-    return axios.delete(`/document/${id}`)
-      .then(() => {
-        dispatch(loadUserDocuments());
-      }).catch((error) => {
-        throw (error);
-      });
-  };
+  return dispatch => axios.delete(`/document/${id}`)
+    .then(() => {
+      dispatch(loadUserDocuments());
+    }).catch((error) => {
+      throw (error);
+    });
 }

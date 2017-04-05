@@ -33,7 +33,7 @@ class DocumentForm extends React.Component {
   }
 
   componentDidMount() {
-    $('#mySelectBox').on('change', this.updateSelectState);
+    $('#accessDropdown').on('change', this.updateSelectState);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -147,7 +147,7 @@ class DocumentForm extends React.Component {
           <br />
 
           <div className="input-field col s12">
-            <select name="access" id="mySelectBox"
+            <select name="access" id="accessDropdown"
               value={this.state.select}
               className="browser-default" onChange={this.updateSelectState}>
               <option value="" disabled >Document Visibility Access</option>
@@ -196,9 +196,7 @@ DocumentForm.propTypes = {
  * @returns {any} object
  */
 function getDocumentById(documents, id) {
-  const document = documents.filter((doc) => {
-    return String(doc.id) === id;
-  });
+  const document = documents.filter(doc => String(doc.id) === id);
   if (document) {
     return document[0]; // The filter method returns an array
   }
@@ -211,8 +209,8 @@ function getDocumentById(documents, id) {
  * @returns {any}
  */
 function mapStateToProps(state) {
-  const currentState = state.handleDocuments;
-  const documentId = currentState.chosenDocument;
+  const docsInState = state.handleDocuments;
+  const id = docsInState.chosenDocument;
   let document = {
     id: '',
     title: '',
@@ -220,13 +218,12 @@ function mapStateToProps(state) {
     access: '',
     ownerId: ''
   };
-  if (documentId > 0) {
-    document = getDocumentById(currentState.documents, documentId);
+  if (id > 0) {
+    document = getDocumentById(docsInState.documents, id);
   }
-
   return {
-    documents: currentState.documents,
-    currentDocument: currentState.chosenDocument,
+    documents: docsInState.documents,
+    currentDocument: docsInState.chosenDocument,
     docValue: document,
     auth: state.auth
   };

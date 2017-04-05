@@ -10,7 +10,7 @@ class DocumentPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.deleteClick = this.deleteClick.bind(this);
+    this.clickToDelete = this.clickToDelete.bind(this);
   }
 
   componentWillMount() {
@@ -23,7 +23,7 @@ class DocumentPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  deleteClick() {
+  clickToDelete() {
     this.props.actions.deleteCurrentDocument();
     $('#docsDisplayModal').modal('open');
   }
@@ -36,11 +36,11 @@ class DocumentPage extends React.Component {
         <div id="documentPage" className="col s12 z-depth-5 card-panel">
           <h4 className="center">MY DOCUMENTS</h4>
           <div id="addBtnDiv"
-            className="fixed-action-btn" onClick={this.deleteClick}>
+            className="fixed-action-btn" onClick={this.clickToDelete}>
             <a
-              className="btn-floating btn-large waves-effect waves-light darkblue tooltipped"
+              className="btn-floating btn-large waves-effect waves-light red tooltipped"
               data-position="left" data-delay="50"
-              data-tooltip="create a new document">
+              data-tooltip="Delete current document">
               <i className="material-icons">create</i>
             </a>
           </div>
@@ -77,21 +77,24 @@ DocumentPage.propTypes = {
  * @param {any} state
  * @returns {any}
  */
-function mapStateToProps(state) {
-  const currentState = state.handleDocuments;
+function mapStateToProps({
+  handleDocuments: { documents, chosenDocument },
+  auth: { user, isAuthenticated }
+}) {
   let personalDocuments = [];
-  if (state.auth.isAuthenticated) {
-    personalDocuments = currentState.documents.filter(
-      doc => doc.ownerId === state.auth.user.userId);
+  if (isAuthenticated) {
+    personalDocuments = documents.filter(
+      doc => doc.ownerId === user.userId);
   }
 
-  const publicDocuments = currentState.documents.filter(
+  const publicDocuments = documents.filter(
     doc => doc.access === 'public');
 
   return {
     personalDocuments,
     publicDocuments,
-    currentDocument: currentState.chosenDocument
+    currentDocument: chosenDocument,
+    user
   };
 }
 
@@ -106,4 +109,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentPage);
-

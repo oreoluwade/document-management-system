@@ -79,4 +79,7 @@ body {
   text-align: center
 }*/
 
-
+#displayDocModal {
+    width: 75% !important;
+    max-height: 80vh !important;
+}

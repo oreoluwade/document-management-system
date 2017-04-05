@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
 class FlashMessage extends React.Component {
@@ -37,8 +37,8 @@ class FlashMessage extends React.Component {
 }
 
 FlashMessage.propTypes = {
-  message: React.PropTypes.object.isRequired,
-  deleteFlashMessage: React.PropTypes.func.isRequired
+  message: PropTypes.object.isRequired,
+  deleteFlashMessage: PropTypes.func.isRequired
 };
 
 export default FlashMessage;

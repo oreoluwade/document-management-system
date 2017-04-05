@@ -41,7 +41,7 @@ class DashboardPage extends React.Component {
       <div className="row">
         <div className="col s12">
           <div id="dashboard" className="col s12 z-depth-5 card-panel">
-            <h5 className="center">D A S H B O A R D</h5>
+            <h5 className="center">DASHBOARD</h5>
             <div className="container">
               <div className="row">
                 <div className="col s12">
@@ -49,15 +49,15 @@ class DashboardPage extends React.Component {
                     className="tabs tab-demo-active z-depth-1 blue-grey">
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light active"
-                        href="#public">P u b l i c</a>
+                        href="#public">Public</a>
                     </li>
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
-                        href="#role">R o l e</a>
+                        href="#role">Role</a>
                     </li>
                     <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
-                        href="#private">P r i v a t e</a>
+                        href="#private">Private</a>
                     </li>
                   </ul>
                 </div>
@@ -97,18 +97,18 @@ DashboardPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const currentState = state.handleDocuments;
+  const docsInState = state.handleDocuments;
   let roleDocuments = [];
   let privateDocuments = [];
-  const publicDocuments = currentState.documents.filter(
+  const publicDocuments = docsInState.documents.filter(
     doc => doc.access === 'public');
   if (state.auth.isAuthenticated && state.auth.user.userRoleId !== 1) {
-    roleDocuments = currentState.documents.filter(
+    roleDocuments = docsInState.documents.filter(
       doc => doc.role === String(state.auth.user.userRoleId));
   } else if (state.auth.isAuthenticated && state.auth.user.userRoleId === 1) {
-    roleDocuments = currentState.documents.filter(
+    roleDocuments = docsInState.documents.filter(
       doc => doc.access === 'role');
-    privateDocuments = currentState.documents.filter(
+    privateDocuments = docsInState.documents.filter(
       doc => doc.access === 'private');
   }
 
@@ -121,6 +121,5 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps,
-  { loadUserDocuments, loadAllDocuments })(DashboardPage);
+export default connect(mapStateToProps, { loadUserDocuments, loadAllDocuments })(DashboardPage);
 

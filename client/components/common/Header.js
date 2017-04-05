@@ -3,7 +3,7 @@ import { Link, IndexLink } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/authenticationAction';
 
-class Header extends React.Component {
+export class Header extends React.Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
@@ -15,62 +15,60 @@ class Header extends React.Component {
     this.props.logout();
   }
 
-  render() {
-    const { isAuthenticated } = this.props.auth;
-
-    const userLinks = (
-      <ul>
-        <li><Link to="/dashboard" activeClassName="active">
-          <i className="material-icons left">dashboard</i>D A S H B O A R D</Link></li>
-        <li activeClassName="active">
-          <a href="#">Hello, {
-              isAuthenticated ? this.props.auth.user.userName : 'Guest'
-            }!</a>
-        </li>
-        <li activeClassName="active" id="personalDocs">
-          <Link to="/document">Personal Documents</Link>
-        </li>
-          {this.props.isAdmin ?
+  getLinks({ isAuthenticated, user, isAdmin }) {
+    if (isAuthenticated) {
+      return (
+        <ul>
+          <li><Link to="/dashboard" activeClassName="active">
+            <i className="material-icons left">dashboard</i>Dashboard</Link></li>
+          <li activeClassName="active">
+            <a href="#">Hello, {user.userName}!</a>
+          </li>
+          <li activeClassName="active" id="personalDocs">
+            <Link to="/documents">Personal Documents</Link>
+          </li>
+          {isAdmin &&
             <li className="admin">
               <Link to="/admin/manageroles">Manage Roles</Link>
             </li>
-             : ''}
-          {this.props.isAdmin ?
-            <li className="admin" id="adminTab">
-              <Link to="/admin/handleusers">Manage Users</Link>
-            </li>
-            : ''}
+          }
+          {isAdmin && <li className="admin" id="adminTab">
+            <Link to="/admin/handleusers">Manage Users</Link>
+          </li>}
           <li>
-          <a href="#" activeClassName="active" onClick={this.logout}>L O G O U T</a>
-        </li>
-      </ul>
-    );
-
-    const guestLinks = (
+            <a href="#" activeClassName="active" onClick={this.logout}>Logout</a>
+          </li>
+        </ul>
+      );
+    }
+    return (
       <ul>
-        <li><Link to="/signup" activeClassName="active">S I G N U P</Link></li>
-        <li><Link to="/login" activeClassName="active">L O G I N</Link></li>
+        <li><Link to="/signup" activeClassName="active">Signup</Link></li>
+        <li><Link to="/login" activeClassName="active">Login</Link></li>
       </ul>
     );
+  }
 
+  render() {
+    const navLinks = this.getLinks(this.props);
     return (
       <nav className="blue-grey">
         <div className="nav-wrapper">
           <IndexLink to="/" activeClassName="active">
-            <i className="material-icons left">home</i>H O M E</IndexLink>
+            <i className="material-icons left">home</i>Home</IndexLink>
           {/* <a href="#" data-activates="mobile-demo" className="button-collapse">
             <i className="material-icons">menu</i>
           </a>*/}
           <ul id="nav-mobile" className="right">
             <li>
-              {isAuthenticated ? userLinks : guestLinks}
+              {navLinks}
             </li>
           </ul>
-          <ul id="mobile-demo" className="side-nav">
+          {/* <ul id="mobile-demo" className="side-nav">
             <li>
-              {isAuthenticated ? userLinks : guestLinks}
+              {navLinks}
             </li>
-          </ul>
+          </ul>*/}
         </div>
       </nav>
     );
@@ -78,25 +76,20 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  auth: React.PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
-  isAdmin: React.PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired
 };
 
 /**
- * @param {object} state
+ * @param {object}
  * @returns {object} data
  */
-function mapStateToProps(state) {
-  let role;
-  if (state.auth.isAuthenticated) {
-    role = state.auth.user.userRoleId;
-  }
-  let isAdmin = false;
-  if (role === 1) {
-    isAdmin = true;
-  }
-  return { auth: state.auth, isAdmin };
-}
+export const mapStateToProps = (state) => {
+  const { auth: { isAuthenticated, user } } = state;
+  const isAdmin = isAuthenticated && user.userRoleId === 1;
+  return { isAuthenticated, user, isAdmin };
+};
 
 export default connect(mapStateToProps, { logout })(Header);

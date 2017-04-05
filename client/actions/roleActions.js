@@ -1,5 +1,5 @@
 import axios from 'axios';
-import types from './actionTypes';
+import * as types from './actionTypes';
 
 /**
  * action to successfully load a role from state
@@ -15,8 +15,8 @@ export function loadRoleSuccess(role) {
 
 /**
  * set selected role in state
- * @param {any} id
- * @returns {any} role id
+ * @param {number} id
+ * @returns {object} role id
  */
 export function setCurrentRole(id) {
   return {
@@ -27,7 +27,7 @@ export function setCurrentRole(id) {
 
 /**
  * delete currently selected role from state
- * @return {[type]}
+ * @return {object}
  */
 export function deleteCurrentRole() {
   return {
@@ -40,12 +40,10 @@ export function deleteCurrentRole() {
  * @return {object} object of roles
  */
 export function loadRoles() {
-  return (dispatch) => {
-    return axios.get('/role')
+  return dispatch => axios.get('/role')
       .then((response) => {
         dispatch(loadRoleSuccess(response.data.role));
       });
-  };
 }
 
 /**
@@ -54,17 +52,15 @@ export function loadRoles() {
  * @return {object}
  */
 export function saveRole(role) {
-  return (dispatch) => {
-    return axios.post('/role', role)
+  return dispatch => axios.post('/role', role)
       .then(() => {
         dispatch(loadRoles());
       });
-  };
 }
 
 /**
  * @param  {object} role
- * @return {object}
+ * @return {function}
  */
 export function updateRole(role) {
   return (dispatch, getState) => {
@@ -82,10 +78,8 @@ export function updateRole(role) {
  * @return {object}
  */
 export function deleteRole(id) {
-  return (dispatch) => {
-    return axios.delete(`/role/${id}`)
+  return dispatch => axios.delete(`/role/${id}`)
       .then(() => {
         dispatch(loadRoles());
       });
-  };
 }
