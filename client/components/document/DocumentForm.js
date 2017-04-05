@@ -33,7 +33,8 @@ class DocumentForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const editable = nextProps.chosenDocument.ownerId === this.props.auth.user.userId || !nextProps.chosenDocument.id;
+    const editable = nextProps.chosenDocument.ownerId === this.props.auth.user.userId
+      || !nextProps.chosenDocument.id;
     if (!editable) {
       $('.fr-wrapper').froalaEditor('edit.off');
     }

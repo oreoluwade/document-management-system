@@ -16,11 +16,6 @@ module.exports = {
         if (!userFound) {
           response.status(400).json({ error: 'The role ID is invalid' });
         }
-        // const { errors, isValid } = validateInput(newUser);
-
-        // if (!isValid) {
-        //   response.status(400).json(errors);
-        // }
 
         User.findOrCreate({
           where: {
@@ -118,12 +113,6 @@ module.exports = {
 
   userLogin: (request, response) => {
     const { identifier, password } = request.body;
-    console.log(identifier, password, '401 search')
-    // if (!request.body.userName || !request.body.password) {
-    //   return response.status(401).send({
-    //     message: 'Invalid request, specify userName and password'
-    //   });
-    // }
     User.find({
       where: {
         $or: [
@@ -131,9 +120,6 @@ module.exports = {
           { userName: identifier }
         ]
       }
-      // where: {
-      //   userName: request.body.userName
-      // }
     })
       .then((user) => {
         if (!user) {
@@ -159,7 +145,6 @@ module.exports = {
           token,
           message: 'Login Successful! Token expires in one day.'
         });
-        // response.json({ token });
       });
   },
 

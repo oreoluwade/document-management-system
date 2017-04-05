@@ -18,6 +18,10 @@
     "mocha": true,
     "jquery": true
   },
+  "globals": {
+    "sinon": true,
+    "expect": true
+  },
   "rules": {
     "class-methods-use-this": 0,
     "one-var": 0,
