@@ -154,14 +154,14 @@ describe('DOCUMENT REQUESTS', () => {
       describe('Making a GET request to fetch all documents accessible', () => {
         it('should not return any document if no token is provided', (done) => {
           request.get('/document')
-            .expect(403, done);
+            .expect(401, done);
         });
 
         it('should not return any document if invalid token is provided',
           (done) => {
             request.get('/document')
               .set({ Authorization: 'songsofsolomon' })
-              .expect(403, done);
+              .expect(401, done);
           });
 
         it('should return all documents when a valid token is provided',

@@ -50,7 +50,7 @@ describe('User Authorization', () => {
     request.get('/user')
       .set({ Authorization: 'trinity' })
       .end((error, response) => {
-        expect(response.status).to.equal(403);
+        expect(response.status).to.equal(401);
         done();
       });
   });

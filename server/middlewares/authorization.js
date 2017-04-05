@@ -44,7 +44,7 @@ module.exports = {
     }
     jwt.verify(token, secret, (error, decoded) => {
       if (error) {
-        return response.status(403)
+        return response.status(401)
           .send({ message: 'No response!' });
       }
       request.decoded = decoded;

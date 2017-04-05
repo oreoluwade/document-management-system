@@ -56,7 +56,7 @@ describe('User API', () => {
         request.get('/user')
           .set({ Authorization: 'incredibleHawk' })
           .end((error, response) => {
-            expect(response.status).to.equal(403);
+            expect(response.status).to.equal(401);
             done();
           });
       });
@@ -134,7 +134,7 @@ describe('User API', () => {
     });
 
     describe('POST: (/user/login) - LOGIN', () => {
-      it('should not allow login when invalid email or password are inputed',
+      it('should not allow login when invalid identifier(userName/email) or password are inputed',
         (done) => {
           request.post('/user/login')
             .send({
@@ -149,8 +149,9 @@ describe('User API', () => {
         });
       it('should allow login when valid credentials are supplied',
         (done) => {
+          const { email: identifier, password } = fakeUser;
           request.post('/user/login')
-            .send(fakeUser)
+            .send({ identifier, password })
             .end((error, response) => {
               expect(response.status).to.equal(200);
               expect(response.body.token).to.exist;

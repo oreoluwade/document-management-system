@@ -61,7 +61,7 @@ module.exports = {
     User.findById(request.params.id)
       .then((userFound) => {
         if (userFound) {
-          response.status(200).json(userFound);
+          return response.status(200).json(userFound);
         }
         response.status(404).json({ error: 'User Not Found' });
       });
@@ -70,7 +70,7 @@ module.exports = {
   getAllUsers: (request, response) => {
     User.findAll({}).then((usersFound) => {
       if (usersFound) {
-        response.status(200).json({ usersFound });
+        return response.status(200).json({ usersFound });
       }
       response.status(404).json({ message: 'No Users Found' });
     });
@@ -118,6 +118,7 @@ module.exports = {
 
   userLogin: (request, response) => {
     const { identifier, password } = request.body;
+    console.log(identifier, password, '401 search')
     // if (!request.body.userName || !request.body.password) {
     //   return response.status(401).send({
     //     message: 'Invalid request, specify userName and password'
