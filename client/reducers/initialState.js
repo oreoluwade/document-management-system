@@ -2,7 +2,7 @@ export default {
   isAuthenticated: false,
   user: {},
   handleUsers: {
-    allUsers: [],
+    users: [],
     userDetails: false
   },
   handleDocuments: {

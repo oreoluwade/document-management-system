@@ -18,19 +18,8 @@ nav {
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: lightgray;
   width: 100%
 }
-
-
-/*.login-form {
-    transition: box-shadow .25s;
-    padding: 20px;
-    border-radius: 2px;
-    background-color: white;
-    width: 75%;
-    margin: 0 auto;
-}*/
 
 #homecard {
   width: 80%;
@@ -72,14 +61,15 @@ body {
   margin-top: 100px
 }
 
-/*#documentCount {
-  width: 20%;
-  margin: 0 auto;
-  height: 100px;
-  text-align: center
-}*/
-
 #displayDocModal {
     width: 75% !important;
     max-height: 80vh !important;
+}
+
+.dashboard, .document-page{
+  height: 100vh;
+}
+
+.menu-action-buttons {
+  right: 100px;
 }

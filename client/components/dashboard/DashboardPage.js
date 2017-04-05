@@ -4,9 +4,7 @@ import { loadUserDocuments, loadAllDocuments } from '../../actions/documentActio
 import DocCollection from '../document/DocCollection';
 import CommonModal from '../common/CommonModal';
 
-
 class DashboardPage extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,13 +13,7 @@ class DashboardPage extends React.Component {
   }
 
   componentWillMount() {
-    const { userRoleId } = this.props.auth.user;
-    if (userRoleId === 1) {
-      this.props.loadAllDocuments();
-      this.setState({ isPrivate: true });
-    } else {
-      this.props.loadUserDocuments(userRoleId);
-    }
+    this.props.loadAllDocuments();
   }
 
   componentDidMount() {
@@ -36,9 +28,9 @@ class DashboardPage extends React.Component {
   render() {
     const { publicDocuments, roleDocuments, privateDocuments } = this.props;
     return (
-      <div className="row">
+      <div className=" dashboard row">
         <div className="col s12">
-          <div id="dashboard" className="col s12 z-depth-5 card-panel">
+          <div className="col s12 z-depth-5 card-panel">
             <h5 className="center">DASHBOARD</h5>
             <div className="container">
               <div className="row">
@@ -62,19 +54,17 @@ class DashboardPage extends React.Component {
                 <div className="col s12">
                   <CommonModal />
                   <div id="private" className="col s12 tab-style">
-                    {this.state.isPrivate ?
-                      <h6>All Private Documents</h6> : ''}
-                    <DocCollection documents={privateDocuments}/>
+                    <h6>All Private Documents</h6>
+                    <DocCollection documents={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6>All Public Documents</h6>
-                    <DocCollection documents={publicDocuments}/>
+                    <DocCollection documents={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6>All Accessible Role Documents</h6>
-                    <DocCollection documents={roleDocuments}/>
+                    <DocCollection documents={roleDocuments} />
                   </div>
-
                 </div>
               </div>
             </div>
@@ -94,21 +84,14 @@ DashboardPage.propTypes = {
   loadAllDocuments: PropTypes.func.isRequired,
 };
 
+const filterDocument = (role, documents) =>
+  documents.filter(doc => doc.access === role);
+
 function mapStateToProps(state) {
-  const docsInState = state.handleDocuments;
-  let roleDocuments = [];
-  let privateDocuments = [];
-  const publicDocuments = docsInState.documents.filter(
-    doc => doc.access === 'public');
-  if (state.auth.isAuthenticated && state.auth.user.userRoleId !== 1) {
-    roleDocuments = docsInState.documents.filter(
-      doc => doc.role === String(state.auth.user.userRoleId));
-  } else if (state.auth.isAuthenticated && state.auth.user.userRoleId === 1) {
-    roleDocuments = docsInState.documents.filter(
-      doc => doc.access === 'role');
-    privateDocuments = docsInState.documents.filter(
-      doc => doc.access === 'private');
-  }
+  const { documents } = state.handleDocuments;
+  const publicDocuments = filterDocument('public', documents);
+  const roleDocuments = filterDocument('role', documents);
+  const privateDocuments = filterDocument('private', documents);
 
   return {
     auth: state.auth,

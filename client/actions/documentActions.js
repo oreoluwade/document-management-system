@@ -41,7 +41,7 @@ export function updateDocumentSuccess(document) {
 }
 
 /**
- * Choose a dicument as the current document action creator
+ * Choose a document as the current document action creator
  * @export
  * @param {number} id
  * @returns {object} action

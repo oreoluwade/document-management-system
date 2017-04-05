@@ -2,7 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocumentList from './DocumentList';
+import DocCollection from './DocCollection';
 import * as documentActions from '../../actions/documentActions';
 import CommonModal from '../common/CommonModal';
 
@@ -32,31 +32,32 @@ class DocumentPage extends React.Component {
   render() {
     const { personalDocuments } = this.props;
     const count = personalDocuments.length;
+
     return (
-      <div className="row">
-        <div id="documentPage" className="col s12 z-depth-5 card-panel">
-          <h4 className="center">MY DOCUMENTS</h4>
+      <div className="document-page row">
+        <div className="col s12 z-depth-5 card-panel">
+          {/*<h4 className="center">MY DOCUMENTS</h4>*/}
           <div id="addBtnDiv"
             className="fixed-action-btn" onClick={this.clickToDelete}>
             <a
               className="btn-floating btn-large waves-effect waves-light red tooltipped"
               data-position="left" data-delay="50"
               data-tooltip="Delete current document">
-              <i className="material-icons">create</i>
+              <i className="material-icons">delete</i>
             </a>
           </div>
           <div className="row">
             <div className="col s12">
               <div className="row">
                 <div className="col s5">
-                  <div id="card-alert" className="card indigo lighten-5">
+                  <div id="card-alert" className="card grey-blue lighten-5">
                     <div className="card-content black-text" id="documentCount">
-                      <p>INFO : You have {count} Documents</p>
+                      <p>{`You have ${count} saved Document${count === 1 ? '' : 's'}`}</p>
                     </div>
                   </div>
                 </div>
                 <div className="col s7">
-                  <DocumentList personalDocuments={personalDocuments} />
+                  <DocCollection documents={personalDocuments} />
                 </div>
               </div>
             </div>

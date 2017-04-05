@@ -13,11 +13,9 @@ documentReducer(state = initialState.handleDocuments, action) {
     case types.LOAD_DOCUMENT_SUCCESS:
       return Object.assign({}, ...state, { documents: action.document });
 
-    case types.CREATE_DOCUMENT_SUCCESS:
-      return [...state, Object.assign({}, { documents: action.document })];
-
     case types.CHOOSE_AS_CURRENT_DOCUMENT: {
-      const chosenDocumentList = state.documents.filter(document => String(document.id) === action.id);
+      const chosenDocumentList = state.documents
+        .filter(document => document.id === action.id);
       const chosenDocument = chosenDocumentList[0] || {};
       return Object.assign({}, state, { chosenDocument });
     }
