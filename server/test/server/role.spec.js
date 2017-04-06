@@ -64,18 +64,27 @@ describe('Role API', () => {
             .expect(400);
           done();
         });
+
+      it('should not create a role if the role already exists', (done) => {
+        request.post('/role')
+          .set({ Authorization: token })
+          .send(regularRoleParams)
+          .expect(409);
+        done();
+      });
     });
 
     describe('making a GET request to the role route', () => {
       it('should not return roles when no token is provided', (done) => {
         request.get('/role')
-          .expect(401, done);
+          .expect(401);
+        done();
       });
 
       it('should not return roles when the token provided is invalid',
         (done) => {
           request.get('/role')
-            .set({ Authorization: 'jbugubhbhkbkbkb' })
+            .set({ Authorization: 'invalidToken' })
             .expect(401, done);
         });
 
@@ -94,7 +103,7 @@ describe('Role API', () => {
     });
 
     describe('making a GET request to get a role by passing in the id', () => {
-      it('should not return the role when an invalid id is supplied',
+      it('should not find any role when an invalid id is supplied',
         (done) => {
           request.get('/role/999999')
             .set({ Authorization: token })
@@ -104,7 +113,7 @@ describe('Role API', () => {
             });
         });
 
-      it('should return the role when a valid id is provided', (done) => {
+      it('should return the role requested when a valid id is provided', (done) => {
         request.get(`/role/${role.id}`)
           .set({ Authorization: token })
           .end((error, response) => {
@@ -114,7 +123,7 @@ describe('Role API', () => {
       });
     });
 
-    describe('making a PUT request to update a role, given the id', () => {
+    describe('making a PUT request to update a role, given the ID', () => {
       it('should not update the role if a wrong id is supplied', (done) => {
         const fieldsToUpdate = { title: 'occasional user' };
         request.put('/role/999999')
@@ -123,7 +132,7 @@ describe('Role API', () => {
           .expect(404, done);
       });
 
-      it('should perform allow updating a role if ID supplied is valid', (done) => {
+      it('should allow for the updating of a role if the ID supplied is valid', (done) => {
         const fieldsToUpdate = { title: 'observer' };
         request.put(`/role/${role.id}`)
           .set({ Authorization: token })
@@ -137,7 +146,7 @@ describe('Role API', () => {
     });
 
     describe('deleting a role by making a DELETE request', () => {
-      it('should not perform a delete action if a wrong id is provided',
+      it('should not perform a delete action if a wrong ID is provided',
         (done) => {
           request.delete('/role/999999')
             .set({ Authorization: token })

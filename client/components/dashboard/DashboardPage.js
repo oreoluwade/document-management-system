@@ -38,15 +38,15 @@ class DashboardPage extends React.Component {
                 <div className="col s12">
                   <ul
                     className="tabs tab-demo-active z-depth-1 blue-grey">
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light active"
                         href="#public">Public</a>
                     </li>
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
                         href="#role">Role</a>
                     </li>
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
                         href="#private">Private</a>
                     </li>
@@ -55,15 +55,15 @@ class DashboardPage extends React.Component {
                 <div className="col s12">
                   <CommonModal />
                   <div id="private" className="col s12 tab-style">
-                    <h6>All Private Documents</h6>
+                    <h6 className="center">All Private Documents</h6>
                     <DocCollection documents={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
-                    <h6>All Public Documents</h6>
+                    <h6 className="center">All Public Documents</h6>
                     <DocCollection documents={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
-                    <h6>All Accessible Role Documents</h6>
+                    <h6 className="center">All Accessible Role Documents</h6>
                     <DocCollection documents={roleDocuments} />
                   </div>
                 </div>

@@ -1,7 +1,6 @@
 // import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import models from '../models';
-// import validateInput from '../shared/validations/signup';
 
 const Role = models.Role;
 const User = models.User;
@@ -10,7 +9,7 @@ const secret = process.env.SECRET || 'secretconfirmation';
 module.exports = {
   createUser: (request, response) => {
     const newUser = request.body;
-
+    // Find user with the aid of role ID
     Role.find({ where: { id: newUser.roleId } })
       .then((userFound) => {
         if (!userFound) {
@@ -47,7 +46,7 @@ module.exports = {
                 token
               });
             }
-            return response.status(400).send({ message: 'User Already Exists!' });
+            return response.status(409).send({ message: 'User Already Exists!' });
           });
       });
   },
@@ -63,7 +62,7 @@ module.exports = {
   },
 
   getAllUsers: (request, response) => {
-    User.findAll({}).then((usersFound) => {
+    User.findAll({ include: [{ model: Role }] }).then((usersFound) => {
       if (usersFound) {
         return response.status(200).json({ usersFound });
       }

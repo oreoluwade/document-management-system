@@ -11,7 +11,7 @@ module.exports = {
     })
       .spread((role, created) => {
         if (!created) {
-          return response.status(400)
+          return response.status(409)
             .send({ message: 'Role Already Exists!' });
         }
         return response.status(201)

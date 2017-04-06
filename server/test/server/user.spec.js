@@ -61,7 +61,7 @@ describe('User API', () => {
           });
       });
 
-      it('should fetch all users when valid token & access are provided',
+      it('should allow get requests for users when valid token & access are provided',
         (done) => {
           request.get('/user')
             .set({ Authorization: token })
@@ -73,12 +73,12 @@ describe('User API', () => {
     });
 
     describe('GET: (/user/:id) - GET A USER', () => {
-      it('should not return a user if the user id is invalid', (done) => {
+      it('should not return the user if the user id is invalid', (done) => {
         request.get('/user/666')
           .set({ Authorization: token })
           .expect(404, done);
       });
-      it('should return the user that has the supplied id', (done) => {
+      it('should return the user that owns the supplied id', (done) => {
         request.get(`/user/${user.id}`)
           .set({ Authorization: token })
           .end((error, response) => {
@@ -90,7 +90,7 @@ describe('User API', () => {
     });
 
     describe('PUT: (/user/:id) - UPDATE', () => {
-      it('should not allow update of a user if the provided id is invalid',
+      it('should not allow the update of a user if the provided ID is invalid',
         (done) => {
           request.get('/user/666')
             .set({ Authorization: token })
