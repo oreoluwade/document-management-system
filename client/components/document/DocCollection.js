@@ -17,7 +17,6 @@ class DocCollection extends React.Component {
   }
 
   renderModal(id) {
-    console.log(id)
     this.props.actions.chooseAsCurrentDocument(id);
     $('#docDisplayModal').modal('open');
   }
@@ -60,7 +59,7 @@ class DocCollection extends React.Component {
           <div className="menu-action-buttons fixed-action-btn horizontal click-to-toggle">
             <a className="btn-floating btn-large tooltipped"
               data-position="top" data-delay="50"
-              data-tooltip="Click to show other buttons"
+              data-tooltip="Click to show actions"
             >
               <i className="material-icons">menu</i>
             </a>

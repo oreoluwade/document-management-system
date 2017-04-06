@@ -3,6 +3,13 @@ import jwtDecode from 'jwt-decode';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER } from './actionTypes';
 
+
+/**
+ * set current user action creator
+ * @export
+ * @param {object} user
+ * @returns {object} payload containing type and user object
+ */
 export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
@@ -10,6 +17,12 @@ export function setCurrentUser(user) {
   };
 }
 
+
+/**
+ * logout action creator
+ * @export
+ * @returns {function}
+ */
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwtToken');
@@ -18,6 +31,13 @@ export function logout() {
   };
 }
 
+
+/**
+ * login action creator
+ * @export
+ * @param {object} data
+ * @returns {function}
+ */
 export function login(data) {
   return dispatch => axios.post('/user/login', data)
     .then((response) => {

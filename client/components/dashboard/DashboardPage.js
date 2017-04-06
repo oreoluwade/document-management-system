@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
+import
+{ loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
 import DocCollection from '../document/DocCollection';
 import CommonModal from '../common/CommonModal';
 
@@ -102,5 +103,6 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { loadUserDocuments, loadAllDocuments })(DashboardPage);
+export default connect(mapStateToProps,
+  { loadUserDocuments, loadAllDocuments })(DashboardPage);
 

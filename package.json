@@ -10,7 +10,10 @@
     "lint": "node_modules/.bin/esw webpack.config.* client tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "istanbul cover _mocha ./server/test/testSetup.js \"./server/test/**/*.spec.js\"",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "test:frontend": "mocha --compilers js:babel-register --require ./client/tests/helpers.js --require ./client/tests/dom.js --recursive",
+    "tdd": "npm run test:frontend -- --watch"
   },
   "repository": {
     "type": "git",
