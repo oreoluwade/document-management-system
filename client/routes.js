@@ -23,7 +23,7 @@ export default (
     <Route path="about" component={AboutPage} />
     <Route path="admin/manageroles"
       component={requireAdminAuth(ManangeRolePage)} />
-    <Route path="admin/handleusers"
+     <Route path="admin/handleusers"
       component={requireAdminAuth(HandleUsersPage)} />
   </Route>
 );

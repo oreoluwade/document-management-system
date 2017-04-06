@@ -29,9 +29,9 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange,
 };
 
 TextFieldGroup.propTypes = {
-  field: PropTypes.string.isRequired,
+  field: PropTypes.string,
   value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   icon: PropTypes.string.isRequired,
   error: PropTypes.string,
   type: PropTypes.string.isRequired,

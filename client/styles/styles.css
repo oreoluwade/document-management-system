@@ -73,3 +73,33 @@ body {
 .menu-action-buttons {
   right: 100px;
 }
+.user-collection {
+  /*margin-left: 100px;
+  margin-right: 100px;*/
+}
+.user-collection-item {
+  display: flex;
+  margin-bottom: 0;
+}
+.user-collection-item .name, .user-collection-item .email, .user-collection-item .role  {
+  margin-top: 7px;
+}
+
+.user-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.user-buttons .btn {
+  padding: 0 0.7rem;
+}
+
+.manage-user {
+  display: flex;
+}
+
+.manage-user .user-list {
+  flex-grow: 2;
+}
+
