@@ -1,13 +1,11 @@
 /* eslint class-methods-use-this: "off"*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import UserList from './UserList';
 import { retrieveUsers, deleteUser } from '../../actions/userActions';
 import { addFlashMessage } from '../../actions/flashMessages';
-// import UserInfoPage from './UserInfoPage';
 import UserForm from './UserForm';
 
 class HandleUsersPage extends React.Component {
@@ -28,8 +26,6 @@ class HandleUsersPage extends React.Component {
   }
 
   componentDidMount() {
-    $('.modal').modal();
-    // $('select').material_select();
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
@@ -73,7 +69,7 @@ class HandleUsersPage extends React.Component {
         <div className="row">
           <div className="col s12">
             <div className="col s12 z-depth-5 card-panel card-body">
-              <h4>Manage User Details and Permissions</h4>
+              <h4 className="center">Manage User Details and Permissions</h4>
               <div className="row manage-user">
                 <div className="col user-list">
                   <UserList editUser={this.renderUserForm} deleteUser={this.renderAlert} users={users} />
@@ -111,12 +107,11 @@ HandleUsersPage.propTypes = {
  */
 function mapStateToProps(state) {
   const { users } = state.handleUsers;
-  const { allRoles } = state.manageRoles;
   return {
     users,
-    allRoles
   };
 }
 
-export default connect(mapStateToProps, { retrieveUsers, deleteUser, swal, close, addFlashMessage })(HandleUsersPage);
+export default connect(mapStateToProps,
+  { retrieveUsers, deleteUser, swal, close, addFlashMessage })(HandleUsersPage);
 
