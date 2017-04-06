@@ -36,7 +36,7 @@ class DocumentPage extends React.Component {
     return (
       <div className="document-page row">
         <div className="col s12 z-depth-5 card-panel">
-          {/*<h4 className="center">MY DOCUMENTS</h4>*/}
+          {/* <h4 className="center">MY DOCUMENTS</h4>*/}
           <div id="addBtnDiv"
             className="fixed-action-btn" onClick={this.clickToDelete}>
             <a

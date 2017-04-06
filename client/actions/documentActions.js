@@ -124,10 +124,10 @@ export function updateDocument(document, userId) {
  * @param {any} id
  * @returns {object} documents
  */
-export function deleteDocument(id) {
+export function deleteDocument(id, userId) {
   return dispatch => axios.delete(`/document/${id}`)
     .then(() => {
-      dispatch(loadUserDocuments());
+      dispatch(loadUserDocuments(userId));
     }).catch((error) => {
       throw (error);
     });

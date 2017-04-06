@@ -39,7 +39,6 @@ class DocumentForm extends React.Component {
       $('.fr-wrapper').froalaEditor('edit.off');
     }
     if (this.props.chosenDocument.id !== nextProps.chosenDocument.id) {
-      // Necessary to populate form when existing documents loaded directly.
       this.setState({
         chosenDocument: nextProps.chosenDocument,
         displaySaveButton: editable
