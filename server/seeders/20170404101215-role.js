@@ -21,6 +21,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },
+      {
+        title: 'rated/restricted',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        title: 'children',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
     ], {});
   },
 

@@ -41,6 +41,46 @@ module.exports = {
         roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        userName: 'funmi',
+        firstName: 'funmi',
+        lastName: 'olukanni',
+        email: 'funmi@gmail.com',
+        password: hashP('olufunmi'),
+        roleId: 4,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        userName: 'thequeeness',
+        firstName: 'eseohe',
+        lastName: 'ojo',
+        email: 'eseohe@gmail.com',
+        password: hashP('thequeeness'),
+        roleId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        userName: 'emmanuel',
+        firstName: 'emmanuel',
+        lastName: 'akinyele',
+        email: 'lanre_rd@yahoo.com',
+        password: hashP('emmanuel'),
+        roleId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        userName: 'tosyne',
+        firstName: 'oluwatosin',
+        lastName: 'akingbulu',
+        email: 'tosinakingbulu@gmail.com',
+        password: hashP('oluwatosin'),
+        roleId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ], {});
   },

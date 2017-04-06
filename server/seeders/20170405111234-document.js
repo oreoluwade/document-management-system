@@ -34,6 +34,22 @@ module.exports = {
       ownerId: 3,
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      title: 'Good stuff happen',
+      content: 'Whatever they may tell you, good things still happen.',
+      access: 'role',
+      ownerId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      title: 'Dan Brown',
+      content: 'I would rave about Dan or Gladwell, but I would prefer that you experience them yourself. Maybe only then would you believe me when I say they and Deaver are in a highly esteemed class of their own.',
+      access: 'public',
+      ownerId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
     ], {});
   },
