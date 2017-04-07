@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andela-oaboluwarin/document-management-system.svg?branch=feature%2F%23142364855%2Fcreate-application-frontend)](https://travis-ci.org/andela-oaboluwarin/document-management-system)
+[![Build Status](https://travis-ci.org/andela-oaboluwarin/document-management-system.svg?branch=develop)](https://travis-ci.org/andela-oaboluwarin/document-management-system)
 [![Test Coverage](https://codeclimate.com/github/andela-oaboluwarin/document-management-system/badges/coverage.svg)](https://codeclimate.com/github/andela-oaboluwarin/document-management-system/coverage)
 
 # Document Management System
