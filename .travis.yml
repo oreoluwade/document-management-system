@@ -22,7 +22,8 @@ deploy:
   provider: heroku
   api_key:
     secure: a3de5514-a4f1-4b52-a24a-45bb0f613ec8
-  app: doc-man-sys
+  app:
+    develop: doc-man-sys
   skip_cleanup: true
 
 after_success:
