@@ -1,0 +1,105 @@
+/*Styles*/
+#app {
+  font: 'Roboto', Helvetica, Arial, sans-serif;
+  color: #4d4d4d;
+  min-width: 550px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+a.active {
+  color: black;
+}
+
+nav {
+  padding-top: 5px;
+  padding-left: 30px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  width: 100%
+}
+
+#homecard {
+  width: 80%;
+  background-color: lightblue;
+  text-align: center;
+  height: 240px;
+  margin-top: 5px;
+  margin: 0 auto
+}
+
+#aboutcard {
+  width: 80%;
+  background-color: lightblue;
+  text-align: center;
+  height: 260px;
+  margin-top: 250px;
+  margin: 0 auto
+}
+
+#signupcard {
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 7px;
+}
+
+#card-alert {
+  width: 50%;
+  margin: 0 auto;
+}
+
+#dismissSignup {
+  background-color: black;
+}
+
+#logincard {
+  width: 40%;
+  margin: 0 auto;
+  height: 250px;
+  margin-top: 100px
+}
+
+#displayDocModal {
+    width: 75% !important;
+    max-height: 80vh !important;
+}
+
+.dashboard, .document-page{
+  height: 100vh;
+}
+
+.menu-action-buttons {
+  right: 100px;
+}
+.user-collection {
+  /*margin-left: 100px;
+  margin-right: 100px;*/
+}
+.user-collection-item, .doc-collection .doc-collection-item {
+  display: flex;
+  margin-bottom: 0;
+}
+.user-collection-item .name, .user-collection-item .email, .user-collection-item .role  {
+  margin-top: 7px;
+}
+
+.user-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.user-buttons .btn {
+  padding: 0 0.7rem;
+}
+
+.manage-user {
+  display: flex;
+}
+
+.manage-user .user-list {
+  flex-grow: 2;
+}
+

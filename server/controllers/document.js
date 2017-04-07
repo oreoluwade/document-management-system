@@ -78,21 +78,36 @@ module.exports = {
   },
 
   getDocuments: (request, response) => {
+    const { userId, userRoleId } = request.decoded;
     if (request.query.limit < 0 || request.query.offset < 0) {
       return response.status(400)
         .send({ message: 'Only Positive integers are permitted.' });
     }
-    const query = {
-      where: {
-        $or: [
-          { access: 'public' },
-          { ownerId: request.decoded.userId }
-        ]
-      },
+
+    let query = {
       limit: request.query.limit || null,
       offset: request.query.offset || null,
       order: [['createdAt', 'DESC']]
     };
+
+    const queryoptions = {
+      where: {
+        $or: [
+          { access: 'public' },
+          { access: 'role' },
+          { ownerId: userId }
+        ]
+      },
+      include: [{
+        model: User,
+        where: { roleId: userRoleId },
+        as: 'owner'
+      }]
+    };
+
+    if (userRoleId !== 1) {
+      query = Object.assign({}, query, queryoptions);
+    }
 
     Document.findAll(query)
       .then(documents => response.status(200).send(documents));

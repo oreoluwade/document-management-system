@@ -1,5 +1,30 @@
-sudo: true
-
 language: node_js
 
 node_js: "6.9"
+
+services:
+  - postgresql
+
+addons:
+  artifacts: true
+  code_climate:
+    repo_token: 57079a7f194eb6c6983a6e18f677092085a00f3080cacd53b63d1599f94518f9
+
+before_script:
+  - psql -c 'create database testdb;' -U postgres
+  - npm run db:migrate
+
+
+before_deploy:
+  - npm run build
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: a3de5514-a4f1-4b52-a24a-45bb0f613ec8
+  app: doc-man-sys
+  skip_cleanup: true
+
+after_success:
+  - npm install -g codeclimate-test-reporter
+  - codeclimate-test-reporter < coverage/lcov.info

@@ -1,23 +1,19 @@
 {
   "development": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-development",
-    "host": "127.0.0.1",
+    "use_env_variable": "DEV_DATABASE_URL",
     "dialect": "postgres"
   },
   "test": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-test",
-    "host": "127.0.0.1",
+    "use_env_variable": "TEST_DATABASE_URL",
     "dialect": "postgres"
   },
+  "travis": {
+    "use_env_variable": "TRAVIS_DATABASE_URL",
+    "dialect": "postgres",
+    "logging": false
+  },
   "production": {
-    "username": "oreoluwade",
-    "password": null,
-    "database": "doc-manager-production",
-    "host": "127.0.0.1",
+    "use_env_variable": "PRODUCTION_DATABASE_URL",
     "dialect": "postgres"
   }
 }
