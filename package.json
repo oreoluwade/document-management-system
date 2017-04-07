@@ -4,6 +4,7 @@
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm-run-all db:migrate db:seed",
     "start": "node tools/distServer",
     "dev:start": "babel-node tools/startLog.js",
     "dev": "npm-run-all dev:start open:src",
@@ -13,6 +14,7 @@
     "test": "babel-node node_modules/babel-istanbul/lib/cli cover _mocha -- --require ./server/test/testSetup.js --recursive ./server/test -R spec",
     "test:watch": "npm run test -- --watch",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "db:seed": "node_modules/.bin/sequelize db:seed:all",
     "test:frontend": "mocha --compilers js:babel-register --require ./client/tests/helpers.js --require ./client/tests/dom.js --recursive",
     "tdd": "npm run test:frontend -- --watch",
     "clean-dist": "rm -rf dist && mkdir dist",
