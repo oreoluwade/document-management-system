@@ -79,15 +79,6 @@ describe('DOCUMENT REQUESTS', () => {
   });
 
   describe('THE POSSIBLE API REQUESTS', () => {
-    // beforeEach((done) => {
-    //   publicDocumentParams.ownerId = adminUser.id;
-    //   Document.create(publicDocumentParams)
-    //     .then((createdPublicDocument) => {
-    //       publicDocument = createdPublicDocument;
-    //       done();
-    //     });
-    // });
-
     afterEach(() => Document.destroy({ where: {} }));
 
     describe('Creating a document by making a POST request', () => {
