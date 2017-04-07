@@ -113,5 +113,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,
-  { retrieveUsers, deleteUser, swal, close, addFlashMessage })(HandleUsersPage);
+  {
+    retrieveUsers,
+    deleteUser,
+    swal,
+    close,
+    addFlashMessage
+  })(HandleUsersPage);
 

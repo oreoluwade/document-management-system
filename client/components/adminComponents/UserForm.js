@@ -11,8 +11,8 @@ class UserForm extends React.Component {
     super(props);
 
     this.state = {
-      user: props.user || {}, // Object.assign({}, props.userValue),
       errors: {},
+      user: props.user || {},
     };
     this.onChange = this.onChange.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -126,6 +126,7 @@ class UserForm extends React.Component {
           <div className="row">
             <div className="input-field">
               <input
+                icon="save"
                 type="submit"
                 value="Save"
                 className="btn waves-effect waves-light blue-grey"

@@ -12,8 +12,12 @@ const UserList = ({ users, editUser, deleteUser }) =>
                 <div className="col s2 name">{user.userName}</div>
                 <div className="col s1 role">{user.Role.title}</div>
                 <div className="user-buttons row col s3">
-                  <a className="waves-effect waves-light btn" onClick={() => editUser(user)}><i className="tiny material-icons left">edit</i>edit</a>
-                  <a className="waves-effect waves-light btn" onClick={() => deleteUser(user.id)}><i className="tiny material-icons left">delete</i>delete</a>
+                  <a className="waves-effect waves-light btn blue-grey"
+                    onClick={() => editUser(user)}>
+                    <i className="tiny material-icons left">edit</i>edit</a>
+                  <a className="waves-effect waves-light btn blue-grey"
+                    onClick={() => deleteUser(user.id)}>
+                    <i className="tiny material-icons left">delete</i>delete</a>
                 </div>
               </div>
             </li>

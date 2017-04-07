@@ -7,8 +7,8 @@ import SignupPage from './components/authentication/SignupPage';
 import LoginPage from './components/login/LoginPage';
 import DocumentPage from './components/document/DocumentPage';
 import DashboardPage from './components/dashboard/DashboardPage';
-import ManangeRolePage from './components/adminStuff/ManageRolePage';
-import HandleUsersPage from './components/adminStuff/HandleUsersPage';
+import ManangeRolePage from './components/adminComponents/ManageRolePage';
+import HandleUsersPage from './components/adminComponents/HandleUsersPage';
 
 import requireAuth from './utils/requireAuth';
 import requireAdminAuth from './utils/requireAdminAuth';
