@@ -105,3 +105,5 @@ DELETE | [/api/document/?id=id](#delete-document) | Remove a specific document f
 
 ## Limitations
 - The current browser-rendered version does not have the search functionality enabled
+- Pagination is not integrated yet, and so as the documents grow in numbers, locating them becomes a difficult process
+- A non-admin user cannot request to be upgraded to an admin
