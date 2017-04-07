@@ -4,7 +4,6 @@
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm-run-all db:migrate db:seed",
     "start": "node tools/distServer",
     "dev:start": "babel-node tools/startLog.js",
     "dev": "npm-run-all dev:start open:src",
