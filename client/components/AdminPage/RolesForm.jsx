@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { saveRole, updateRole, loadRoles } from '../../actions/roleActions';
-import { addFlashMessage } from '../../actions/flashMessages';
+import { addFlashMessage } from '../../actions/flashMessagesActions';
 
-class RoleForm extends React.Component {
+class RolesForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -120,7 +120,7 @@ class RoleForm extends React.Component {
   }
 }
 
-RoleForm.propTypes = {
+RolesForm.propTypes = {
   roles: PropTypes.array.isRequired,
   role: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -141,4 +141,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadRoles, saveRole, updateRole, addFlashMessage })(RoleForm);
+export default connect(mapStateToProps, { loadRoles, saveRole, updateRole, addFlashMessage })(RolesForm);

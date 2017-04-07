@@ -1,7 +1,7 @@
 /* eslint class-methods-use-this: "off"*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import DocumentForm from '../document/DocumentForm';
+import DocumentForm from '../DocumentPage/DocumentForm.jsx';
 
 class CommonModal extends React.Component {
   componentDidMount() {
@@ -17,7 +17,8 @@ class CommonModal extends React.Component {
         <div id="docDisplayModal" className="modal">
           <div>
             <a href="#"
-              className="btn-floating btn-flat blue-grey closeModal modal-close">
+              className="btn-floating btn-flat blue-grey closeModal modal-close"
+            >
               <i className="material-icons">close</i>
             </a>
           </div>

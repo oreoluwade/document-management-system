@@ -2,9 +2,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocList from './DocList';
+import DocumentList from './DocumentList';
 import * as documentActions from '../../actions/documentActions';
-import CommonModal from '../common/CommonModal';
+import Modal from '../Common/Modal';
 
 class DocumentPage extends React.Component {
 
@@ -45,13 +45,13 @@ class DocumentPage extends React.Component {
                   </div>
                 </div>
                 <div className="col s12">
-                  <DocList docs={personalDocuments} />
+                  <DocumentList docs={personalDocuments} />
                 </div>
               </div>
             </div>
 
           </div>
-          <CommonModal />
+          <Modal />
         </div>
       </div>
     );
