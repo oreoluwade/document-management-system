@@ -4,7 +4,7 @@ import initialState from './initialState';
 /**
  * [documentReducer description]
  * @param  {[type]} [state=initialState.handleDocuments]
- * @param  {[type]} action
+ * @param  {object} action
  * @return {[type]}
  */
 export default function

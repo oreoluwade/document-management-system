@@ -6,7 +6,10 @@ import { deleteFlashMessage } from '../../actions/flashMessages';
 class FlashMessagesList extends React.Component {
   render() {
     const messages = this.props.messages.map(message =>
-      <FlashMessage key={message.id} message={message} deleteFlashMessage={this.props.deleteFlashMessage}/>
+      <FlashMessage
+        key={message.id}
+        message={message}
+        deleteFlashMessage={this.props.deleteFlashMessage} />
     );
     return (
       <div>{messages}</div>
@@ -25,4 +28,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { deleteFlashMessage })(FlashMessagesList);
+export default connect(mapStateToProps,
+  { deleteFlashMessage })(FlashMessagesList);

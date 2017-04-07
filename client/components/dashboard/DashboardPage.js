@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import
 { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
-import DocCollection from '../document/DocCollection';
+import DocList from '../document/DocList';
 import CommonModal from '../common/CommonModal';
 
 class DashboardPage extends React.Component {
@@ -33,7 +33,7 @@ class DashboardPage extends React.Component {
         <div className="col s12">
           <div className="col s12 z-depth-5 card-panel">
             <h5 className="center">DASHBOARD</h5>
-            <div className="container">
+            <div>
               <div className="row">
                 <div className="col s12">
                   <ul
@@ -56,15 +56,15 @@ class DashboardPage extends React.Component {
                   <CommonModal />
                   <div id="private" className="col s12 tab-style">
                     <h6 className="center">All Private Documents</h6>
-                    <DocCollection documents={privateDocuments} />
+                    <DocList docs={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6 className="center">All Public Documents</h6>
-                    <DocCollection documents={publicDocuments} />
+                    <DocList docs={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6 className="center">All Accessible Role Documents</h6>
-                    <DocCollection documents={roleDocuments} />
+                    <DocList docs={roleDocuments} />
                   </div>
                 </div>
               </div>
@@ -88,6 +88,12 @@ DashboardPage.propTypes = {
 const filterDocument = (role, documents) =>
   documents.filter(doc => doc.access === role);
 
+
+/**
+ * Helper function to get only required properties from state
+ * @param {any} state
+ * @returns {any}
+ */
 function mapStateToProps(state) {
   const { documents } = state.handleDocuments;
   const publicDocuments = filterDocument('public', documents);

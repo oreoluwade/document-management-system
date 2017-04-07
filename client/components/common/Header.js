@@ -22,7 +22,7 @@ export class Header extends React.Component {
           <li><Link to="/dashboard" activeClassName="active">
             <i className="material-icons left">dashboard</i>Dashboard</Link></li>
           <li activeClassName="active">
-            <a href="#">Hello, {user.userName}!</a>
+            <a href="#">Welcome, {user.userName}!</a>
           </li>
           <li activeClassName="active" id="personalDocs">
             <Link to="/documents">Saved Documents</Link>
@@ -89,7 +89,11 @@ Header.propTypes = {
 export const mapStateToProps = (state) => {
   const { auth: { isAuthenticated, user } } = state;
   const isAdmin = isAuthenticated && user.userRoleId === 1;
-  return { isAuthenticated, user, isAdmin };
+  return {
+    isAuthenticated,
+    user,
+    isAdmin
+  };
 };
 
 export default connect(mapStateToProps, { logout })(Header);

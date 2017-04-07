@@ -11,7 +11,7 @@ class CommonModal extends React.Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, doc = {} } = this.props;
     return (
       <div>
         <div id="docDisplayModal" className="modal">
@@ -23,7 +23,7 @@ class CommonModal extends React.Component {
           </div>
           <div className="modal-content">
             <h4>Document</h4>
-            <DocumentForm auth={auth}/>
+            <DocumentForm auth={auth} doc={doc} />
           </div>
         </div>
       </div>
@@ -32,7 +32,8 @@ class CommonModal extends React.Component {
 }
 
 CommonModal.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  doc: PropTypes.object
 };
 
 /**

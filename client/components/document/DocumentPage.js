@@ -2,16 +2,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocCollection from './DocCollection';
+import DocList from './DocList';
 import * as documentActions from '../../actions/documentActions';
 import CommonModal from '../common/CommonModal';
 
 class DocumentPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.clickToDelete = this.clickToDelete.bind(this);
-  }
 
   componentWillMount() {
     const { userId } = this.props.user;
@@ -24,10 +19,12 @@ class DocumentPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  clickToDelete() {
-    this.props.actions.deleteCurrentDocument();
-    $('#docsDisplayModal').modal('open');
+
+  addNewDocument(e) {
+    e.preventDefault();
+    $('#docDisplayModal').modal('open');
   }
+
 
   render() {
     const { personalDocuments } = this.props;
@@ -37,15 +34,6 @@ class DocumentPage extends React.Component {
       <div className="document-page row">
         <div className="col s12 z-depth-5 card-panel">
           {/* <h4 className="center">MY DOCUMENTS</h4>*/}
-          <div id="addBtnDiv"
-            className="fixed-action-btn" onClick={this.clickToDelete}>
-            <a
-              className="btn-floating btn-large waves-effect waves-light red tooltipped"
-              data-position="left" data-delay="50"
-              data-tooltip="Delete current document">
-              <i className="material-icons">delete</i>
-            </a>
-          </div>
           <div className="row">
             <div className="col s12">
               <div className="row">
@@ -56,8 +44,8 @@ class DocumentPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="col s7">
-                  <DocCollection documents={personalDocuments} />
+                <div className="col s12">
+                  <DocList docs={personalDocuments} />
                 </div>
               </div>
             </div>

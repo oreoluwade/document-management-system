@@ -18,7 +18,7 @@ class DocumentForm extends React.Component {
 
     this.state = {
       errors: {},
-      chosenDocument: props.chosenDocument,
+      doc: props.doc || {},
       displaySaveButton: true
     };
     this.onChange = this.onChange.bind(this);
@@ -33,14 +33,14 @@ class DocumentForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const editable = nextProps.chosenDocument.ownerId === this.props.auth.user.userId
-      || !nextProps.chosenDocument.id;
+    const editable = nextProps.doc.ownerId === this.props.auth.user.userId
+      || !nextProps.doc.id;
     if (!editable) {
       $('.fr-wrapper').froalaEditor('edit.off');
     }
-    if (this.props.chosenDocument.id !== nextProps.chosenDocument.id) {
+    if (this.props.doc.id !== nextProps.doc.id) {
       this.setState({
-        chosenDocument: nextProps.chosenDocument,
+        doc: nextProps.doc,
         displaySaveButton: editable
       });
     }
@@ -51,27 +51,27 @@ class DocumentForm extends React.Component {
     const ownerId = this.props.auth.user.userId;
     const role = String(this.props.auth.user.userRoleId);
     this.setState((state) => {
-      const chosenDocument = Object.assign({},
-        state.chosenDocument, {
+      const doc = Object.assign({},
+        state.doc, {
           [field]: value,
           ownerId,
           role
         });
-      return { chosenDocument };
+      return { doc };
     });
   }
 
   handleModelChange(model) {
     this.setState((state) => {
-      const chosenDocument = Object.assign({},
-        state.chosenDocument, { content: model });
-      return { chosenDocument };
+      const doc = Object.assign({},
+        state.doc, { content: model });
+      return { doc };
     });
   }
 
   saveDocument(event) {
     event.preventDefault();
-    this.props.actions.saveDocument(this.state.chosenDocument, this.props.auth.user.userId)
+    this.props.actions.saveDocument(this.state.doc, this.props.auth.user.userId)
       .then(() => {
         toastr.success('Document Successfully Saved');
         $('#docDisplayModal').modal('close');
@@ -88,7 +88,7 @@ class DocumentForm extends React.Component {
 
   updateDocument(event) {
     event.preventDefault();
-    this.props.actions.updateDocument(this.state.chosenDocument, this.props.auth.user.userId)
+    this.props.actions.updateDocument(this.state.doc, this.props.auth.user.userId)
       .then(() => {
         toastr.success('Document Successfully Updated');
         $('#docDisplayModal').modal('close');
@@ -110,8 +110,9 @@ class DocumentForm extends React.Component {
   }
 
   render() {
-    const { displaySaveButton, chosenDocument } = this.state;
-    const { id, title = '', content = '', access } = chosenDocument;
+    const { displaySaveButton, doc } = this.state;
+    const { id, title = '', content = '', access } = doc;
+
     const form = (
       <form>
         <div className="row">
@@ -161,7 +162,6 @@ class DocumentForm extends React.Component {
               value="Save"
               className="btn waves-effect waves-light blue-grey"
               onClick={id ? this.updateDocument : this.saveDocument} />
-
           </div>
         </div>
       </form>
@@ -177,23 +177,10 @@ class DocumentForm extends React.Component {
 DocumentForm.propTypes = {
   auth: PropTypes.object.isRequired,
   onChange: PropTypes.func,
-  chosenDocument: PropTypes.object.isRequired,
+  doc: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   addFlashMessage: PropTypes.func.isRequired
 };
-
-/**
- * @param {any} state
- * @returns {any}
- */
-function mapStateToProps(state) {
-  const { chosenDocument = {} } = state.handleDocuments;
-
-  return {
-    chosenDocument,
-    auth: state.auth
-  };
-}
 
 /**
  * @param {any} dispatch
@@ -206,4 +193,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentForm);
+export default connect(null, mapDispatchToProps)(DocumentForm);
