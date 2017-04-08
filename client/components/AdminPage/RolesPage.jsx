@@ -3,22 +3,21 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import RoleList from './RoleList';
+import RolesList from './RolesList.jsx';
 import { loadRoles, deleteRole } from '../../actions/roleActions';
-import { addFlashMessage } from '../../actions/flashMessages';
-import RoleForm from './RoleForm';
+import RolesForm from './RolesForm.jsx';
 
-class ManangeRolePage extends React.Component {
+class RolesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       displayForm: false,
       role: {}
     };
-    this.deleteRole = this.deleteRole.bind(this);
-    this.renderRoleForm = this.renderRoleForm.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
-    this.cancelRoleForm = this.cancelRoleForm.bind(this);
+    this.deleteRole = this.deleteRole.bind(this);
+    this.cancelRolesForm = this.cancelRolesForm.bind(this);
+    this.renderRolesForm = this.renderRolesForm.bind(this);
   }
 
   componentWillMount() {
@@ -31,10 +30,12 @@ class ManangeRolePage extends React.Component {
 
   renderAlert(id) {
     this.props.swal({
-      title: 'Warning!',
-      text: 'Are you sure you want to delete role?',
-      type: 'info',
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this',
+      type: 'warning',
       showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       onConfirm: () => this.deleteRole(id),
       onCancel: this.props.close,
     });
@@ -44,21 +45,16 @@ class ManangeRolePage extends React.Component {
     this.props.deleteRole(id)
       .then(() => toastr.success('Role Successfully Deleted'))
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to delete role'
-        });
-        toastr.error(
-          'Unable to delete role');
+        toastr.error('Unable to delete role');
       });
   }
 
-  renderRoleForm(role = {}) {
+  renderRolesForm(role = {}) {
     const text = 'Update Role Details';
     this.setState({ displayForm: true, text, role });
   }
 
-  cancelRoleForm() {
+  cancelRolesForm() {
     this.setState({ displayForm: false, user: {} });
   }
 
@@ -69,15 +65,19 @@ class ManangeRolePage extends React.Component {
         <div className="row">
           <div className="col s12">
             <div className="col s12 z-depth-5 card-panel card-body">
-              <h4 className="center">Manage Role Details and Permissions</h4>
+              <h4 className="center">Manage Roles</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                  <RoleList editRole={this.renderRoleForm} deleteRole={this.renderAlert} roles={roles} />
+                  <RolesList
+                    editRole={this.renderRolesForm}
+                    deleteRole={this.renderAlert}
+                    roles={roles}
+                  />
                 </div>
                 {this.state.displayForm && <div className="col s5">
                   <div>
                     <h6>{this.state.text}</h6>
-                    <RoleForm cancel={this.cancelRoleForm} role={this.state.role} />
+                    <RolesForm cancel={this.cancelRolesForm} role={this.state.role} />
                   </div>
                 </div>}
               </div>
@@ -90,13 +90,12 @@ class ManangeRolePage extends React.Component {
   }
 }
 
-ManangeRolePage.propTypes = {
-  loadRoles: PropTypes.func.isRequired,
+RolesPage.propTypes = {
+  close: PropTypes.func.isRequired,
   deleteRole: PropTypes.func.isRequired,
+  loadRoles: PropTypes.func.isRequired,
   roles: PropTypes.array.isRequired,
   swal: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired
 };
 
 /**
@@ -104,7 +103,6 @@ ManangeRolePage.propTypes = {
  * @returns {any}
  */
 function mapStateToProps(state) {
-  console.log(state.manageRoles);
   const { roles } = state.manageRoles;
   return {
     roles
@@ -112,4 +110,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,
-  { loadRoles, deleteRole, swal, close, addFlashMessage })(ManangeRolePage);
+  { loadRoles, deleteRole, swal, close })(RolesPage);

@@ -9,16 +9,15 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as documentActions from '../../actions/documentActions';
-import { addFlashMessage } from '../../actions/flashMessages';
+import { addFlashMessage } from '../../actions/flashMessagesActions';
 
 
 class DocumentForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errors: {},
-      doc: props.doc || {},
+      document: props.document || {},
       displaySaveButton: true
     };
     this.onChange = this.onChange.bind(this);
@@ -33,14 +32,14 @@ class DocumentForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const editable = nextProps.doc.ownerId === this.props.auth.user.userId
-      || !nextProps.doc.id;
+    const editable = nextProps.document.ownerId === this.props.auth.user.userId
+      || !nextProps.document.id;
     if (!editable) {
       $('.fr-wrapper').froalaEditor('edit.off');
     }
-    if (this.props.doc.id !== nextProps.doc.id) {
+    if (this.props.document.id !== nextProps.document.id) {
       this.setState({
-        doc: nextProps.doc,
+        document: nextProps.document,
         displaySaveButton: editable
       });
     }
@@ -51,37 +50,37 @@ class DocumentForm extends React.Component {
     const ownerId = this.props.auth.user.userId;
     const role = String(this.props.auth.user.userRoleId);
     this.setState((state) => {
-      const doc = Object.assign({},
-        state.doc, {
+      const document = Object.assign({},
+        state.document, {
           [field]: value,
           ownerId,
           role
         });
-      return { doc };
+      return { document };
     });
   }
 
   handleModelChange(model) {
     this.setState((state) => {
-      const doc = Object.assign({},
-        state.doc, { content: model });
-      return { doc };
+      const document = Object.assign({},
+        state.document, { content: model });
+      return { document };
     });
   }
 
   saveDocument(event) {
     event.preventDefault();
-    this.props.actions.saveDocument(this.state.doc, this.props.auth.user.userId)
+    this.props.actions.saveDocument(this.state.document, this.props.auth.user.userId)
       .then(() => {
         toastr.success('Document Successfully Saved');
         $('#docDisplayModal').modal('close');
       })
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to save document'
-        });
-        toastr.error('Unable to save document');
+        // this.props.addFlashMessage({
+        //   type: 'error',
+        //   text: 'Unable to save document'
+        // });
+        toastr.error('Something went wrong! Unable to save document');
         $('#docDisplayModal').modal('close');
       });
   }
@@ -94,11 +93,11 @@ class DocumentForm extends React.Component {
         $('#docDisplayModal').modal('close');
       })
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to update document'
-        });
-        toastr.error('Unable to update document');
+        // this.props.addFlashMessage({
+        //   type: 'error',
+        //   text: 'Unable to update document'
+        // });
+        toastr.error('Something went wrong. Unable to update document');
         $('#docDisplayModal').modal('close');
       });
   }
@@ -110,9 +109,8 @@ class DocumentForm extends React.Component {
   }
 
   render() {
-    const { displaySaveButton, doc } = this.state;
-    const { id, title = '', content = '', access } = doc;
-
+    const { displaySaveButton, document } = this.state;
+    const { id, title = '', content = '', access } = document;
     const form = (
       <form>
         <div className="row">
@@ -145,7 +143,7 @@ class DocumentForm extends React.Component {
             <select name="access" id="accessDropdown"
               value={access}
               className="browser-default" onChange={this.onChange}>
-              <option value="" disabled >Document Visibility Access</option>
+              <option value="" disabled>Access Type</option>
               <option value="public">Public</option>
               <option value="private">Private</option>
               <option value="role">Role</option>
@@ -161,7 +159,8 @@ class DocumentForm extends React.Component {
               type="submit"
               value="Save"
               className="btn waves-effect waves-light blue-grey"
-              onClick={id ? this.updateDocument : this.saveDocument} />
+              onClick={id ? this.updateDocument : this.saveDocument}
+            />
           </div>
         </div>
       </form>
@@ -175,11 +174,11 @@ class DocumentForm extends React.Component {
 }
 
 DocumentForm.propTypes = {
-  auth: PropTypes.object.isRequired,
-  onChange: PropTypes.func,
-  doc: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  // addFlashMessage: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  document: PropTypes.object.isRequired,
+  onChange: PropTypes.func
 };
 
 /**

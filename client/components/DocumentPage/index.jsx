@@ -2,9 +2,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocumentList from './DocumentList';
+import DocumentList from './DocumentList.jsx';
 import * as documentActions from '../../actions/documentActions';
-import Modal from '../Common/Modal';
+import Modal from '../Common/Modal.jsx';
 
 class DocumentPage extends React.Component {
 
@@ -19,12 +19,10 @@ class DocumentPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-
   addNewDocument(e) {
     e.preventDefault();
     $('#docDisplayModal').modal('open');
   }
-
 
   render() {
     const { personalDocuments } = this.props;
@@ -38,14 +36,14 @@ class DocumentPage extends React.Component {
             <div className="col s12">
               <div className="row">
                 <div className="col s5">
-                  <div id="card-alert" className="card grey-blue lighten-5">
+                  <div id="card-alert" className="card blue-grey lighten-5">
                     <div className="card-content black-text" id="documentCount">
                       <p>{`You have ${count} saved Document${count === 1 ? '' : 's'}`}</p>
                     </div>
                   </div>
                 </div>
                 <div className="col s12">
-                  <DocumentList docs={personalDocuments} />
+                  <DocumentList documents={personalDocuments} />
                 </div>
               </div>
             </div>
@@ -77,11 +75,10 @@ function mapStateToProps({
   let personalDocuments = [];
   if (isAuthenticated) {
     personalDocuments = documents.filter(
-      doc => doc.ownerId === user.userId);
+      document => document.ownerId === user.userId);
   }
-
   const publicDocuments = documents.filter(
-    doc => doc.access === 'public');
+    document => document.access === 'public');
 
   return {
     personalDocuments,

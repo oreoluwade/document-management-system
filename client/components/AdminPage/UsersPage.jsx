@@ -3,22 +3,21 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import UserList from './UserList';
+import UsersList from './UsersList.jsx';
 import { retrieveUsers, deleteUser } from '../../actions/userActions';
-import { addFlashMessage } from '../../actions/flashMessages';
-import UserForm from './UserForm';
+import UsersForm from './UsersForm.jsx';
 
-class HandleUsersPage extends React.Component {
+class UsersPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       displayForm: false,
       user: {}
     };
+    this.cancelUsersForm = this.cancelUsersForm.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
-    this.renderUserForm = this.renderUserForm.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
-    this.cancelUserForm = this.cancelUserForm.bind(this);
+    this.renderUsersForm = this.renderUsersForm.bind(this);
   }
 
   componentWillMount() {
@@ -31,10 +30,12 @@ class HandleUsersPage extends React.Component {
 
   renderAlert(id) {
     this.props.swal({
-      title: 'Warning!',
-      text: 'Are you sure you want to delete user?',
-      type: 'info',
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this',
+      type: 'warning',
       showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       onConfirm: () => this.deleteUser(id),
       onCancel: this.props.close,
     });
@@ -44,21 +45,17 @@ class HandleUsersPage extends React.Component {
     this.props.deleteUser(id)
       .then(() => toastr.success('User Successfully Deleted'))
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to delete user'
-        });
         toastr.error(
           'Unable to delete user');
       });
   }
 
-  renderUserForm(user = {}) {
+  renderUsersForm(user = {}) {
     const text = 'Update User Details';
     this.setState({ displayForm: true, text, user });
   }
 
-  cancelUserForm() {
+  cancelUsersForm() {
     this.setState({ displayForm: false, user: {} });
   }
 
@@ -72,12 +69,19 @@ class HandleUsersPage extends React.Component {
               <h4 className="center">Manage User Details and Permissions</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                  <UserList editUser={this.renderUserForm} deleteUser={this.renderAlert} users={users} />
+                  <UsersList
+                    editUser={this.renderUsersForm}
+                    deleteUser={this.renderAlert}
+                    users={users}
+                  />
                 </div>
                 {this.state.displayForm && <div className="col s5">
                   <div>
                     <h6>{this.state.text}</h6>
-                    <UserForm cancel={this.cancelUserForm} user={this.state.user} />
+                    <UsersForm
+                      cancel={this.cancelUsersForm}
+                      user={this.state.user}
+                    />
                   </div>
                 </div>}
               </div>
@@ -91,12 +95,11 @@ class HandleUsersPage extends React.Component {
 }
 
 
-HandleUsersPage.propTypes = {
-  retrieveUsers: PropTypes.func.isRequired,
-  deleteUser: PropTypes.func.isRequired,
-  swal: PropTypes.func.isRequired,
+UsersPage.propTypes = {
   close: PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  retrieveUsers: PropTypes.func.isRequired,
+  swal: PropTypes.func.isRequired,
   users: React.PropTypes.array.isRequired,
 };
 
@@ -112,12 +115,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,
-  {
-    retrieveUsers,
-    deleteUser,
-    swal,
-    close,
-    addFlashMessage
-  })(HandleUsersPage);
+export default connect(mapStateToProps, { retrieveUsers, deleteUser, swal, close, })(UsersPage);
 

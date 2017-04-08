@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import
 { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
-import DocList from '../document/DocList';
-import CommonModal from '../common/CommonModal';
+import DocumentList from '../DocumentPage/DocumentList.jsx';
+import Modal from '../Common/Modal.jsx';
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class DashboardPage extends React.Component {
       <div className=" dashboard row">
         <div className="col s12">
           <div className="col s12 z-depth-5 card-panel">
-            <h5 className="center">DASHBOARD</h5>
+            <h5 className="center">Dashboard</h5>
             <div>
               <div className="row">
                 <div className="col s12">
@@ -53,18 +53,18 @@ class DashboardPage extends React.Component {
                   </ul>
                 </div>
                 <div className="col s12">
-                  <CommonModal />
+                  <Modal />
                   <div id="private" className="col s12 tab-style">
                     <h6 className="center">All Private Documents</h6>
-                    <DocList docs={privateDocuments} />
+                    <DocumentList docs={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6 className="center">All Public Documents</h6>
-                    <DocList docs={publicDocuments} />
+                    <DocumentList docs={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6 className="center">All Accessible Role Documents</h6>
-                    <DocList docs={roleDocuments} />
+                    <DocumentList docs={roleDocuments} />
                   </div>
                 </div>
               </div>
@@ -78,15 +78,15 @@ class DashboardPage extends React.Component {
 
 DashboardPage.propTypes = {
   auth: PropTypes.object,
-  privateDocuments: PropTypes.array.isRequired,
-  roleDocuments: PropTypes.array.isRequired,
-  publicDocuments: PropTypes.array.isRequired,
-  loadUserDocuments: PropTypes.func.isRequired,
   loadAllDocuments: PropTypes.func.isRequired,
+  loadUserDocuments: PropTypes.func.isRequired,
+  privateDocuments: PropTypes.array.isRequired,
+  publicDocuments: PropTypes.array.isRequired,
+  roleDocuments: PropTypes.array.isRequired,
 };
 
 const filterDocument = (role, documents) =>
-  documents.filter(doc => doc.access === role);
+  documents.filter(document => document.access === role);
 
 
 /**

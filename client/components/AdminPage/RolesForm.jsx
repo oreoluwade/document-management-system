@@ -2,22 +2,19 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { saveRole, updateRole, loadRoles } from '../../actions/roleActions';
-import { addFlashMessage } from '../../actions/flashMessagesActions';
 
 class RolesForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       role: props.role || {},
-      // titleValue: Object.assign({}, props.roleValue).title,
     };
-
     this.onChange = this.onChange.bind(this);
     this.saveRole = this.saveRole.bind(this);
     this.updateRole = this.updateRole.bind(this);
   }
 
-  componentWillMount() {
+  componentWillMount() { // should this be here?
     this.props.loadRoles();
   }
 
@@ -39,30 +36,22 @@ class RolesForm extends React.Component {
     });
   }
 
-  saveRole(e) {
-    e.preventDefault();
+  saveRole(event) {
+    event.preventDefault();
     const { role } = this.state;
     this.props.saveRole(role).then(() => {
       toastr.success('Role Successfully Saved!');
     }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to save role, please try again.'
-      });
       toastr.error('Unable to save role');
     });
   }
 
-  updateRole(e) {
-    e.preventDefault();
+  updateRole(event) {
+    event.preventDefault();
     const { role } = this.state;
     this.props.updateRole(role).then(() => {
       toastr.success('Role Successfully Updated!');
     }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update role'
-      });
       toastr.error('Unable to update role');
     });
   }
@@ -93,20 +82,22 @@ class RolesForm extends React.Component {
                 onChange={this.onChange}
               />
 
-              <label htmlFor="title" className="active">Role Title</label>
+              <label htmlFor="title" className="active">title</label>
             </div>
             <div className="input-field col s12">
               <input
                 id="btnSave"
                 type="submit"
                 value="Save"
-                className="btn waves-effect waves-light blue-grey"
-                onClick={id ? this.updateRole : this.saveRole} />
+                className="btn-small waves-effect waves-light blue-grey"
+                onClick={id ? this.updateRole : this.saveRole}
+              />
               <input
                 type="submit"
                 value="Cancel"
-                className="btn waves-effect waves-light blue-grey"
-                onClick={this.props.cancel} />
+                className="btn-small waves-effect waves-light blue-grey"
+                onClick={this.props.cancel}
+              />
             </div>
           </div>
         </form>
@@ -121,13 +112,12 @@ class RolesForm extends React.Component {
 }
 
 RolesForm.propTypes = {
-  roles: PropTypes.array.isRequired,
-  role: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
+  cancel: PropTypes.func,
+  role: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
   saveRole: PropTypes.func,
-  updateRole: PropTypes.func,
-  addFlashMessage: PropTypes.func.isRequired,
-  cancel: PropTypes.func
+  updateRole: PropTypes.func
 };
 
 /**
@@ -141,4 +131,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadRoles, saveRole, updateRole, addFlashMessage })(RolesForm);
+export default connect(mapStateToProps, { loadRoles, saveRole, updateRole })(RolesForm);

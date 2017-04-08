@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 
-
-const RoleList = ({ roles, editRole, deleteRole }) =>
+const RolesList = ({ roles, editRole, deleteRole }) =>
   (
     <div className="role-collection">
       <ul className="collection">
@@ -13,10 +12,12 @@ const RoleList = ({ roles, editRole, deleteRole }) =>
                 <div className="col s2 name">{role.id}</div>
                 <div className="user-buttons row col s3">
                   <a className="waves-effect waves-light btn blue-grey"
-                    onClick={() => editRole(role)}>
+                    onClick={() => editRole(role)}
+                  >
                     <i className="tiny material-icons left">edit</i>edit</a>
                   <a className="waves-effect waves-light btn blue-grey"
-                    onClick={() => deleteRole(role.id)}>
+                    onClick={() => deleteRole(role.id)}
+                  >
                     <i className="tiny material-icons left">delete</i>delete</a>
                 </div>
               </div>
@@ -26,11 +27,11 @@ const RoleList = ({ roles, editRole, deleteRole }) =>
     </div>
   );
 
-RoleList.propTypes = {
-  editRole: PropTypes.func.isRequired,
+RolesList.propTypes = {
   deleteRole: PropTypes.func.isRequired,
+  editRole: PropTypes.func.isRequired,
   roles: React.PropTypes.array.isRequired
 };
 
 
-export default RoleList;
+export default RolesList;

@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
-import CommonModal from '../common/CommonModal';
+import Modal from '../Common/Modal.jsx';
 
-class DocList extends Component {
+class DocumentList extends Component {
   constructor() {
     super();
     this.state = {
-      doc: {}
+      document: {}
     };
     this.renderModal = this.renderModal.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
@@ -18,15 +18,15 @@ class DocList extends Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  renderModal(doc = {}) {
-    this.setState(() => ({ doc }), () => {
+  renderModal(document = {}) {
+    this.setState(() => ({ document }), () => {
       $('#docDisplayModal').modal('open');
     });
   }
 
   deleteDocument(id) {
     const { user: { userId } } = this.props;
-    const result = confirm('Do you want to delete this docuement?');
+    const result = confirm('Do you want to delete this document?');
     if (result) {
       this.props.deleteDocument(id, userId)
         .then(() => toastr.success('Document Successfully Deleted'));
@@ -34,31 +34,31 @@ class DocList extends Component {
   }
 
   render() {
-    const { docs } = this.props;
+    const { documents } = this.props;
     return (
       <div className="doc-collection">
         <ul className="collection">
-          {docs
-            .map(doc =>
-              <li key={doc.title} className="collection-item">
+          {documents
+            .map(document =>
+              <li key={document.title} className="collection-item">
                 <div className="row doc-collection-item">
                   <div className="col s4 offset s2 title"><a href="#">
-                    Title: {doc.title}</a></div>
-                  <div className="col s2 access"><a href="#">Access: {doc.access}</a></div>
-                  <div className="col s1 role"><a href="#">Doc ID: {doc.id}</a></div>
-                  <div className="user-buttons row col s3">
+                    {document.title}</a></div>
+                  <div className="col s2 access"><a href="#">{document.access}</a></div>
+                  {/* <div className="col s1 role"><a href="#">Doc ID: {document.id}</a></div>*/}
+                  <div className="user-buttons row col s4">
                     <a className="waves-effect waves-light btn blue-grey"
-                      onClick={() => this.renderModal(doc)}>
+                      onClick={() => this.renderModal(document)}>
                       <i className="tiny material-icons left">edit</i>edit</a>
                     <a className="waves-effect waves-light btn blue-grey"
-                      onClick={() => this.deleteDocument(doc.id)}>
+                      onClick={() => this.deleteDocument(document.id)}>
                       <i className="tiny material-icons left">delete</i>delete</a>
                   </div>
                 </div>
               </li>
             )}
         </ul>
-        <CommonModal doc={this.state.doc} />
+        <Modal document={this.state.document} />
         <div className="fixed-action-btn horizontal">
           <a className="btn-floating btn-large tooltipped blue-grey"
             data-position="top" data-delay="50"
@@ -73,9 +73,9 @@ class DocList extends Component {
   }
 }
 
-DocList.propTypes = {
+DocumentList.propTypes = {
   deleteDocument: PropTypes.func.isRequired,
-  docs: React.PropTypes.array.isRequired,
+  documents: React.PropTypes.array.isRequired,
   user: React.PropTypes.object.isRequired,
 };
 
@@ -91,4 +91,4 @@ function mapStateToProps({
   };
 }
 
-export default connect(mapStateToProps, { deleteDocument })(DocList);
+export default connect(mapStateToProps, { deleteDocument })(DocumentList);

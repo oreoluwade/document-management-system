@@ -1,23 +1,19 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
-import TextFieldGroup from '../common/TextFieldGroup';
+import TextFieldGroup from '../Common/TextFieldGroup.jsx';
 import { saveUserAdmin, updateUserAdmin } from '../../actions/userActions';
-import { addFlashMessage } from '../../actions/flashMessages';
 import { loadRoles } from '../../actions/roleActions';
 
 class UserForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errors: {},
       user: props.user || {},
     };
     this.onChange = this.onChange.bind(this);
     this.updateUser = this.updateUser.bind(this);
-    // this.saveUser = this.saveUser.bind(this);
-    // this.clearError = this.clearError.bind(this);
   }
 
   componentDidMount() {
@@ -45,14 +41,9 @@ class UserForm extends React.Component {
   updateUser(e) {
     e.preventDefault();
     const { user } = this.state;
-    // this.props.updateUserAdmin(this.state.user).then(() => {
     this.props.updateUserAdmin(user).then(() => {
       toastr.success('User Updated Successfully');
     }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update user'
-      });
       toastr.error('Unable to update user');
     });
   }
@@ -64,6 +55,7 @@ class UserForm extends React.Component {
     const form = (
       <div className="col s12 z-depth-5 card-panel">
         <form className="login-form">
+
           <div className="row margin">
             <TextFieldGroup
               type="text"
@@ -75,6 +67,7 @@ class UserForm extends React.Component {
               onChange={this.onChange}
             />
           </div>
+
           <div className="row margin">
             <TextFieldGroup
               type="text"
@@ -86,6 +79,7 @@ class UserForm extends React.Component {
               onChange={this.onChange}
             />
           </div>
+
           <div className="row margin">
             <TextFieldGroup
               type="text"
@@ -97,6 +91,7 @@ class UserForm extends React.Component {
               onChange={this.onChange}
             />
           </div>
+
           <div className="row margin">
             <TextFieldGroup
               type="email"
@@ -108,18 +103,22 @@ class UserForm extends React.Component {
               onChange={this.onChange}
             />
           </div>
+
           <div className="row margin">
             <label>User Role</label>
             <div className="input-field col s12">
               <select name="roleId" id="mySelectBox"
                 value={roleId}
                 className="browser-default" onChange={this.onChange}>
-                <option value="" disabled >User Role</option>
+                <option
+                  value=""
+                  disabled>User Role
+                </option>
                 {roles.map(role =>
-                  (<option key={role.id}
+                  (<option
+                    key={role.id}
                     value={role.id}>{role.title}</option>)
-                )
-                }
+                )}
               </select>
             </div>
           </div>
@@ -129,12 +128,12 @@ class UserForm extends React.Component {
                 icon="save"
                 type="submit"
                 value="Save"
-                className="btn waves-effect waves-light blue-grey"
+                className="btn-small waves-effect waves-light blue-grey"
                 onClick={this.updateUser} />
               <input
                 type="submit"
                 value="Cancel"
-                className="btn waves-effect waves-light blue-grey"
+                className="btn-small waves-effect waves-light blue-grey"
                 onClick={this.props.cancel} />
             </div>
           </div>
@@ -156,7 +155,6 @@ UserForm.propTypes = {
   loadRoles: PropTypes.func,
   updateUserAdmin: PropTypes.func,
   saveUserAdmin: PropTypes.func,
-  addFlashMessage: PropTypes.func,
   cancel: PropTypes.func,
 };
 
@@ -172,4 +170,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,
-  { loadRoles, saveUserAdmin, updateUserAdmin, addFlashMessage })(UserForm);
+  { loadRoles, saveUserAdmin, updateUserAdmin })(UserForm);
