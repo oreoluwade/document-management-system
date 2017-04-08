@@ -14,18 +14,18 @@ export function loadDocumentSuccess(document) {
   };
 }
 
-/**
- * Create document success action creator
- * @export
- * @param {any} document
- * @returns {object} action
- */
-export function createDocumentSuccess(document) {
-  return {
-    type: types.CREATE_DOCUMENT_SUCCESS,
-    document
-  };
-}
+// /**
+//  * Create document success action creator
+//  * @export
+//  * @param {any} document
+//  * @returns {object} action
+//  */
+// export function createDocumentSuccess(document) {
+//   return {
+//     type: types.CREATE_DOCUMENT_SUCCESS,
+//     document
+//   };
+// }
 
 /**
  * Update document success action creator
@@ -53,15 +53,15 @@ export function chooseAsCurrentDocument(id) {
   };
 }
 
-/**
- * Delete the current document action creator
- * @return {object} actiontype
- */
-export function deleteCurrentDocument() {
-  return {
-    type: types.DELETE_CURRENT_DOCUMENT,
-  };
-}
+// /**
+//  * Delete the current document action creator
+//  * @return {object} actiontype
+//  */
+// export function deleteCurrentDocument() {
+//   return {
+//     type: types.DELETE_CURRENT_DOCUMENT,
+//   };
+// }
 
 
 /**

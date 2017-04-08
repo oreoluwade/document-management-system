@@ -3,7 +3,7 @@ import * as types from './actionTypes';
 
 /**
  * action to successfully load a role from state
- * @param  {object} role
+ * @param  {object} roles
  * @return {object}
  */
 export function loadRoleSuccess(roles) {

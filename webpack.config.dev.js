@@ -43,9 +43,6 @@ export default {
           path.join(__dirname, 'client'),
           path.join(__dirname, 'server')],
         loaders: ['babel-loader'],
-        query: {
-          presets: ['es2015', 'react']
-        }
       },
       {
         test: /(\.css)$/,

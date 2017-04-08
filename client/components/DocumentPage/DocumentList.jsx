@@ -75,7 +75,7 @@ class DocumentList extends Component {
 
 DocumentList.propTypes = {
   deleteDocument: PropTypes.func.isRequired,
-  documents: React.PropTypes.array.isRequired,
+  documents: React.PropTypes.array,
   user: React.PropTypes.object.isRequired,
 };
 
@@ -84,10 +84,12 @@ DocumentList.propTypes = {
  * @returns {any}
  */
 function mapStateToProps({
-  auth: { user }
+  auth: { user },
+  handleDocuments: { documents }
 }) {
   return {
-    user
+    user,
+    documents
   };
 }
 

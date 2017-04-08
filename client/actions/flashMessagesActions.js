@@ -1,6 +1,5 @@
 import { ADD_FLASH_MESSAGE, DELETE_FLASH_MESSAGE } from './actionTypes';
 
-
 /**
  * Add flash messages action
  * @export

@@ -58,3 +58,7 @@ export function updateUserAdmin(user) {
       });
 }
 
+export function getUser(id) {
+  return dispatch => axios.get()
+}
+

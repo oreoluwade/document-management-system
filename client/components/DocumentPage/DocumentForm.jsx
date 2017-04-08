@@ -177,7 +177,7 @@ DocumentForm.propTypes = {
   actions: PropTypes.object.isRequired,
   // addFlashMessage: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  document: PropTypes.object.isRequired,
+  document: PropTypes.object,
   onChange: PropTypes.func
 };
 

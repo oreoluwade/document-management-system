@@ -3,6 +3,13 @@ import jwtDecode from 'jwt-decode';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER, CREATE_USER_SUCCESS } from './actionTypes';
 
+
+/**
+ * setCurrentUser description
+ * @export
+ * @param {any} user
+ * @returns {object}
+ */
 export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
@@ -10,6 +17,13 @@ export function setCurrentUser(user) {
   };
 }
 
+
+/**
+ * createUserSuccess description
+ * @export
+ * @param {any} user
+ * @returns {object}
+ */
 export function createUserSuccess(user) {
   return {
     type: CREATE_USER_SUCCESS,
@@ -17,10 +31,24 @@ export function createUserSuccess(user) {
   };
 }
 
+
+/**
+ * isUserExists description
+ * @export
+ * @param {any} identifier
+ * @returns {function}
+ */
 export function isUserExists(identifier) {
-  return (dispatch) => axios.get(`/user/findUser/${identifier}`);
+  return dispatch => axios.get(`/user/findUser/${identifier}`);
 }
 
+
+/**
+ * userSignupRequest description
+ * @export
+ * @param {any} userData
+ * @returns {function}
+ */
 export function userSignupRequest(userData) {
   return dispatch => axios.post('/user', userData)
   .then((response) => {
@@ -31,6 +59,4 @@ export function userSignupRequest(userData) {
     dispatch(setCurrentUser(jwtDecode(token)));
   });
 }
-
-
 

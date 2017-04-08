@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import HomePage from './components/home/HomePage';
-import AboutPage from './components/about/AboutPage';
-import SignupPage from './components/authentication/SignupPage';
-import LoginPage from './components/login/LoginPage';
-import DocumentPage from './components/document/DocumentPage';
-import DashboardPage from './components/dashboard/DashboardPage';
-import ManangeRolePage from './components/adminComponents/ManageRolePage';
-import HandleUsersPage from './components/adminComponents/HandleUsersPage';
+import HomePage from './components/HomePage/index.jsx';
+import AboutPage from './components/AboutPage/index.jsx';
+import SignupPage from './components/SignupPage/index.jsx';
+import LoginPage from './components/LoginPage/index.jsx';
+import DocumentPage from './components/DocumentPage/index.jsx';
+import DashboardPage from './components/DashboardPage/index.jsx';
+import RolesPage from './components/AdminPage/RolesPage.jsx';
+import UsersPage from './components/AdminPage/UsersPage.jsx';
 
-import requireAuth from './utils/requireAuth';
-import requireAdminAuth from './utils/requireAdminAuth';
+import requireAuth from './utils/requireAuth.jsx';
+import requireAdminAuth from './utils/requireAdminAuth.jsx';
 
 export default (
   <Route path="/" component={App}>
@@ -22,8 +22,8 @@ export default (
     <Route path="documents" component={requireAuth(DocumentPage)} />
     <Route path="about" component={AboutPage} />
     <Route path="admin/manageroles"
-      component={requireAdminAuth(ManangeRolePage)} />
+      component={requireAdminAuth(RolesPage)} />
      <Route path="admin/handleusers"
-      component={requireAdminAuth(HandleUsersPage)} />
+      component={requireAdminAuth(UsersPage)} />
   </Route>
 );
