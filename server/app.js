@@ -15,7 +15,7 @@ app.set('hiddenDetails', secret);
 
 // Parse incoming requests data
 app.use(parser.json());
-app.use(parser.urlencoded({ extended: false }));
+app.use(parser.urlencoded({ extended: true }));
 
 // Requiring the routes into the application
 Routes(app);

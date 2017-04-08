@@ -8,7 +8,8 @@ class DocumentList extends Component {
   constructor() {
     super();
     this.state = {
-      document: {}
+      document: {},
+      modal: 'close'
     };
     this.renderModal = this.renderModal.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
@@ -58,7 +59,7 @@ class DocumentList extends Component {
               </li>
             )}
         </ul>
-        <Modal document={this.state.document} />
+        <Modal document={this.state.document} modal={this.state.modal} />
         <div className="fixed-action-btn horizontal">
           <a className="btn-floating btn-large tooltipped blue-grey"
             data-position="top" data-delay="50"

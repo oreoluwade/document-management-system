@@ -27,6 +27,20 @@ export function getUserSuccess(user) {
   };
 }
 
+export function updateUserSuccess(user) {
+  return {
+    type: types.UPDATE_USER_SUCCESS,
+    user
+  };
+}
+
+export function getUserInfoSuccess(user) {
+  return {
+    type: types.GET_USER_INFO_SUCCESS,
+    user
+  };
+}
+
 /**
  * dispatching the action to get users
  * @export
@@ -86,3 +100,23 @@ export function getUserById(id) {
     });
 }
 
+export function updateUserInfo(userInfo) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  return dispatch => axios.put(`/user/${user.userId}`, userInfo)
+    .then((response) => {
+      console.log(response, 'response');
+      dispatch(updateUserSuccess(userInfo));
+    }).catch((error) => {
+      throw error;
+    });
+}
+
+export function getUserInfo() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  return dispatch => axios.get(`/user/${user.userId}`)
+    .then((response) => {
+      dispatch(getUserInfoSuccess(response.data));
+    }).catch((error) => {
+      throw error;
+    });
+}

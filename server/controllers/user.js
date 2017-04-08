@@ -76,6 +76,7 @@ module.exports = {
         if (!user) {
           response.status(404).json({ error: 'User not found' });
         }
+        console.log(request.body, 'body');
         user.update(request.body)
           .then((updatedUser) => {
             const token = jwt.sign({

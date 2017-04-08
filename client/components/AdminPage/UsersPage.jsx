@@ -35,7 +35,6 @@ class UsersPage extends React.Component {
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       onConfirm: () => this.deleteUser(id),
       onCancel: this.props.close,
     });

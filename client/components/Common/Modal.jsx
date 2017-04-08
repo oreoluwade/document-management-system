@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentForm from '../DocumentPage/DocumentForm.jsx';
 
-class CommonModal extends React.Component {
+class Modal extends React.Component {
   componentDidMount() {
     $('.modal').modal();
     $('select').material_select();
@@ -11,7 +11,7 @@ class CommonModal extends React.Component {
   }
 
   render() {
-    const { auth, doc = {} } = this.props;
+    const { auth, document } = this.props;
     return (
       <div>
         <div id="docDisplayModal" className="modal">
@@ -24,7 +24,7 @@ class CommonModal extends React.Component {
           </div>
           <div className="modal-content">
             <h4>Document</h4>
-            <DocumentForm auth={auth} doc={doc} />
+            <DocumentForm auth={auth} document={document} />
           </div>
         </div>
       </div>
@@ -32,9 +32,9 @@ class CommonModal extends React.Component {
   }
 }
 
-CommonModal.propTypes = {
+Modal.propTypes = {
   auth: PropTypes.object.isRequired,
-  doc: PropTypes.object
+  document: PropTypes.object
 };
 
 /**
@@ -47,4 +47,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CommonModal);
+export default connect(mapStateToProps)(Modal);

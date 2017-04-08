@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -23,6 +24,16 @@ documentReducer(state = initialState.handleDocuments, action) {
     case types.DELETE_CURRENT_DOCUMENT: {
       const newState = JSON.parse(JSON.stringify(state));
       delete newState.chosenDocument;
+      return newState;
+    }
+
+    case types.DELETE_DOCUMENT_SUCCESS: {
+      const newState = Object.assign([], state);
+      const indexOfDocumentToDelete = state.findIndex((document) => {
+        return document.id === action.document.id;
+      });
+      newState.splice(indexOfDocumentToDelete, 1);
+      browserHistory.push('/documents');
       return newState;
     }
 

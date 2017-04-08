@@ -56,15 +56,15 @@ class DashboardPage extends React.Component {
                   <Modal />
                   <div id="private" className="col s12 tab-style">
                     <h6 className="center">All Private Documents</h6>
-                    <DocumentList docs={privateDocuments} />
+                    <DocumentList documents={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6 className="center">All Public Documents</h6>
-                    <DocumentList docs={publicDocuments} />
+                    <DocumentList documents={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6 className="center">All Accessible Role Documents</h6>
-                    <DocumentList docs={roleDocuments} />
+                    <DocumentList documents={roleDocuments} />
                   </div>
                 </div>
               </div>
