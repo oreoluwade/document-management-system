@@ -3,6 +3,8 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
 import CommonModal from '../common/CommonModal';
+// import { addDisabledClass, disabledDocuments } from '../adminComponents/disabledItems';
+
 
 class DocList extends Component {
   constructor() {
@@ -43,14 +45,16 @@ class DocList extends Component {
               <li key={doc.title} className="collection-item">
                 <div className="row doc-collection-item">
                   <div className="col s4 offset s2 title"><a href="#">
-                    Title: {doc.title}</a></div>
-                  <div className="col s2 access"><a href="#">Access: {doc.access}</a></div>
-                  <div className="col s1 role"><a href="#">Doc ID: {doc.id}</a></div>
+                    {doc.title}</a></div>
+                  {/* <div className="col s2 access"><a href="#">{doc.access}</a></div>*/}
+                  {/* <div className="col s1 role"><a href="#">{doc.id}</a></div>*/}
                   <div className="user-buttons row col s3">
-                    <a className="waves-effect waves-light btn blue-grey"
+                    <a
+                      className="waves-effect waves-light btn blue-grey"
                       onClick={() => this.renderModal(doc)}>
                       <i className="tiny material-icons left">edit</i>edit</a>
-                    <a className="waves-effect waves-light btn blue-grey"
+                    <a
+                      className="waves-effect waves-light btn blue-grey"
                       onClick={() => this.deleteDocument(doc.id)}>
                       <i className="tiny material-icons left">delete</i>delete</a>
                   </div>
