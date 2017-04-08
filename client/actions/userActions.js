@@ -15,6 +15,19 @@ export function retrieveUsersSuccess(users) {
 }
 
 /**
+ * action to successfully get a user
+ * @export
+ * @param {any} user
+ * @returns  {object} user
+ */
+export function getUserSuccess(user) {
+  return {
+    type: types.GET_USER_SUCCESS,
+    user
+  };
+}
+
+/**
  * dispatching the action to get users
  * @export
  * @returns {object}
@@ -58,7 +71,18 @@ export function updateUserAdmin(user) {
       });
 }
 
-export function getUser(id) {
-  return dispatch => axios.get()
+/**
+ * dispatching the action to get users
+ * @param {any} id
+ * @export
+ * @returns {object}
+ */
+export function getUserById(id) {
+  return dispatch => axios.get(`/user/${id}`)
+    .then((response) => {
+      dispatch(getUserSuccess(response.data.userFound));
+    }).catch((error) => {
+      throw (error);
+    });
 }
 

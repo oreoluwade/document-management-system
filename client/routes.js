@@ -9,7 +9,7 @@ import DocumentPage from './components/DocumentPage/index.jsx';
 import DashboardPage from './components/DashboardPage/index.jsx';
 import RolesPage from './components/AdminPage/RolesPage.jsx';
 import UsersPage from './components/AdminPage/UsersPage.jsx';
-
+import ProfilePage from './components/ProfilePage/index.jsx';
 import requireAuth from './utils/requireAuth.jsx';
 import requireAdminAuth from './utils/requireAdminAuth.jsx';
 
@@ -20,6 +20,7 @@ export default (
     <Route path="login" component={LoginPage} />
     <Route path="signup" component={SignupPage} />
     <Route path="documents" component={requireAuth(DocumentPage)} />
+    <Route path="profilepage" component={requireAuth(ProfilePage)}/>
     <Route path="about" component={AboutPage} />
     <Route path="admin/manageroles"
       component={requireAdminAuth(RolesPage)} />

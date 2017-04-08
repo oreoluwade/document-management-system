@@ -5,7 +5,7 @@ import TextFieldGroup from '../Common/TextFieldGroup.jsx';
 import { saveUserAdmin, updateUserAdmin } from '../../actions/userActions';
 import { loadRoles } from '../../actions/roleActions';
 
-class UserForm extends React.Component {
+class UsersForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -149,7 +149,7 @@ class UserForm extends React.Component {
 }
 
 
-UserForm.propTypes = {
+UsersForm.propTypes = {
   roles: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
   loadRoles: PropTypes.func,
@@ -170,4 +170,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,
-  { loadRoles, saveUserAdmin, updateUserAdmin })(UserForm);
+  { loadRoles, saveUserAdmin, updateUserAdmin })(UsersForm);

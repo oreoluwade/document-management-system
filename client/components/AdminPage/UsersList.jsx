@@ -30,7 +30,7 @@ const UserList = ({ users, editUser, deleteUser }) =>
 
 UserList.propTypes = {
   editUser: PropTypes.func.isRequired,
-  deleteUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func,
   users: React.PropTypes.array.isRequired
 };
 
