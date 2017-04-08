@@ -9,7 +9,7 @@ import DocumentPage from './components/document/DocumentPage';
 import DashboardPage from './components/dashboard/DashboardPage';
 import ManangeRolePage from './components/adminComponents/ManageRolePage';
 import HandleUsersPage from './components/adminComponents/HandleUsersPage';
-
+import ProfilePage from './components/ProfilePage/ProfilePage';
 import requireAuth from './utils/requireAuth';
 import requireAdminAuth from './utils/requireAdminAuth';
 
@@ -20,10 +20,11 @@ export default (
     <Route path="login" component={LoginPage} />
     <Route path="signup" component={SignupPage} />
     <Route path="documents" component={requireAuth(DocumentPage)} />
+    <Route path="profilepage" component={requireAuth(ProfilePage)} />
     <Route path="about" component={AboutPage} />
     <Route path="admin/manageroles"
       component={requireAdminAuth(ManangeRolePage)} />
-     <Route path="admin/handleusers"
+    <Route path="admin/handleusers"
       component={requireAdminAuth(HandleUsersPage)} />
   </Route>
 );
