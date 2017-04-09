@@ -10,8 +10,11 @@ class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPrivate: false
+      isPrivate: false,
+      doc: {}
     };
+
+    this.renderModal = this.renderModal.bind(this);
   }
 
   componentWillMount() {
@@ -25,6 +28,12 @@ class DashboardPage extends React.Component {
     $('.dropdown-button').dropdown();
     $('ul.tabs').tabs();
     $('ul.tabs').tabs('select_tab', 'public');
+  }
+
+  renderModal(doc = {}) {
+    this.setState({ doc }, () => {
+      $('#docDisplayModal').modal('open');
+    });
   }
 
   render() {
@@ -54,18 +63,18 @@ class DashboardPage extends React.Component {
                   </ul>
                 </div>
                 <div className="col s12">
-                  <CommonModal />
+                  <CommonModal doc={this.state.doc}/>
                   <div id="private" className="col s12 tab-style">
                     <h6 className="center">All Private Documents</h6>
-                    <DocList docs={privateDocuments} />
+                    <DocList showModal={this.renderModal} docs={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6 className="center">All Public Documents</h6>
-                    <DocList docs={publicDocuments} />
+                    <DocList showModal={this.renderModal} docs={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6 className="center">All Accessible Role Documents</h6>
-                    <DocList docs={roleDocuments} />
+                    <DocList showModal={this.renderModal} docs={roleDocuments} />
                   </div>
                 </div>
               </div>

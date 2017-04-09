@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
-import CommonModal from '../Common/CommonModal.jsx';
 // import { addDisabledClass, disabledDocuments } from '../adminComponents/disabledItems';
 
 
@@ -12,18 +11,11 @@ class DocList extends Component {
     this.state = {
       doc: {}
     };
-    this.renderModal = this.renderModal.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
   }
 
   componentDidMount() {
     $('.tooltipped').tooltip({ delay: 50 });
-  }
-
-  renderModal(doc = {}) {
-    this.setState(() => ({ doc }), () => {
-      $('#docDisplayModal').modal('open');
-    });
   }
 
   deleteDocument(id) {
@@ -51,7 +43,7 @@ class DocList extends Component {
                   <div className="user-buttons row col s3">
                     <a
                       className="waves-effect waves-light btn blue-grey"
-                      onClick={() => this.renderModal(doc)}>
+                      onClick={() => this.props.showModal(doc)}>
                       <i className="tiny material-icons left">edit</i>edit</a>
                     <a
                       className="waves-effect waves-light btn blue-grey"
@@ -62,12 +54,11 @@ class DocList extends Component {
               </li>
             )}
         </ul>
-        <CommonModal doc={this.state.doc} />
         <div className="fixed-action-btn horizontal">
           <a className="btn-floating btn-large tooltipped blue-grey"
             data-position="top" data-delay="50"
             data-tooltip="create new document"
-            onClick={() => this.renderModal()}
+            onClick={() => this.props.showModal()}
           >
             <i className="material-icons">note_add</i>
           </a>
@@ -80,6 +71,7 @@ class DocList extends Component {
 DocList.propTypes = {
   deleteDocument: PropTypes.func.isRequired,
   docs: React.PropTypes.array.isRequired,
+  showModal: PropTypes.func.isRequired,
   user: React.PropTypes.object.isRequired,
 };
 
