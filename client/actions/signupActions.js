@@ -23,13 +23,14 @@ export function isUserExists(identifier) {
 
 export function userSignupRequest(userData) {
   return dispatch => axios.post('/user', userData)
-  .then((response) => {
-    const token = response.data.token;
-    dispatch(createUserSuccess(response.data.newUser));
-    localStorage.setItem('jwtToken', token);
-    setAuthorizationToken(token);
-    dispatch(setCurrentUser(jwtDecode(token)));
-  });
+    .then((response) => {
+      const token = response.data.token;
+      const user = response.data.user;
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('jwtToken', token);
+      setAuthorizationToken(token);
+      dispatch(setCurrentUser(jwtDecode(token)));
+    });
 }
 
 

@@ -32,7 +32,7 @@ module.exports = {
           .spread((user, created) => {
             if (created) {
               const token = jwt.sign({
-                userId: user.id,
+                id: user.id,
                 userName: user.userName,
                 userRoleId: user.roleId
               }, secret);
@@ -40,6 +40,8 @@ module.exports = {
                 user: {
                   id: user.id,
                   userName: user.userName,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
                   userRoleId: user.roleId,
                   email: user.email
                 },
@@ -79,14 +81,16 @@ module.exports = {
         user.update(request.body)
           .then((updatedUser) => {
             const token = jwt.sign({
-              userId: updatedUser.id,
+              id: updatedUser.id,
               userName: updatedUser.userName,
               userRoleId: updatedUser.roleId
             }, secret);
             return response.status(200).json({
               user: {
-                userId: updatedUser.id,
+                id: updatedUser.id,
                 userName: updatedUser.userName,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 userRoleId: updatedUser.userId,
                 email: updatedUser.email
               },
@@ -130,14 +134,16 @@ module.exports = {
             .json({ errors: { form: 'Invalid Credentials' } });
         }
         const token = jwt.sign({
-          userId: user.id,
+          id: user.id,
           userName: user.userName,
           userRoleId: user.roleId
         }, secret);
         return response.status(200).send({
           user: {
+            id: user.id,
             userName: user.userName,
-            userId: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
             userRoleId: user.roleId,
             email: user.email
           },
@@ -167,7 +173,7 @@ module.exports = {
         }
         return response.status(400).json({ error: 'User already exists' });
       })
-      // .catch(error => response.status(501).json({
-      //   error, err: 'An error occurred while retrieving the user'
-      // }))
+  // .catch(error => response.status(501).json({
+  //   error, err: 'An error occurred while retrieving the user'
+  // }))
 };

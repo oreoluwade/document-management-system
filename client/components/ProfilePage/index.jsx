@@ -8,32 +8,36 @@ import { updateUserInfo, getUserInfo } from '../../actions/userActions';
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
+    const user = JSON.parse(localStorage.getItem('user'));
     this.state = {
-      user: {}
+      user: props.user || user || {}
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.submitData = this.submitData.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.props.getUserInfo();
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  componentWillReceiveProps() {
-    this.props.getUserInfo();
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      user: nextProps.user
+    });
   }
 
   handleOnChange(event) {
-    const field = event.target.name;
-    const value = event.target.value;
-    return this.setState({
-      [field]: value
+    const { name: field, value } = event.target;
+    return this.setState((state) => {
+      const user = Object.assign({}, state.user, { [field]: value });
+      return { user };
     });
   }
 
   submitData() {
-    const userInfo = this.state;
+    const userInfo = this.state.user;
     return this.props.updateUserInfo(userInfo);
   }
 
@@ -43,13 +47,13 @@ class ProfilePage extends React.Component {
       text: 'yes',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      onConfirm: () => this.submitData(),
+      onConfirm: this.submitData,
       onCancel: this.props.close,
     });
   }
 
   render() {
+    const { firstName = '', lastName = '', userName = '', email = '' } = this.state.user;
     return (
       <div>
         <div className="row">
@@ -58,69 +62,69 @@ class ProfilePage extends React.Component {
               <h4 className="center">Edit Your Details</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                    <div className="row">
-                        <form className="col s12">
-                          <div className="row">
-                            <div className="input-field col s6">
-                              <input
-                                id="first_name"
-                                type="text"
-                                name="firstName"
-                                value={this.state.firstName}
-                                className="validate"
-                                onChange={this.handleOnChange}
-                              />
-                              <label htmlFor="first_name">First Name</label>
-                            </div>
-                            <div className="input-field col s6">
-                              <input
-                                id="last_name"
-                                name="lastName"
-                                type="text"
-                                value={this.state.lastName}
-                                className="validate"
-                                onChange={this.handleOnChange}
-                              />
-                              <label htmlFor="last_name">Last Name</label>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="input-field col s6">
-                              <input
-                                id="userName"
-                                type="text"
-                                name="userName"
-                                value={this.state.userName}
-                                onChange={this.handleOnChange}
-                                className="validate"
-                              />
-                              <label htmlFor="first_name">Username</label>
-                            </div>
-                            <div className="input-field col s6">
-                              <input
-                                id="email"
-                                type="email"
-                                value={this.state.email}
-                                name="email"
-                                onChange={this.handleOnChange}
-                                className="validate"
-                              />
-                              <label htmlFor="email">Email</label>
-                            </div>
-                            <div className="row">
-                              <div className="col s6">
-                                <button
-                                  className="btn waves-effect blue-grey"
-                                  type="button"
-                                  onClick={() => this.renderAlert()}
-                                >
-                                  Update
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
+                  <div className="row">
+                    <form className="col s12">
+                      <div className="row">
+                        <div className="input-field col s6">
+                          <input
+                            id="first_name"
+                            type="text"
+                            name="firstName"
+                            value={firstName}
+                            className="validate"
+                            onChange={this.handleOnChange}
+                          />
+                          <label className="active" htmlFor="first_name">First Name</label>
+                        </div>
+                        <div className="input-field col s6">
+                          <input
+                            id="last_name"
+                            name="lastName"
+                            type="text"
+                            value={lastName}
+                            className="validate"
+                            onChange={this.handleOnChange}
+                          />
+                          <label className="active" htmlFor="last_name">Last Name</label>
+                        </div>
                       </div>
+                      <div className="row">
+                        <div className="input-field col s6">
+                          <input
+                            id="userName"
+                            type="text"
+                            name="userName"
+                            value={userName}
+                            onChange={this.handleOnChange}
+                            className="validate"
+                          />
+                          <label className="active" htmlFor="first_name">Username</label>
+                        </div>
+                        <div className="input-field col s6">
+                          <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            name="email"
+                            onChange={this.handleOnChange}
+                            className="validate"
+                          />
+                          <label className="active" htmlFor="email">Email</label>
+                        </div>
+                        <div className="row">
+                          <div className="col s6">
+                            <button
+                              className="btn waves-effect blue-grey"
+                              type="button"
+                              onClick={() => this.renderAlert()}
+                            >
+                              Update
+                                </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -157,8 +161,8 @@ function mapDispatchToProps(dispatch) {
   return {
     updateUserInfo: bindActionCreators(updateUserInfo, dispatch),
     getUserInfo: bindActionCreators(getUserInfo, dispatch),
-    swal,
-    close
+    swal: bindActionCreators(swal, dispatch),
+    close: bindActionCreators(close, dispatch)
   };
 }
 

@@ -74,9 +74,8 @@ export function updateUserAdmin(user) {
 
 export function updateUserInfo(userInfo) {
   const user = JSON.parse(localStorage.getItem('user'));
-  return dispatch => axios.put(`/user/${user.userId}`, userInfo)
+  return dispatch => axios.put(`/user/${user.id}`, userInfo)
     .then((response) => {
-      console.log(response, 'response');
       dispatch(updateUserSuccess(userInfo));
     }).catch((error) => {
       throw error;
@@ -85,7 +84,7 @@ export function updateUserInfo(userInfo) {
 
 export function getUserInfo() {
   const user = JSON.parse(localStorage.getItem('user'));
-  return dispatch => axios.get(`/user/${user.userId}`)
+  return dispatch => axios.get(`/user/${user.id}`)
     .then((response) => {
       dispatch(getUserInfoSuccess(response.data));
     }).catch((error) => {
