@@ -14,7 +14,7 @@ const fakeDocument = helper.createDocument();
 const requiredFields = ['title', 'content', 'access'];
 
 describe('The Document Model Test Suite', () => {
-  describe('How The Document Model Works', () => {
+  describe('The Document Model', () => {
     let document;
     let owner;
 
@@ -39,7 +39,7 @@ describe('The Document Model Test Suite', () => {
 
     after(() => model.sequelize.sync({ force: true }));
 
-    it('should be allow for the creation of a document', (done) => {
+    it('should allow a document be created', (done) => {
       document.save()
         .then((createdDocument) => {
           expect(createdDocument).to.exist;
@@ -57,7 +57,7 @@ describe('The Document Model Test Suite', () => {
         });
     });
 
-    it('should not the time the document was created', (done) => {
+    it('should note the time the document was created', (done) => {
       document.save()
         .then((createdDocument) => {
           expect(createdDocument.createdAt).to.exist;
@@ -75,7 +75,8 @@ describe('The Document Model Test Suite', () => {
       });
 
     describe('Document Model Validations', () => {
-      describe('The validation of the required fields for doc creation', () => {
+      describe(`The validation of the required fields for document
+      creation`, () => {
         requiredFields.forEach((field) => {
           it(`requires a ${field} field to create a document`, () => {
             document[field] = null;

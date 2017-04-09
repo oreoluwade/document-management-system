@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import models from '../models';
 
 const Role = models.Role;
-// const User = models.User;
 const secret = process.env.SECRET || 'secretconfirmation';
 
 module.exports = {
