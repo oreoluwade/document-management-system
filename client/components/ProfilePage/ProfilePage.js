@@ -110,7 +110,7 @@ class ProfilePage extends React.Component {
                             <div className="row">
                               <div className="col s6">
                                 <button
-                                  className="btn waves-effect waves-light"
+                                  className="btn waves-effect blue-grey"
                                   type="button"
                                   onClick={() => this.renderAlert()}
                                 >

@@ -79,9 +79,9 @@ class DocumentForm extends React.Component {
       .catch(() => {
         this.props.addFlashMessage({
           type: 'error',
-          text: 'Unable to save document'
+          text: 'You can only edit a document you created'
         });
-        toastr.error('Unable to save document');
+        toastr.error('You can only edit a document you created');
         $('#docDisplayModal').modal('close');
       });
   }
