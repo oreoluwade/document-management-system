@@ -10,7 +10,7 @@ const firstRole = helper.createAdminRole();
 
 describe('The Role Model Test Suite', () => {
   before(() => model.sequelize.sync({ force: true }));
-  describe('The Process of creation of a Role', () => {
+  describe('Creating a Role', () => {
     let role;
     before((done) => {
       Role.create(firstRole)
@@ -22,18 +22,18 @@ describe('The Role Model Test Suite', () => {
 
     after(() => model.sequelize.sync({ force: true }));
 
-    it('should allow the creation of a role to be possible', () => {
+    it('should allow the creation of a role', () => {
       expect(role).to.exist;
       expect(typeof role).to.equal('object');
     });
 
-    it('should allow a creator to define the title of role created', () => {
+    it('should allow a creator define the title of the role created', () => {
       expect(firstRole).to.include.keys('title');
       expect(role.title).to.equal(firstRole.title);
     });
   });
 
-  describe('Role Model Validations Test Suite', () => {
+  describe('Role Model Validations', () => {
     after(() => model.sequelize.sync({ force: true }));
 
     describe('Validation for the Title field', () => {
@@ -51,7 +51,7 @@ describe('The Role Model Test Suite', () => {
         (done) => {
           Role.create(firstRole)
             .then(() => {
-              // attempt to create a second role with same title
+              // attempting to create a second role with the same title as the first
               Role.create(firstRole)
                 .catch((error) => {
                   expect(/UniqueConstraintError/.test(error.name)).to.be.true;

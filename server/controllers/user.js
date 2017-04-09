@@ -167,7 +167,7 @@ module.exports = {
         }
         return response.status(400).json({ error: 'User already exists' });
       })
-      // .catch(error => response.status(501).json({
-      //   error, err: 'An error occurred while retrieving the user'
-      // }))
+      .catch(error => response.status(501).json({
+        error, err: 'An error occurred while retrieving the user'
+      }))
 };

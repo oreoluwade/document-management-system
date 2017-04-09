@@ -23,7 +23,7 @@ describe('The User Model Test Suite', () => {
       });
   });
 
-  describe('The Process of creation of a User', () => {
+  describe('Creating a User', () => {
     let user;
     before((done) => {
       Role.create(fakeRole)
@@ -75,7 +75,7 @@ describe('The User Model Test Suite', () => {
           expect(createdUser.Role.title).to.equal(fakeRole.title);
         }));
 
-    it('should allow for the updating of the details of a user', (done) => {
+    it('should allow updating of a user details', (done) => {
       User.findById(user.id)
         .then(createdUser => createdUser.update({ userName: 'oreoluwade' }))
         .then((updatedUser) => {
@@ -85,7 +85,7 @@ describe('The User Model Test Suite', () => {
     });
   });
 
-  describe('The working of the Validation of the User model', () => {
+  describe('Validation of the User model', () => {
     let user;
     beforeEach((done) => {
       Role.create(fakeRole)
@@ -101,7 +101,7 @@ describe('The User Model Test Suite', () => {
         .then(() => done());
     });
 
-    describe('the fields necessary before a user can be created', () => {
+    describe('The fields necessary for user creation', () => {
       requiredParams.forEach((field) => {
         it(`requires ${field} to create a user`, (done) => {
           user[field] = null;
@@ -114,7 +114,7 @@ describe('The User Model Test Suite', () => {
       });
     });
 
-    describe('Fields that have to be unique in the creation of users', () => {
+    describe('Unique fields for user creation', () => {
       uniqueParams.forEach((field) => {
         it(`requires ${field} field to be Unique`, () => {
           user.save()
@@ -131,7 +131,7 @@ describe('The User Model Test Suite', () => {
     });
 
     describe('Mail Validation', () => {
-      it('should require an authentic user email', (done) => {
+      it('should require a properly formatted email', (done) => {
         user.email = 'lagbaja tamedo';
         user.save()
           .catch((error) => {
@@ -143,7 +143,7 @@ describe('The User Model Test Suite', () => {
     });
 
     describe('Password Validation', () => {
-      it('should be valid when passed into the password validation function',
+      it('should be valided with the password validation function',
         () => user.save()
           .then((createdUser) => {
             expect(createdUser.validPassword(fakeUser.password)).to.be.true;

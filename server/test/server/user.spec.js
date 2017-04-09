@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-
 import { expect } from 'chai';
 import supertest from 'supertest';
 import app from '../../app';
@@ -27,7 +26,7 @@ describe('User API', () => {
 
   after(() => models.sequelize.sync({ force: true }));
 
-  describe('REQUESTS', () => {
+  describe('USER API', () => {
     beforeEach((done) => {
       request.post('/user')
         .send(fakeUser)
@@ -38,7 +37,7 @@ describe('User API', () => {
         });
     });
 
-    it('should not allow creation of two users with the same email', (done) => {
+    it('should ensure that emails are unique when creating users', (done) => {
       request.post('/user').send(fakeUser).expect(409);
       done();
     });
@@ -61,7 +60,8 @@ describe('User API', () => {
           });
       });
 
-      it('should allow get requests for users when valid token & access are provided',
+      it(`should allow get requests for users when valid
+      token & access are provided`,
         (done) => {
           request.get('/user')
             .set({ Authorization: token })
@@ -73,7 +73,7 @@ describe('User API', () => {
     });
 
     describe('GET: (/user/:id) - GET A USER', () => {
-      it('should not return the user if the user id is invalid', (done) => {
+      it('should not return the user if the user ID is invalid', (done) => {
         request.get('/user/666')
           .set({ Authorization: token })
           .expect(404, done);
@@ -89,14 +89,14 @@ describe('User API', () => {
       });
     });
 
-    describe('PUT: (/user/:id) - UPDATE', () => {
+    describe('PUT: (/user/:id) - Update user details', () => {
       it('should not allow the update of a user if the provided ID is invalid',
         (done) => {
           request.get('/user/666')
             .set({ Authorization: token })
             .expect(404, done);
         });
-      it('should update a user if the provided id is valid', (done) => {
+      it('should update a user if the provided ID is valid', (done) => {
         const fieldToUpdate = {
           userName: 'nicodemus',
         };
@@ -134,7 +134,8 @@ describe('User API', () => {
     });
 
     describe('POST: (/user/login) - LOGIN', () => {
-      it('should not allow login when invalid identifier(userName/email) or password are inputed',
+      it(`should not allow login when invalid identifier(userName/email)
+      or password are inputed`,
         (done) => {
           request.post('/user/login')
             .send({
@@ -155,7 +156,8 @@ describe('User API', () => {
             .end((error, response) => {
               expect(response.status).to.equal(200);
               expect(response.body.token).to.exist;
-              expect(response.body.message).to.equal('Login Successful! Token expires in one day.');
+              expect(response.body.message).to.
+                equal('Login Successful! Token expires in one day.');
               done();
             });
         });
@@ -167,7 +169,8 @@ describe('User API', () => {
           .end((error, response) => {
             expect(response.status).to.equal(200);
             expect(response.body.message).to.exist;
-            expect(response.body.message).to.equal('User Successfully logged out!');
+            expect(response.body.message).to.
+              equal('User Successfully logged out!');
             done();
           });
       });

@@ -37,7 +37,7 @@ module.exports = {
       allowNull: false,
       validate: {
         isInt: {
-          msg: 'Owner ID must be an integer'
+          msg: 'owner ID must be an integer'
         }
       }
     },
