@@ -38,7 +38,7 @@ describe('User Authorization', () => {
 
   after(() => model.sequelize.sync({ force: true }));
 
-  it('should not authorize a user without a token', (done) => {
+  it('should not authorize a user who does not have a token set', (done) => {
     request.get('/user')
       .end((error, response) => {
         expect(response.status).to.equal(401);
@@ -46,7 +46,7 @@ describe('User Authorization', () => {
       });
   });
 
-  it('should not authorize a user who supplies invalid token', (done) => {
+  it('should not authorize a user that has an invalid token', (done) => {
     request.get('/user')
       .set({ Authorization: 'trinity' })
       .end((error, response) => {
@@ -55,13 +55,15 @@ describe('User Authorization', () => {
       });
   });
 
-  it('should not return users if the user is not admin', (done) => {
+  it(`should not return all users if the user requesting for them is
+  not an admin user`, (done) => {
     request.get('/user')
       .set({ Authorization: regularToken })
       .expect(403, done);
   });
 
-  it('should correctly return all users with valid token and access',
+  it(`should correctly return all users when required valid token
+  and access levels are set`,
     (done) => {
       request.get('/user')
         .set({ Authorization: adminToken })
