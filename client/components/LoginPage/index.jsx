@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from './LoginForm';
+import LoginForm from './LoginForm.jsx';
 
 class LoginPage extends React.Component {
   render() {

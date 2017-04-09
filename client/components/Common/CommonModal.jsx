@@ -1,7 +1,7 @@
 /* eslint class-methods-use-this: "off"*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import DocumentForm from '../document/DocumentForm';
+import DocumentForm from '../DocumentPage/DocumentForm.jsx';
 
 class CommonModal extends React.Component {
   componentDidMount() {

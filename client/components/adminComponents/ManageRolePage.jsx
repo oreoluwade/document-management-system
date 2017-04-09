@@ -3,10 +3,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import RoleList from './RoleList';
+import RoleList from './RoleList.jsx';
 import { loadRoles, deleteRole } from '../../actions/roleActions';
 import { addFlashMessage } from '../../actions/flashMessages';
-import RoleForm from './RoleForm';
+import RoleForm from './RoleForm.jsx';
 
 class ManangeRolePage extends React.Component {
   constructor(props) {
