@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
-import CommonModal from '../common/CommonModal';
+import CommonModal from '../Common/CommonModal.jsx';
 // import { addDisabledClass, disabledDocuments } from '../adminComponents/disabledItems';
 
 

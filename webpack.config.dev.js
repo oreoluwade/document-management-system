@@ -4,9 +4,9 @@ import path from 'path';
 export default {
   devtool: 'inline-source-map',
   entry: [
-    'eventsource-polyfill', // necessary for hot reloading with IE
+    'babel-polyfill',
     'webpack-hot-middleware/client?reload=true', // note that it reloads the page if hot module reloading fails.
-    path.resolve(__dirname, 'client/index')
+    path.resolve(__dirname, 'client/index.jsx')
   ],
   target: 'web',
   output: {
@@ -18,9 +18,10 @@ export default {
     contentBase: path.resolve(__dirname, 'client')
   },
   resolve: {
-    alias: {
-      jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
-    }
+    extensions: ['', '.js', '.jsx']
+    // alias: {
+    //   jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
+    // }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -36,12 +37,13 @@ export default {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         include: [
           path.join(__dirname, 'client'),
           path.join(__dirname, 'server')],
-        loaders: ['babel-loader'] },
+        loaders: ['babel-loader'],
+      },
       {
         test: /(\.css)$/,
         loaders: ['style-loader', 'css-loader']
@@ -73,7 +75,8 @@ export default {
         },
       }, {
         test: /materialize-css\/bin\//,
-        loader: 'imports?jQuery=jquery,$=jquery,hammerjs' },
+        loader: 'imports?jQuery=jquery,$=jquery,hammerjs'
+      },
     ]
   }
 };

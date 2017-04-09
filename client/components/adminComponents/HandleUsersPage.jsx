@@ -3,10 +3,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import UserList from './UserList';
+import UserList from './UserList.jsx';
 import { retrieveUsers, deleteUser } from '../../actions/userActions';
 import { addFlashMessage } from '../../actions/flashMessages';
-import UserForm from './UserForm';
+import UserForm from './UserForm.jsx';
 
 class HandleUsersPage extends React.Component {
   constructor(props) {
