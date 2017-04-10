@@ -48,21 +48,17 @@ class DashboardPage extends React.Component {
                 <div className="col s12">
                   <ul
                     className="tabs tab-demo-active z-depth-1 blue-grey">
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light active"
                         href="#public">Public</a>
                     </li>
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
                         href="#role">Role</a>
                     </li>
-                    <li className="tab col s3">
+                    <li className="tab col s4">
                       <a className="white-text waves-effect waves-light"
                         href="#private">Private</a>
-                    </li>
-                    <li className="tab col s3">
-                      <a className="white-text waves-effect waves-light"
-                        href="#search"><i className="material-icons">search</i></a>
                     </li>
                   </ul>
                 </div>
