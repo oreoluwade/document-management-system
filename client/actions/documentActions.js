@@ -66,11 +66,11 @@ export function deleteCurrentDocument() {
 
 /**
  * action creator to get user documents
- * @param {number} userId
+ * @param {number} user
  * @returns {function} documents
  */
-export function loadUserDocuments(userId) {
-  return dispatch => axios.get(`user/${userId}/document`)
+export function loadUserDocuments(id) {
+  return dispatch => axios.get(`user/${id}/document`)
     .then((response) => {
       dispatch(loadDocumentSuccess(response.data));
     }).catch((error) => {
@@ -97,10 +97,10 @@ export function loadAllDocuments() {
  * @param {any} userId
  * @returns {function}
  */
-export function saveDocument(document, userId) {
+export function saveDocument(document, id) {
   return dispatch => axios.post('/document/', document)
     .then(() => {
-      dispatch(loadUserDocuments(userId));
+      dispatch(loadUserDocuments(id));
     }).catch((error) => {
       throw (error);
     });
@@ -123,6 +123,7 @@ export function updateDocument(document, userId) {
 /**
  * @export
  * @param {any} id
+ * @param {any} userId
  * @returns {object} documents
  */
 export function deleteDocument(id, userId) {

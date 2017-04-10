@@ -8,6 +8,15 @@ import CommonModal from '../Common/CommonModal.jsx';
 
 class DocumentPage extends React.Component {
 
+   constructor(props) {
+    super(props);
+    this.state = {
+      doc: {}
+    };
+
+    this.addNewDocument = this.addNewDocument.bind(this);
+  }
+
   componentWillMount() {
     const { userId } = this.props.user;
     this.props.actions.loadUserDocuments(userId);
@@ -19,10 +28,10 @@ class DocumentPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-
-  addNewDocument(e) {
-    e.preventDefault();
-    $('#docDisplayModal').modal('open');
+  addNewDocument(doc = {}) {
+    this.setState({ doc }, () => {
+      $('#docDisplayModal').modal('open');
+    });
   }
 
 
@@ -45,13 +54,12 @@ class DocumentPage extends React.Component {
                   </div>
                 </div>
                 <div className="col s12">
-                  <DocList docs={personalDocuments} />
+                  <DocList showModal={this.addNewDocument} docs={personalDocuments} />
                 </div>
               </div>
             </div>
-
           </div>
-          <CommonModal />
+          <CommonModal doc={this.state.doc}/>
         </div>
       </div>
     );
