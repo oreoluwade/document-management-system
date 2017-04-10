@@ -53,7 +53,7 @@ module.exports = {
         }
 
         if ((foundDocument.access === accessLevels.private) &&
-          (foundDocument.ownerId === request.decoded.userId)) {
+          (foundDocument.ownerId === request.decoded.id)) {
           return response.status(200)
             .send(foundDocument);
         }
@@ -78,7 +78,7 @@ module.exports = {
   },
 
   getDocuments: (request, response) => {
-    const { userId, userRoleId } = request.decoded;
+    const { id, userRoleId } = request.decoded;
     if (request.query.limit < 0 || request.query.offset < 0) {
       return response.status(400)
         .send({ message: 'Only Positive integers are permitted.' });
@@ -95,7 +95,7 @@ module.exports = {
         $or: [
           { access: 'public' },
           { access: 'role' },
-          { ownerId: userId }
+          { ownerId: id }
         ]
       },
       include: [{
@@ -123,7 +123,7 @@ module.exports = {
               `document with id: ${request.params.id} not found`
             });
         }
-        if (documentFound.ownerId === request.decoded.userId) {
+        if (documentFound.ownerId === request.decoded.id) {
           documentFound.update(request.body)
             .then(editedDocument => response.status(200)
               .send({ editedDocument, message: 'Update Successful!' }));
@@ -144,7 +144,7 @@ module.exports = {
               `document with id: ${request.params.id} not found`
             });
         }
-        if (foundDocument.ownerId === request.decoded.userId) {
+        if (foundDocument.ownerId === request.decoded.id) {
           foundDocument.destroy()
             .then(() => response.status(200)
               .send({ message: 'Document successfully deleted' }));
@@ -184,7 +184,7 @@ module.exports = {
         $and: [{
           $or: [
             { access: 'public' },
-            { ownerId: request.decoded.userId }
+            { ownerId: request.decoded.id }
           ]
         }],
       },

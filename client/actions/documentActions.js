@@ -94,6 +94,7 @@ export function loadAllDocuments() {
 /**
  * Action creator to save a document after adding content and title
  * @param {any} document
+ * @param {any} userId
  * @returns {function}
  */
 export function saveDocument(document, userId) {
