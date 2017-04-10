@@ -11,7 +11,4 @@ export default {
   manageRoles: {
     roles: []
   },
-  handleSearch: {
-    searchedDocuments: []
-  }
 };

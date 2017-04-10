@@ -73,10 +73,7 @@ body {
 .menu-action-buttons {
   right: 100px;
 }
-.user-collection {
-  /*margin-left: 100px;
-  margin-right: 100px;*/
-}
+
 .user-collection-item, .doc-collection .doc-collection-item {
   display: flex;
   margin-bottom: 0;
