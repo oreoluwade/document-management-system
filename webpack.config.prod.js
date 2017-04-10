@@ -9,7 +9,7 @@ const GLOBALS = {
 export default {
   devtool: 'cheap-module-eval-source-map',
   entry: {
-    bundle: path.resolve(__dirname, 'client/index')
+    bundle: path.resolve(__dirname, 'client/index.jsx')
   },
   target: 'web',
   output: {
@@ -18,9 +18,7 @@ export default {
     filename: '[name].js'
   },
   resolve: {
-    alias: {
-      jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
-    }
+    extensions: ['', '.js', '.jsx']
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -40,7 +38,7 @@ export default {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loaders: ['babel']
       },

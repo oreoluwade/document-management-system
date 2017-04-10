@@ -19,9 +19,6 @@ export default {
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
-    // alias: {
-    //   jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
-    // }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

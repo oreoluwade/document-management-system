@@ -68,8 +68,6 @@ class DocumentPage extends React.Component {
 
 DocumentPage.propTypes = {
   personalDocuments: PropTypes.array.isRequired,
-  publicDocuments: PropTypes.array,
-  currentDocument: PropTypes.object,
   user: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };
@@ -85,7 +83,7 @@ function mapStateToProps({
   let personalDocuments = [];
   if (isAuthenticated) {
     personalDocuments = documents.filter(
-      doc => doc.ownerId === user.userId);
+      doc => doc.ownerId === user.id);
   }
 
   const publicDocuments = documents.filter(
