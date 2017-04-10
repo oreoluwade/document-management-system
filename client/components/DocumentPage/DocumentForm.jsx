@@ -46,7 +46,7 @@ class DocumentForm extends React.Component {
 
   onChange(event) {
     const { name: field, value } = event.target;
-    const ownerId = this.props.auth.user.userId;
+    const ownerId = this.props.auth.user.id;
     const role = String(this.props.auth.user.userRoleId);
     this.setState((state) => {
       const doc = Object.assign({},
@@ -69,7 +69,7 @@ class DocumentForm extends React.Component {
 
   saveDocument(event) {
     event.preventDefault();
-    this.props.actions.saveDocument(this.state.doc, this.props.auth.user.userId)
+    this.props.actions.saveDocument(this.state.doc, this.props.auth.user.id)
       .then(() => {
         toastr.success('Document Successfully Saved');
         $('#docDisplayModal').modal('close');
@@ -77,16 +77,16 @@ class DocumentForm extends React.Component {
       .catch(() => {
         this.props.addFlashMessage({
           type: 'error',
-          text: 'You can only edit a document you created'
+          text: 'Cannot save Document'
         });
-        toastr.error('You can only edit a document you created');
+        toastr.error('Cannot save Document');
         $('#docDisplayModal').modal('close');
       });
   }
 
   updateDocument(event) {
     event.preventDefault();
-    this.props.actions.updateDocument(this.state.doc, this.props.auth.user.userId)
+    this.props.actions.updateDocument(this.state.doc, this.props.auth.user.id)
       .then(() => {
         toastr.success('Document Successfully Updated');
         $('#docDisplayModal').modal('close');

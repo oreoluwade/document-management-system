@@ -19,7 +19,7 @@ class DocList extends Component {
   }
 
   deleteDocument(id) {
-    const { user: { userId } } = this.props;
+    const { user: { id: userId } } = this.props;
     const result = confirm('Do you want to delete this docuement?');
     if (result) {
       this.props.deleteDocument(id, userId)

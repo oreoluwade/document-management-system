@@ -20,12 +20,6 @@ documentReducer(state = initialState.handleDocuments, action) {
       return Object.assign({}, state, { chosenDocument });
     }
 
-    case types.DELETE_CURRENT_DOCUMENT: {
-      const newState = JSON.parse(JSON.stringify(state));
-      delete newState.chosenDocument;
-      return newState;
-    }
-
     case types.UPDATE_DOCUMENT_SUCCESS:
       return [...state.filter(document => document.id !== action.document.id),
         Object.assign({}, { documents: action.document })
