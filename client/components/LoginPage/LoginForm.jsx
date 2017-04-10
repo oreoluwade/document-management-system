@@ -60,6 +60,7 @@ class LoginForm extends React.Component {
             value={identifier}
             error={errors.identifier}
             onChange={this.onChange}
+            type="text"
             />
           </div>
 
@@ -76,7 +77,7 @@ class LoginForm extends React.Component {
           </div>
 
           <div className="center-align">
-            <button disabled={isLoading} className="btn blue-grey">
+            <button disabled={isLoading} className="btn blue-grey" type="submit">
               Login<i className="material-icons right">thumb_up</i>
             </button>
           {errors.form && <div className="card-panel red darken-1">{errors.form}</div>}

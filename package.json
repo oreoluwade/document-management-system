@@ -17,10 +17,12 @@
     "db:seed": "node_modules/.bin/sequelize db:seed:all",
     "test:frontend": "mocha --compilers js:babel-register --require ./client/tests/helpers.js --require ./client/tests/dom.js --recursive",
     "tdd": "npm run test:frontend -- --watch",
+    "test-e2e": "node_modules/.bin/nightwatch --config nightwatch.conf.js",
     "clean-dist": "rm -rf dist && mkdir dist",
     "prebuild": "npm-run-all clean-dist build:html",
     "build:html": "babel-node tools/buildHtml.js",
-    "build": "babel-node tools/build.js"
+    "build": "babel-node tools/build.js",
+    "postinstall": "node nightwatch.conf.js"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
     "compression": "1.6.1",
     "cross-env": "1.0.7",
     "css-loader": "0.27.3",
+    "env2": "^2.1.1",
     "enzyme": "^2.2.0",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.0",
@@ -78,6 +81,7 @@
     "redux-immutable-state-invariant": "1.2.3",
     "redux-mock-store": "1.0.2",
     "rimraf": "2.5.2",
+    "selenium-download": "^2.0.9",
     "selenium-standalone": "^6.2.0",
     "sinon": "^2.1.0",
     "style-loader": "0.13.1",
@@ -109,6 +113,7 @@
     "materialize": "^1.0.0",
     "materialize-css": "^0.98.1",
     "morgan": "^1.8.1",
+    "nightwatch": "^0.9.14",
     "pg": "^6.1.4",
     "pg-hstore": "^2.3.2",
     "react": "15.0.2",

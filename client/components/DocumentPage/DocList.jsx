@@ -38,11 +38,10 @@ class DocList extends Component {
                 <div className="row doc-collection-item">
                   <div className="col s4 offset s2 title"><a href="#">
                     {doc.title}</a></div>
-                  {/* <div className="col s2 access"><a href="#">{doc.access}</a></div>*/}
-                  {/* <div className="col s1 role"><a href="#">{doc.id}</a></div>*/}
                   <div className="user-buttons row col s3">
                     <a
                       className="waves-effect waves-light btn blue-grey"
+                      id="editButton"
                       onClick={() => this.props.showModal(doc)}>
                       <i className="tiny material-icons left">edit</i>edit</a>
                     <a

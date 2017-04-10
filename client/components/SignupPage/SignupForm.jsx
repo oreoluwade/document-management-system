@@ -88,6 +88,7 @@ class SignupForm extends React.Component {
             checkUserExists={this.checkUserExists}
             value={this.state.userName}
             field="userName"
+            type="text"
           />
         </div>
 
@@ -99,6 +100,7 @@ class SignupForm extends React.Component {
             onChange={this.onChange}
             value={this.state.firstName}
             field="firstName"
+            type="text"
           />
         </div>
 
@@ -110,6 +112,7 @@ class SignupForm extends React.Component {
             onChange={this.onChange}
             value={this.state.lastName}
             field="lastName"
+            type="text"
           />
         </div>
 
@@ -122,6 +125,7 @@ class SignupForm extends React.Component {
             checkUserExists={this.checkUserExists}
             value={this.state.email}
             field="email"
+            type="email"
           />
         </div>
 
@@ -151,7 +155,7 @@ class SignupForm extends React.Component {
 
         <div className="center-align">
           <button disabled={this.state.isLoading || this.state.invalid}
-            className="btn blue-grey">
+            className="btn blue-grey" type="submit">
             Sign Up<i className="material-icons right">thumb_up</i>
           </button>
         </div>
