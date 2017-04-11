@@ -8,7 +8,7 @@ import jwtDecode from 'jwt-decode';
 import { setCurrentUser } from './actions/authenticationAction';
 import configureStore from './store/configureStore';
 import routes from './routes';
-import setAuthorizationToken from './Utils/setAuthorizationToken';
+import setAuthorizationToken from './utils/setAuthorizationToken';
 import '../node_modules/materialize-css/dist/js/materialize.min';
 import '../node_modules/materialize-css/dist/css/materialize.min.css';
 import '../node_modules/material-icons/css/material-icons.css';
