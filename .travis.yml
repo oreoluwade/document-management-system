@@ -16,7 +16,7 @@ before_script:
 
 
 before_deploy:
-  - npm run build
+  - npm run build && cd dist && ls
 
 deploy:
   provider: heroku

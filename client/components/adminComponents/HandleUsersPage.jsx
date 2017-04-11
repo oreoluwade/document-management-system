@@ -97,7 +97,7 @@ HandleUsersPage.propTypes = {
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired,
-  users: React.PropTypes.array.isRequired,
+  users: React.PropTypes.array,
 };
 
 

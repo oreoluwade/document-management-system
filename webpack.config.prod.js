@@ -13,7 +13,7 @@ export default {
   },
   target: 'web',
   output: {
-    path: `${__dirname}/dist`,
+    path: `${__dirname}/dist/`,
     filename: '[name].js',
     publicPath: '/'
   },
