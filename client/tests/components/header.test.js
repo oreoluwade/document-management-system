@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link, IndexLink } from 'react-router';
-import { Header, mapStateToProps } from '../../components/Common/Header.jsx';
+import { Header, mapStateToProps } from '../../components/Common/Header';
 
 describe('Header Component', () => {
   let wrapper;
