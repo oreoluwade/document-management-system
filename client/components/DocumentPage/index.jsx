@@ -2,13 +2,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocList from './DocList.jsx';
+import DocumentList from './DocumentList.jsx';
 import * as documentActions from '../../actions/documentActions';
 import CommonModal from '../Common/CommonModal.jsx';
 
 class DocumentPage extends React.Component {
 
-   constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       doc: {}
@@ -18,8 +18,8 @@ class DocumentPage extends React.Component {
   }
 
   componentWillMount() {
-    const { userId } = this.props.user;
-    this.props.actions.loadUserDocuments(userId);
+    const { id } = this.props.user;
+    this.props.actions.loadUserDocuments(id);
   }
 
   componentDidMount() {
@@ -54,7 +54,7 @@ class DocumentPage extends React.Component {
                   </div>
                 </div>
                 <div className="col s12">
-                  <DocList showModal={this.addNewDocument} docs={personalDocuments} />
+                  <DocumentList showModal={this.addNewDocument} docs={personalDocuments} />
                 </div>
               </div>
             </div>

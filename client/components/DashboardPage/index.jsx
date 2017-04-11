@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import
 { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
-import DocList from '../DocumentPage/DocList.jsx';
+import DocumentList from '../DocumentPage/DocumentList.jsx';
 import CommonModal from '../Common/CommonModal.jsx';
 
 
@@ -66,15 +66,15 @@ class DashboardPage extends React.Component {
                   <CommonModal doc={this.state.doc}/>
                   <div id="private" className="col s12 tab-style">
                     <h6 className="center">All Private Documents</h6>
-                    <DocList showModal={this.renderModal} docs={privateDocuments} />
+                    <DocumentList showModal={this.renderModal} docs={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
                     <h6 className="center">All Public Documents</h6>
-                    <DocList showModal={this.renderModal} docs={publicDocuments} />
+                    <DocumentList showModal={this.renderModal} docs={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
                     <h6 className="center">All Accessible Role Documents</h6>
-                    <DocList showModal={this.renderModal} docs={roleDocuments} />
+                    <DocumentList showModal={this.renderModal} docs={roleDocuments} />
                   </div>
                 </div>
               </div>

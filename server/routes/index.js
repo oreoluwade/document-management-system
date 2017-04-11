@@ -56,7 +56,7 @@ const Routes = (app) => {
     .post(documentController.createDocument);
 
   // Document search route
-  app.route('/document/search')
+  app.route('/documents/search')
     .get(authorization.validateToken, documentController.searchDocuments);
 
   // Single-user route

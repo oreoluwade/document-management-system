@@ -22,9 +22,6 @@ export class Header extends React.Component {
     if (['dashboard', 'documents'].includes(path)) {
       this.props.searchDocuments(e.target.value);
     }
-    // else if (path === 'users') {
-    //   this.props.search(e.target.value);
-    // }
   }
 
   getLinks({ isAuthenticated, user, isAdmin }) {

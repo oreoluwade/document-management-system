@@ -14,18 +14,6 @@ export function loadDocumentSuccess(document) {
   };
 }
 
-/**
- * Create document success action creator
- * @export
- * @param {any} document
- * @returns {object} action
- */
-export function createDocumentSuccess(document) {
-  return {
-    type: types.CREATE_DOCUMENT_SUCCESS,
-    document
-  };
-}
 
 /**
  * Update document success action creator
@@ -136,7 +124,7 @@ export function deleteDocument(id, userId) {
 }
 
 export function searchDocuments(query) {
-  return dispatch => axios.get(`/document/search?query=${query}`)
+  return dispatch => axios.get(`/documents/search?query=${query}`)
     .then((response) => {
       dispatch(loadDocumentSuccess(response.data));
     }).catch((error) => {
