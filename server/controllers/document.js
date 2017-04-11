@@ -196,8 +196,8 @@ module.exports = {
     if (queryString) {
       query.where.$and.push({
         $or: [
-          { title: { $like: `%${queryString}%` } },
-          { content: { $like: `%${queryString}%` } }
+          { title: { $iLike: `%${queryString}%` } },
+          { content: { $iLike: `%${queryString}%` } }
         ]
       });
     }
