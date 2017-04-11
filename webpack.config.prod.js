@@ -7,15 +7,15 @@ const GLOBALS = {
 };
 
 export default {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   entry: {
     bundle: path.resolve(__dirname, 'client/index.js')
   },
   target: 'web',
   output: {
     path: `${__dirname}/dist`,
-    publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].js',
+    publicPath: '/'
   },
   resolve: {
     extensions: ['', '.js', '.jsx']

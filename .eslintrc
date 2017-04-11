@@ -64,14 +64,14 @@
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
     "react/wrap-multilines": 1,
-    "require-jsdoc": [1, {
+    "require-jsdoc": [0, {
         "require": {
             "FunctionDeclaration": true,
             "MethodDefinition": false,
             "ClassDeclaration": false
         }
     }],
-    "valid-jsdoc": [1, {
+    "valid-jsdoc": [0, {
       "requireReturn": false,
       "requireReturnType": false,
       "requireParamDescription": false,
