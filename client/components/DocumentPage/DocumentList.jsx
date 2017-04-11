@@ -2,10 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
-// import { addDisabledClass, disabledDocuments } from '../adminComponents/disabledItems';
 
-
-class DocList extends Component {
+class DocumentList extends Component {
   constructor() {
     super();
     this.state = {
@@ -67,7 +65,7 @@ class DocList extends Component {
   }
 }
 
-DocList.propTypes = {
+DocumentList.propTypes = {
   deleteDocument: PropTypes.func.isRequired,
   docs: React.PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
@@ -86,4 +84,4 @@ function mapStateToProps({
   };
 }
 
-export default connect(mapStateToProps, { deleteDocument })(DocList);
+export default connect(mapStateToProps, { deleteDocument })(DocumentList);
