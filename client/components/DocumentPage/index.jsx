@@ -8,7 +8,7 @@ import CommonModal from '../Common/CommonModal.jsx';
 
 class DocumentPage extends React.Component {
 
-   constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       doc: {}
@@ -18,8 +18,8 @@ class DocumentPage extends React.Component {
   }
 
   componentWillMount() {
-    const { userId } = this.props.user;
-    this.props.actions.loadUserDocuments(userId);
+    const { id } = this.props.user;
+    this.props.actions.loadUserDocuments(id);
   }
 
   componentDidMount() {
