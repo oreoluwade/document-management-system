@@ -191,18 +191,18 @@ describe('DOCUMENT REQUESTS', () => {
           });
       });
 
-      describe(`Updating a document's details/content (/PUT)`,
+      describe('Updating a document\'s details/content (/PUT)',
         () => {
           it(`should not be possible to edit a document
           if the ID is invalid`, (done) => {
-              const fieldToUpdate = { content: 'replace previous document' };
-              request.put('/document/9999')
+            const fieldToUpdate = { content: 'replace previous document' };
+            request.put('/document/9999')
                 .set({ Authorization: publicToken })
                 .send(fieldToUpdate)
                 .expect(404, done);
-            });
+          });
 
-          it(`should not be possible to update another person's document`,
+          it('should not be possible to update another person\'s document',
             (done) => {
               const fieldToUpdate = { content: 'replace previous document' };
               request.put(`/document/${publicDocument.id}`)
@@ -285,7 +285,7 @@ describe('DOCUMENT REQUESTS', () => {
               .expect(403, done);
           });
 
-        it(`should only be returned to the owner`,
+        it('should only be returned to the owner',
           (done) => {
             request.get(`/document/${privateDocument.id}`)
               .set({ Authorization: privateToken })
@@ -315,7 +315,7 @@ describe('DOCUMENT REQUESTS', () => {
 
         it(`should ONLY be returned when the requester
         has the same role as the owner`, (done) => {
-            request.get(`/document/${roleDocument.id}`)
+          request.get(`/document/${roleDocument.id}`)
               .set({ Authorization: privateToken })
               .end((errors, response) => {
                 expect(response.status).to.equal(200);
@@ -324,7 +324,7 @@ describe('DOCUMENT REQUESTS', () => {
                   .to.equal(roleDocumentParams.content);
                 done();
               });
-          });
+        });
       });
     });
   });
@@ -335,25 +335,25 @@ describe('DOCUMENT REQUESTS', () => {
     describe('Document Pagination', () => {
       it(`should allow the use of the "limit" query
       parameter to limit the results gotten`, (done) => {
-          request.get('/document?limit=7')
+        request.get('/document?limit=7')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
               expect(response.body.length).to.equal(7);
               done();
             });
-        });
+      });
 
       it(`should allow the use of the "offset" query parameter
       to create a range of results gotten`, (done) => {
-          request.get('/document?offset=7')
+        request.get('/document?offset=7')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
               expect(response.body.length).to.equal(9);
               done();
             });
-        });
+      });
 
       it('should return the documents in the order of their published dates',
         (done) => {
@@ -394,7 +394,7 @@ describe('DOCUMENT REQUESTS', () => {
           const query = documentsBundleParams[10].content.substr(5, 13);
           const matcher = new RegExp(query);
 
-          request.post(`/document/search?query=${query}`)
+          request.get(`/documents/search?query=${query}`)
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
@@ -406,7 +406,7 @@ describe('DOCUMENT REQUESTS', () => {
       it(`should allow for the specification of the query params "limit"
       to determine the number of documents to return`,
         (done) => {
-          request.post('/document/search?limit=4')
+          request.get('/documents/search?limit=4')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
@@ -418,7 +418,7 @@ describe('DOCUMENT REQUESTS', () => {
       it(`should allow the use of query params "offset" to create a range
       within which to search from`,
         (done) => {
-          request.post('/document/search?offset=7')
+          request.get('/documents/search?offset=7')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
@@ -430,7 +430,7 @@ describe('DOCUMENT REQUESTS', () => {
       it(`should allow the use of query params "role" to get documents
       that are accessible by specific roles`,
         (done) => {
-          request.post('/document/search?role=1')
+          request.get('/documents/search?role=1')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               expect(response.status).to.equal(200);
@@ -453,7 +453,7 @@ describe('DOCUMENT REQUESTS', () => {
       it(`should allow the use of query params "publishedDate" to
       determine the order in which results are returned`,
         (done) => {
-          request.post('/document/search?publishedDate=ASC')
+          request.get('/documents/search?publishedDate=ASC')
             .set({ Authorization: publicToken })
             .end((error, response) => {
               const foundDocuments = response.body;
@@ -469,16 +469,16 @@ describe('DOCUMENT REQUESTS', () => {
             });
         });
 
-      it(`should NOT return documents if the limit specified is invalid`,
+      it('should NOT return documents if the limit specified is invalid',
         (done) => {
-          request.post('/document/search?limit=-1')
+          request.get('/documents/search?limit=-1')
             .set({ Authorization: publicToken })
             .expect(400);
           done();
         });
 
       it('should NOT return documents if the offset is invalid', (done) => {
-        request.post('/document/search?offset=-2')
+        request.get('/documents/search?offset=-2')
           .set({ Authorization: publicToken })
           .expect(400);
         done();
