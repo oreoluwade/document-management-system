@@ -1,4 +1,6 @@
 node_modules
-server/models/*
-server/migrations/*
-server/seeders/*
+server/models/
+server/migrations/
+server/seeders/
+server/test
+client/tests
