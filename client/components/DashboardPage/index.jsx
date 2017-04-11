@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import
 { loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
-import DocumentList from '../DocumentPage/DocumentList.jsx';
-import CommonModal from '../Common/CommonModal.jsx';
+import DocumentList from '../DocumentPage/DocumentList';
+import CommonModal from '../Common/CommonModal';
 
 
 class DashboardPage extends React.Component {

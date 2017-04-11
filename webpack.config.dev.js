@@ -6,7 +6,7 @@ export default {
   entry: [
     'babel-polyfill',
     'webpack-hot-middleware/client?reload=true', // note that it reloads the page if hot module reloading fails.
-    path.resolve(__dirname, 'client/index.jsx')
+    path.resolve(__dirname, 'client/index')
   ],
   target: 'web',
   output: {
@@ -36,9 +36,6 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        include: [
-          path.join(__dirname, 'client'),
-          path.join(__dirname, 'server')],
         loaders: ['babel-loader'],
       },
       {

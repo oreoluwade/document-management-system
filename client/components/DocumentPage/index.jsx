@@ -2,9 +2,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import DocumentList from './DocumentList.jsx';
+import DocumentList from './DocumentList';
 import * as documentActions from '../../actions/documentActions';
-import CommonModal from '../Common/CommonModal.jsx';
+import CommonModal from '../Common/CommonModal';
 
 class DocumentPage extends React.Component {
 
