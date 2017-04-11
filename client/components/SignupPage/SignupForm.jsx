@@ -88,6 +88,7 @@ class SignupForm extends React.Component {
             checkUserExists={this.checkUserExists}
             value={this.state.userName}
             field="userName"
+            name="userName"
             type="text"
           />
         </div>
@@ -100,6 +101,7 @@ class SignupForm extends React.Component {
             onChange={this.onChange}
             value={this.state.firstName}
             field="firstName"
+            name="firstName"
             type="text"
           />
         </div>
@@ -112,6 +114,7 @@ class SignupForm extends React.Component {
             onChange={this.onChange}
             value={this.state.lastName}
             field="lastName"
+            name="lastName"
             type="text"
           />
         </div>
@@ -137,21 +140,11 @@ class SignupForm extends React.Component {
             onChange={this.onChange}
             value={this.state.password}
             field="password"
+            name="password"
             type="password"
           />
         </div>
 
-        <div className="row margin">
-          <TextFieldGroup
-            icon="lock"
-            error={errors.passwordConfirmation}
-            label="Password Confirmation"
-            onChange={this.onChange}
-            value={this.state.passwordConfirmation}
-            field="passwordConfirmation"
-            type="password"
-          />
-        </div>
 
         <div className="center-align">
           <button disabled={this.state.isLoading || this.state.invalid}

@@ -15,7 +15,7 @@ export default {
   output: {
     path: `${__dirname}/dist`,
     publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].jsx'
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
