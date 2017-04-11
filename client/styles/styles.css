@@ -100,3 +100,23 @@ body {
   flex-grow: 2;
 }
 
+#docsSearchModal {
+  min-height: 400px;
+}
+
+.leftsearchbox {
+  background-color: white;
+  margin-top: 22px;
+}
+
+.input-field input[type=search] {
+    margin-bottom: 0;
+    padding-left: 5px;
+    color: black;
+    font-size: 18px;
+}
+
+/*.input-field input[type=search]:disabled {
+    background-color: blue-grey;
+}*/
+

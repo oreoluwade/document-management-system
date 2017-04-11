@@ -134,3 +134,12 @@ export function deleteDocument(id, userId) {
       throw (error);
     });
 }
+
+export function searchDocuments(query) {
+  return dispatch => axios.get(`/document/search?query=${query}`)
+    .then((response) => {
+      dispatch(loadDocumentSuccess(response.data));
+    }).catch((error) => {
+      throw (error);
+    });
+}

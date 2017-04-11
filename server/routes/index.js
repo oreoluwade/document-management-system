@@ -55,6 +55,10 @@ const Routes = (app) => {
     .get(documentController.getDocuments)
     .post(documentController.createDocument);
 
+  // Document search route
+  app.route('/document/search')
+    .get(authorization.validateToken, documentController.searchDocuments);
+
   // Single-user route
   app.route('/document/:id')
     .all(authorization.validateToken)
@@ -62,9 +66,7 @@ const Routes = (app) => {
     .put(documentController.editDocument)
     .delete(documentController.deleteDocument);
 
-  // Document search route
-  app.route('/document/search')
-    .post(authorization.validateToken, documentController.searchDocuments);
+
 };
 
 export default Routes;

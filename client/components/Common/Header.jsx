@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 import { connect } from 'react-redux';
+// import classname from 'classnames';
 import { logout } from '../../actions/authenticationAction';
-import SearchModal from '../SearchModal/index.jsx';
+import { searchDocuments } from '../../actions/documentActions';
 
 export class Header extends React.Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
-    this.handleSearchModal = this.handleSearchModal.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   logout(e) {
@@ -16,20 +17,29 @@ export class Header extends React.Component {
     this.props.logout();
   }
 
-  handleSearchModal(e) {
-    e.preventDefault();
-    $('#docsSearchModal').modal('open');
+  handleSearch(e) {
+    const path = this.props.location.pathname.slice(1);
+    if (['dashboard', 'documents'].includes(path)) {
+      this.props.searchDocuments(e.target.value);
+    }
+    // else if (path === 'users') {
+    //   this.props.search(e.target.value);
+    // }
   }
 
   getLinks({ isAuthenticated, user, isAdmin }) {
+    const path = this.props.location.pathname.slice(1);
+    const enabled = ['dashboard', 'documents'].includes(path);
     if (isAuthenticated) {
       return (
         <ul>
-          <li id="searchClick">
-            <a onClick={this.handleSearchModal} className="tooltipped"
-            data-position="left" data-delay="50"
-            data-tooltip="search for documents">
-          <i className="material-icons">search</i></a>
+          <li>
+            <form className="leftsearchbox">
+              <div className="input-field">
+                <input disabled={!enabled} id="search" type="search" onChange={this.handleSearch} />
+                <label htmlFor="search"><i className="mdi mdi-magnify"></i></label>
+              </div>
+            </form>
           </li>
           <li><Link to="/dashboard" activeClassName="active">
             <i className="material-icons left">dashboard</i>Dashboard</Link></li>
@@ -71,21 +81,12 @@ export class Header extends React.Component {
         <div className="nav-wrapper">
           <IndexLink to="/" activeClassName="active">
             <i className="material-icons left">home</i>Home</IndexLink>
-          {/* <a href="#" data-activates="mobile-demo" className="button-collapse">
-            <i className="material-icons">menu</i>
-          </a>*/}
           <ul id="nav-mobile" className="right">
             <li>
               {navLinks}
             </li>
           </ul>
-          {/* <ul id="mobile-demo" className="side-nav">
-            <li>
-              {navLinks}
-            </li>
-          </ul>*/}
         </div>
-        <SearchModal />
       </nav>
     );
   }
@@ -93,8 +94,10 @@ export class Header extends React.Component {
 
 Header.propTypes = {
   user: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
+  searchDocuments: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
@@ -112,4 +115,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { logout })(Header);
+export default connect(mapStateToProps, { logout, searchDocuments })(Header);

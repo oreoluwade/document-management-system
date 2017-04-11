@@ -7,7 +7,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header location={this.props.location}/>
         <FlashMessagesList />
         {this.props.children}
       </div>
@@ -16,6 +16,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  location: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired
 };
 
