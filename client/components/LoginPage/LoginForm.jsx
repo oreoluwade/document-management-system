@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
-import TextFieldGroup from '../Common/TextFieldGroup.jsx';
+import TextFieldGroup from '../Common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
 import { login } from '../../actions/authenticationAction';
 import { addFlashMessage } from '../../actions/flashMessages';

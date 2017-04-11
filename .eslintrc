@@ -4,11 +4,26 @@
   "plugins": [
     "react"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": {
+          "resolve": {
+            "extensions": [
+              ".js",
+              ".jsx"
+            ]
+          }
+        }
+      }
     }
   },
   "env": {
@@ -30,11 +45,35 @@
     "consistent-return": 0,
     "no-param-reassign": 0,
     "comma-dangle": 0,
-    "curly": [1, "multi-line"],
-    "no-shadow": [1, { "allow": ["req", "res", "err"] }],
+    "curly": [
+      1,
+      "multi-line"
+    ],
+    "no-shadow": [
+      1,
+      {
+        "allow": [
+          "req",
+          "res",
+          "err"
+        ]
+      }
+    ],
     "jsx-quotes": 1,
-    "react/display-name": [ 1, {"ignoreTranspilerName": false }],
-    "react/forbid-prop-types": [1, {"forbid": ["any"]}],
+    "react/display-name": [
+      1,
+      {
+        "ignoreTranspilerName": false
+      }
+    ],
+    "react/forbid-prop-types": [
+      1,
+      {
+        "forbid": [
+          "any"
+        ]
+      }
+    ],
     "react/jsx-boolean-value": 1,
     "react/jsx-closing-bracket-location": 0,
     "react/jsx-curly-spacing": 1,
@@ -64,18 +103,24 @@
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
     "react/wrap-multilines": 1,
-    "require-jsdoc": [0, {
+    "require-jsdoc": [
+      0,
+      {
         "require": {
-            "FunctionDeclaration": true,
-            "MethodDefinition": false,
-            "ClassDeclaration": false
+          "FunctionDeclaration": true,
+          "MethodDefinition": false,
+          "ClassDeclaration": false
         }
-    }],
-    "valid-jsdoc": [0, {
-      "requireReturn": false,
-      "requireReturnType": false,
-      "requireParamDescription": false,
-      "requireReturnDescription": false
-    }]
+      }
+    ],
+    "valid-jsdoc": [
+      0,
+      {
+        "requireReturn": false,
+        "requireReturnType": false,
+        "requireParamDescription": false,
+        "requireReturnDescription": false
+      }
+    ]
   }
 }

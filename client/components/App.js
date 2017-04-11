@@ -1,7 +1,7 @@
 // This component handles the App template used on every page.
 import React, { PropTypes } from 'react';
-import Header from './Common/Header.jsx';
-import FlashMessagesList from './FlashMessagesList/index.jsx';
+import Header from './Common/Header';
+import FlashMessagesList from './FlashMessagesList/index';
 
 class App extends React.Component {
   render() {

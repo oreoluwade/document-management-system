@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import validateInput from '../../../server/shared/validations/signup';
-import TextFieldGroup from '../Common/TextFieldGroup.jsx';
+import TextFieldGroup from '../Common/TextFieldGroup';
 
 class SignupForm extends React.Component {
   constructor(props) {
