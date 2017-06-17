@@ -64,7 +64,13 @@ module.exports = {
   },
 
   getAllUsers: (request, response) => {
-    User.findAll({ include: [{ model: Role }] }).then((usersFound) => {
+    User.findAll({
+      include: [
+        {
+          model: Role
+        }
+      ]
+    }).then((usersFound) => {
       if (usersFound) {
         return response.status(200).json({ usersFound });
       }

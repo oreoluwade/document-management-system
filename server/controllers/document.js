@@ -159,7 +159,11 @@ module.exports = {
   },
 
   findUserDocuments: (request, response) => {
-    Document.findAll({ where: { ownerId: request.params.id } })
+    Document.findAll({
+      where: {
+        ownerId: request.params.id
+      }
+    })
       .then((foundDocuments) => {
         if (!foundDocuments) {
           return response.status(404)

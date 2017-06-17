@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 import { connect } from 'react-redux';
-// import classname from 'classnames';
 import { logout } from '../../actions/authenticationAction';
 import { searchDocuments } from '../../actions/documentActions';
 

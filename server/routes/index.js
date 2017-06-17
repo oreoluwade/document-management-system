@@ -65,8 +65,6 @@ const Routes = (app) => {
     .get(documentController.getDocument)
     .put(documentController.editDocument)
     .delete(documentController.deleteDocument);
-
-
 };
 
 export default Routes;

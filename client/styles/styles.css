@@ -30,7 +30,7 @@ body {
   margin: 0 auto
 }
 
-#aboutcard {
+.card-panel .z-depth-8 .aboutcard {
   width: 80%;
   background-color: lightblue;
   text-align: center;
