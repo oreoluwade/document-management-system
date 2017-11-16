@@ -26,6 +26,7 @@ class SignupForm extends React.Component {
   }
 
   onChange(e) {
+    console.log('me');
     this.setState({ [e.target.name]: e.target.value });
   }
 
