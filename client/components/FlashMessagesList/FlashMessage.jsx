@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 class FlashMessage extends React.Component {

@@ -69,6 +69,7 @@
     "npm-run-all": "1.8.0",
     "open": "0.0.5",
     "prop-types": "^15.6.0",
+    "react-redux-sweetalert": "^1.0.1",
     "rimraf": "2.5.2",
     "selenium-download": "^2.0.9",
     "selenium-standalone": "^6.2.0",
