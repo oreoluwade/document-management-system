@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-class FlashMessage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick() {
+class FlashMessage extends Component {
+  onClick = () => {
     this.props.deleteFlashMessage(this.props.message.id);
   }
 
