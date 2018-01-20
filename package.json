@@ -11,7 +11,7 @@
     "open:src": "babel-node tools/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* client tools",
     "lint:watch": "npm run lint -- --watch",
-    "test": "babel-node node_modules/babel-istanbul/lib/cli cover _mocha -- --require ./server/test/testSetup.js --recursive ./server/test -R spec",
+    "test": "babel-node node_modules/babel-istanbul/lib/cli cover _mocha -- --require ./server/test/testSetup.js --recursive ./server/test -R spec || true",
     "test:watch": "npm run test -- --watch",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:seed": "node_modules/.bin/sequelize db:seed:all",

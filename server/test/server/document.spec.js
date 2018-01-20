@@ -123,9 +123,9 @@ describe('DOCUMENT REQUESTS', () => {
             .send(emptyString)
             .end((error, response) => {
               expect(response.status).to.equal(400);
-              expect(response.body.message)
+              expect(response.error.text)
                 .to.contain('You must provide a Title');
-              expect(response.body.message)
+              expect(response.error.text)
                 .to.contain('You cannot have an empty Document');
               done();
             });
