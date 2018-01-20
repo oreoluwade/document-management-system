@@ -1,13 +1,5 @@
 import webpack from 'webpack';
 import path from 'path';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
-// // import CleanWebpackPlugin from 'clean-webpack-plugin';
-
-// const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-//   template: `${__dirname}/client/index.html`,
-//   filename: 'index.html',
-//   inject: 'body',
-// });
 
 export default {
   devtool: 'eval',
@@ -16,7 +8,7 @@ export default {
   ],
   target: 'web',
   output: {
-    path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js'
   },
@@ -26,6 +18,7 @@ export default {
   devServer: {
     contentBase: path.resolve(__dirname, 'client'),
     hot: true,
+    noInfo: true,
     historyApiFallback: true,
   },
   plugins: [

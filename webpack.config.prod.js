@@ -36,38 +36,45 @@ export default {
   ],
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['babel']
+        use: [
+          { loader: 'babel-loader' }
+        ],
+      },
+      {
+        test: /(\.css)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ]
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader'
+        use: [
+          { loader: 'file-loader' }
+        ]
       },
       {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
+        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          { loader: 'url?limit=10000&mimetype=application/font-woff' }
+        ]
       },
       {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/octet-stream'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=image/svg+xml'
-      }, {
         test: /\.(jpg|png|svg)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 25000,
-        },
+        use: [
+          { loader: 'url-loader' }
+        ]
       }, {
+        test: /materialize-css\/bin\//,
+        use: [
+          { loader: 'imports?jQuery=jquery,$=jquery,hammerjs' }
+        ]
+      },
+     {
         test: /materialize-css\/bin\//,
         loader: 'imports?jQuery=jquery,$=jquery,hammerjs'
       }, {

@@ -4,5 +4,8 @@
     "development": {
       "presets": ["react-hmre"]
     }
-  }
+  },
+  "plugins": [
+    "transform-class-properties"
+  ]
 }
