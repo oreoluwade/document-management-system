@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-
 import { expect } from 'chai';
 import model from '../../models';
 import helper from '../helper';
@@ -13,7 +12,7 @@ const requiredFields = ['title', 'content', 'access'];
 
 describe('The Document Model Test Suite', () => {
   describe('The Document Model', () => {
-    let document;
+    let documents;
     let owner;
 
     before((done) => {
@@ -29,8 +28,9 @@ describe('The Document Model Test Suite', () => {
         });
     });
 
-    beforeEach(() => {
-      document = Document.build(fakeDocument);
+    beforeEach((done) => {
+      documents = Document.build(fakeDocument);
+      done()
     });
 
     afterEach(() => Document.destroy({ where: {} }));
@@ -38,7 +38,7 @@ describe('The Document Model Test Suite', () => {
     after(() => model.sequelize.sync({ force: true }));
 
     it('should allow a document be created', (done) => {
-      document.save()
+      documents.save()
         .then((createdDocument) => {
           expect(createdDocument).to.exist;
           expect(typeof createdDocument).to.equal('object');
@@ -47,7 +47,7 @@ describe('The Document Model Test Suite', () => {
     });
 
     it('should create a document that has both title and content', (done) => {
-      document.save()
+      documents.save()
         .then((createdDocument) => {
           expect(createdDocument.title).to.equal(fakeDocument.title);
           expect(createdDocument.content).to.equal(fakeDocument.content);
@@ -56,7 +56,7 @@ describe('The Document Model Test Suite', () => {
     });
 
     it('should note the time the document was created', (done) => {
-      document.save()
+      documents.save()
         .then((createdDocument) => {
           expect(createdDocument.createdAt).to.exist;
           done();
@@ -65,7 +65,7 @@ describe('The Document Model Test Suite', () => {
 
     it('should have the access privilege of a created document specified',
       (done) => {
-        document.save()
+        documents.save()
           .then((createdDocument) => {
             expect(createdDocument.access).to.equal('public');
             done();
@@ -77,8 +77,8 @@ describe('The Document Model Test Suite', () => {
       creation`, () => {
         requiredFields.forEach((field) => {
           it(`requires a ${field} field to create a document`, () => {
-            document[field] = null;
-            return document.save()
+            documents[field] = null;
+            return documents.save()
               .catch((error) => {
                 expect(/notNull Violation/.test(error.message)).to.be.true;
               });
