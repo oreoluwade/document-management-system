@@ -1,23 +1,19 @@
 {
   "development": {
     "use_env_variable": "DEV_DATABASE_URL",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test": {
     "use_env_variable": "TEST_DATABASE_URL",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "travis": {
     "use_env_variable": "TRAVIS_DATABASE_URL",
     "dialect": "postgres",
-    "logging": false,
-    "operatorsAliases": false
+    "logging": false
   },
   "production": {
     "use_env_variable": "PRODUCTION_DATABASE_URL",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   }
 }
