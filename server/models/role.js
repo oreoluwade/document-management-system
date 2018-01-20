@@ -5,9 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     }
-  })
-
-  freezetablename: true
+  });
 
   Role.associate = (models) => {
     Role.hasMany(models.User, {
@@ -15,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'roleId'
     })
   };
+
+  freezeTableName: true
 
   return Role;
 };
