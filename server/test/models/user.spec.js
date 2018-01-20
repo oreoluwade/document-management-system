@@ -124,7 +124,7 @@ describe('The User Model Test Suite', () => {
               return User.build(fakeUser).save();
             })
             .catch((error) => {
-              expect(/ValidationErrorItem/.test(error.message)).to.be.true;
+              expect(/SequelizeUniqueConstraintError/.test(error.name)).to.be.true;
             });
         });
       });
