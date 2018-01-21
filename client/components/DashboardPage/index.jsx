@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import
-{ loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
+import {
+  loadUserDocuments,
+  loadAllDocuments
+} from '../../actions/documentActions';
 import DocumentList from '../DocumentPage/DocumentList';
 import CommonModal from '../Common/CommonModal';
 
 
-class DashboardPage extends React.Component {
+class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -99,13 +101,7 @@ DashboardPage.propTypes = {
 const filterDocument = (role, documents) =>
   documents.filter(doc => doc.access === role);
 
-
-/**
- * Helper function to get only required properties from state
- * @param {any} state
- * @returns {any}
- */
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   const { documents } = state.handleDocuments;
   const publicDocuments = filterDocument('public', documents);
   const roleDocuments = filterDocument('role', documents);
@@ -117,9 +113,14 @@ function mapStateToProps(state) {
     roleDocuments,
     privateDocuments
   };
-}
+};
 
 
-export default connect(mapStateToProps,
-  { loadUserDocuments, loadAllDocuments })(DashboardPage);
+export default connect(
+  mapStateToProps,
+  {
+    loadUserDocuments,
+    loadAllDocuments
+  }
+)(DashboardPage);
 

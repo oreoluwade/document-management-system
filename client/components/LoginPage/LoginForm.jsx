@@ -98,4 +98,10 @@ LoginForm.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(null, { login, addFlashMessage })(LoginForm);
+export default connect(
+  null,
+  {
+    login,
+    addFlashMessage
+  }
+)(LoginForm);
