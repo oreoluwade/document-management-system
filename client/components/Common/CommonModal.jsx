@@ -16,7 +16,8 @@ class CommonModal extends React.Component {
       <div>
         <div id="docDisplayModal" className="modal">
           <div>
-            <a href="#"
+            <a
+              href="#"
               className="btn-floating btn-flat blue-grey closeModal modal-close">
               <i className="material-icons">close</i>
             </a>
@@ -36,14 +37,8 @@ CommonModal.propTypes = {
   doc: PropTypes.object
 };
 
-/**
- * @param  {object} state
- * @return {object}
- */
-function mapStateToProps(state) {
-  return {
-    auth: state.auth,
-  };
-}
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
 export default connect(mapStateToProps)(CommonModal);

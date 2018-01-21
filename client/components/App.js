@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import FlashMessagesList from './FlashMessagesList';
 import HomePage from './HomePage';
+import Header from './Common';
 import AboutPage from './AboutPage';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
@@ -20,6 +21,7 @@ import requireAdminAuth from './Utils/RequireAdminAuth';
 const App = () => (
   <Router>
     <div>
+      <Header location={window.location}/>
       <FlashMessagesList />
       <Switch>
         <Route
