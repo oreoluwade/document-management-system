@@ -20,6 +20,7 @@ describe('The Document Model Test Suite', () => {
         .then((createdRole) => {
           fakeUser.roleId = createdRole.id;
           return User.create(fakeUser);
+          done();
         })
         .then((createdUser) => {
           owner = createdUser;
