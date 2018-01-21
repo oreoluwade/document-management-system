@@ -20,8 +20,8 @@
     "test-e2e": "node_modules/.bin/nightwatch --config nightwatch.conf.js",
     "clean-dist": "rm -rf dist && mkdir dist",
     "prebuild": "npm-run-all clean-dist build:html",
-    "build:html": "babel-node tools/buildHtml.js",
-    "build": "babel-node tools/build.js"
+    "build:html": "babel-node tools/buildHtml",
+    "build": "babel client -d dist"
   },
   "repository": {
     "type": "git",
@@ -83,6 +83,7 @@
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "classnames": "^2.2.5",
+    "clean-webpack-plugin": "^0.1.17",
     "dotenv": "^4.0.0",
     "enzyme": "^3.3.0",
     "eslint": "^4.15.0",

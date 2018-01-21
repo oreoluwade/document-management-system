@@ -1,31 +1,25 @@
 language: node_js
-
-node_js: "stable"
-
+node_js: stable
 services:
   - postgresql
-
 addons:
   artifacts: true
   code_climate:
     repo_token: 57079a7f194eb6c6983a6e18f677092085a00f3080cacd53b63d1599f94518f9
-
 before_script:
   - psql -c 'create database testdb;' -U postgres
-  - npm run db:migrate
-
-
+  - 'npm run db:migrate'
 before_deploy:
   - npm run build && cd dist && ls
-
 deploy:
   provider: heroku
-  api_key:
-    secure: a3de5514-a4f1-4b52-a24a-45bb0f613ec8
   app:
     develop: doc-man-sys
+    refactor-stuff: docman-test
   skip_cleanup: true
-
+  api_key:
+    - secure: >-
+        TOF881nBhc8ISHbWDQtEfjEiB9cUefOMRi1pkUSLxORs7hEpqn2+1FM/c70bGHtzjQSNsmK8l54USBZa4YrOLJbSK74dp2RhgRY8hKwBBlvtL728jQ3KZD5cxsFjQ85bZ9CTBjGEBfV6HXj0Z/DGc/EiWCwmYyPsEPx2KwaQvKD1Nl1plGf+sfmJsfLoTmws0PZoaDUl8awrMX9O55YqERl+ZOci6tln5NpOUg+XOtbV3tMQhTHdj0YxRvWnqOQtquTbPMRsHCIfGVf9mcCDTjzQoQqeL8ek/NYyLKaAK1aeBKzYrhyhBISr9wBs/DiQvi76Ui55qBOuu8vniGk+gmhl95GuqwP9OTH+MqP6WpUeNOrD3FHOuFXa2wb9luPKTl1BmL+XtNsr/tMs7AuX61Z+ZUJ2o+FGK7BzmvJSRK2jeeICinup3G9YGPHnq2beLUH0k7UBnLU/GO2vn81jCdPJYa2S59nRvKDLrunEcokp366NJz+5rhxC1FDwo+9m4/8lSAclRecPpxlW08yTMc/6zbeC74R4uuR6JQMzrrrAQYk6V+eDrD5zzVJl7oZXONIIExURzkb9cf/1cuhFKdO2owuGMp61CJNiayY68ztvdQPOqUJVp3DNbtyFOpru7ebBcHtyaiuxbLwwxiim2j2W5DNdX+01ENaOrfO5qNg=
 after_success:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info

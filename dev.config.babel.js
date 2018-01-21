@@ -59,7 +59,8 @@ export default {
         use: [
           { loader: 'url-loader' }
         ]
-      }, {
+      },
+      {
         test: /materialize-css\/bin\//,
         use: [
           { loader: 'imports?jQuery=jquery,$=jquery,hammerjs' }
