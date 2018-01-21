@@ -13,13 +13,13 @@ const GLOBALS = {
 };
 
 export default {
-  entry: {
-    bundle: path.resolve(__dirname, 'client/index')
-  },
+  entry: [
+    path.resolve(__dirname, 'client/index.js')
+  ],
   target: 'web',
   output: {
     path: `${__dirname}/dist/`,
-    filename: '[name].js'
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['.js', '.jsx']
@@ -28,8 +28,7 @@ export default {
     new webpack.optimize.OccurrenceOrderPlugin(),
     HtmlWebpackPluginConfig,
     new webpack.DefinePlugin(GLOBALS),
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -47,7 +46,7 @@ export default {
         exclude: /node_modules/,
       },
       {
-        test: /(\.scss$)/,
+        test: /(\.css$)/,
         loaders: ['style-loader', 'css-loader'],
       },
       {

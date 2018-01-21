@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 import webpack from 'webpack';
 import colors from 'colors';
-
 import webpackConfig from '../prod.config.babel';
 
 process.env.NODE_ENV = 'production';
 
-console.log('Generating minified bundle for via Webpack...'.blue);
+console.log('Generating minified bundle via Webpack...'.blue);
 
 webpack(webpackConfig).run((err, stats) => {
   if (err) { // so a fatal error occurred. Stop here.

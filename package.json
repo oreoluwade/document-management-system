@@ -21,7 +21,7 @@
     "clean-dist": "rm -rf dist && mkdir dist",
     "prebuild": "npm-run-all clean-dist build:html",
     "build:html": "babel-node tools/buildHtml",
-    "build": "babel client -d dist"
+    "build": "babel-node tools/build.js"
   },
   "repository": {
     "type": "git",
