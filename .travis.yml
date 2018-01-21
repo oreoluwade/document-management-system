@@ -15,7 +15,6 @@ deploy:
   provider: heroku
   app:
     develop: doc-man-sys
-    refactor-stuff: doc-man-sys
   skip_cleanup: true
   api_key:
     - secure: >-
