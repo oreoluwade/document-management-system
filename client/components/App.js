@@ -23,42 +23,49 @@ const App = () => (
     <div>
       <Header location={window.location}/>
       <FlashMessagesList />
+      <Route
+        component={HomePage}
+        exact
+        path="/"
+      />
       <Switch>
-        <Route
-          component={HomePage}
-          exact
-          path="/"
-        />
         <Route
           path="dashboard"
           component={requireAuth(DashboardPage)}
         />
         <Route
-          path="login"
+          exact
+          path="/login"
           component={LoginPage}
         />
         <Route
-          path="signup"
+          exact
+          path="/signup"
           component={SignupPage}
         />
         <Route
-          path="documents"
+          exact
+          path="/documents"
           component={requireAuth(DocumentPage)}
         />
         <Route
-          path="profilepage"
+          exact
+          path="/profilepage"
           component={requireAuth(ProfilePage)}
         />
         <Route
-          path="about"
+          exact
+          path="/about"
           component={AboutPage}
         />
         <Route
-          path="admin/manageroles"
+          exact
+          path="/admin/manageroles"
           component={requireAdminAuth(ManangeRolePage)}
         />
         <Route
-          path="admin/handleusers"
+          exact
+          path="/admin/handleusers"
           component={requireAdminAuth(HandleUsersPage)}
         />
       </Switch>
