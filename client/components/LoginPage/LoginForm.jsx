@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import TextFieldGroup from '../Common/TextFieldGroup';
@@ -97,4 +98,10 @@ LoginForm.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(null, { login, addFlashMessage })(LoginForm);
+export default connect(
+  null,
+  {
+    login,
+    addFlashMessage
+  }
+)(LoginForm);

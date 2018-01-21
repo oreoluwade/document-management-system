@@ -1,6 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import React, { PropTypes } from 'react';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../Common/TextFieldGroup';
 
@@ -19,13 +19,9 @@ class SignupForm extends React.Component {
       isLoading: false,
       invalid: false
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.checkUserExists = this.checkUserExists.bind(this);
   }
 
-  onChange(e) {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -37,12 +33,12 @@ class SignupForm extends React.Component {
     return isValid;
   }
 
-  checkUserExists(e) {
+  checkUserExists = (e) => {
     const field = e.target.name;
     const val = e.target.value;
     if (val !== '') {
       this.props.isUserExists(val).then((response) => {
-        const errors = this.state.errors;
+        const { errors } = this.state;
         let invalid;
         if (response.data.user) {
           errors[field] = `A user already exists with that ${field}`;
@@ -56,7 +52,7 @@ class SignupForm extends React.Component {
     }
   }
 
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
 
     if (this.isValid()) {
@@ -164,9 +160,9 @@ class SignupForm extends React.Component {
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-  isUserExists: React.PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired
 };
 
 SignupForm.contextTypes = {
