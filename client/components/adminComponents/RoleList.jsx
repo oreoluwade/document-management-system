@@ -4,8 +4,15 @@ import { addDisabledClass } from './disabledItems';
 
 
 const RoleList = ({ roles, editRole, deleteRole }) => {
-  const handleEditRole = roleToBeEdited => editRole(roleToBeEdited)
-  const handleDeleteRole = roleToBeDeleted => deleteRole(roleToBeDeleted)
+  const handleEditRole = (roleToBeEdited) => {
+    if (roleToBeEdited.title === 'admin') return;
+    editRole(roleToBeEdited);
+  };
+
+  const handleDeleteRole = (roleToBeDeleted) => {
+    if (roleToBeDeleted.title === 'admin') return;
+    deleteRole(roleToBeDeleted.id);
+  };
 
   return (
     <div className="role-collection">
@@ -25,7 +32,7 @@ const RoleList = ({ roles, editRole, deleteRole }) => {
                   </a>
                   <a
                     className={`waves-effect waves-light btn blue-grey ${addDisabledClass(role.title)}`}
-                    onClick={handleDeleteRole(role.id)}>
+                    onClick={handleDeleteRole(role)}>
                     <i className="tiny material-icons left">delete</i>
                     delete
                   </a>
