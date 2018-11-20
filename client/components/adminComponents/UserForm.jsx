@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
-import TextFieldGroup from '../Common/TextFieldGroup';
+import { TextFieldGroup } from '../Common';
 import { saveUserAdmin, updateUserAdmin } from '../../actions/userActions';
 import { addFlashMessage } from '../../actions/flashMessages';
 import { loadRoles } from '../../actions/roleActions';
@@ -117,10 +117,8 @@ class UserForm extends React.Component {
               >
                 <option value="" disabled >User Role</option>
                 {roles.map(role =>
-                  (<option key={role.id}
-                    value={role.id}>{role.title}</option>)
-                )
-                }
+                  (<option key={role.id} value={role.id}>{role.title}</option>)
+                )}
               </select>
             </div>
           </div>

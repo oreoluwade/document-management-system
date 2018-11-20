@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -26,12 +27,12 @@ class HandleUsersPage extends React.Component {
       text: 'Are you sure you want to delete user?',
       type: 'info',
       showCancelButton: true,
-      onConfirm: () => this.deleteUser(id),
+      onConfirm: () => this.handleDeleteUser(id),
       onCancel: this.props.close,
     });
   }
 
-  deleteUser = (id) => {
+  handleDeleteUser = (id) => {
     this.props.deleteUser(id)
       .then(() => toastr.success('User Successfully Deleted'))
       .catch(() => {
@@ -62,7 +63,7 @@ class HandleUsersPage extends React.Component {
       props: { users },
       cancelUserForm,
       renderUserForm,
-      renderAlert
+      renderAlert,
     } = this;
 
     return (
@@ -73,7 +74,11 @@ class HandleUsersPage extends React.Component {
               <h4 className="center">Manage User Details and Permissions</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                  <UserList editUser={renderUserForm} deleteUser={renderAlert} users={users} />
+                  <UserList
+                    editUser={() => renderUserForm}
+                    deleteUser={() => renderAlert}
+                    users={users}
+                  />
                 </div>
                 {displayForm && <div className="col s5">
                   <div>
