@@ -1,8 +1,9 @@
 /* eslint no-console: "off" */
 import express from 'express';
+import dotenv from 'dotenv';
 import Routes from './routes';
 
-require('dotenv').config();
+dotenv.config();
 
 const secret = process.env.SECRET || 'secretconfirmation';
 
