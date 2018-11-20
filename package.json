@@ -1,6 +1,9 @@
 {
   "name": "document-management-system",
   "version": "1.0.0",
+  "engines": {
+    "node": "9.11.1"
+  },
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "index.js",
   "scripts": {
