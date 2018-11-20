@@ -5,21 +5,16 @@ import SignupForm from './SignupForm';
 import { userSignupRequest, isUserExists } from '../../actions/signupActions';
 import { addFlashMessage } from '../../actions/flashMessages';
 
-class SignupPage extends React.Component {
-  render() {
-    const { userSignupRequest, addFlashMessage, isUserExists } = this.props;
-    return (
-      <div className="card" id="signupcard">
-        <div>
-          <SignupForm
-            isUserExists={isUserExists}
-            userSignupRequest={userSignupRequest}
-            addFlashMessage={addFlashMessage} />
-        </div>
-      </div>
-    );
-  }
-}
+const SignupPage = props => (
+  <div className="card" id="signupcard">
+    <div>
+      <SignupForm
+        isUserExists={props.isUserExists}
+        userSignupRequest={props.userSignupRequest}
+        addFlashMessage={props.addFlashMessage} />
+    </div>
+  </div>
+);
 
 SignupPage.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
@@ -27,4 +22,8 @@ SignupPage.propTypes = {
   isUserExists: PropTypes.func.isRequired
 };
 
-export default connect(null, { userSignupRequest, addFlashMessage, isUserExists })(SignupPage);
+export default connect(null, {
+  userSignupRequest,
+  addFlashMessage,
+  isUserExists
+})(SignupPage);

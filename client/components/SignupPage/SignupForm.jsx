@@ -1,30 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../Common/TextFieldGroup';
 
 class SignupForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      roleId: 2,
-      errors: {},
-      isLoading: false,
-      invalid: false
-    };
+  state = {
+    userName: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    roleId: 2,
+    errors: {},
+    isLoading: false,
+    invalid: false
+  };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.checkUserExists = this.checkUserExists.bind(this);
-  }
-
-  onChange(e) {
+  handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -36,7 +30,7 @@ class SignupForm extends React.Component {
     return isValid;
   }
 
-  checkUserExists(e) {
+  checkUserExists = (e) => {
     const field = e.target.name;
     const val = e.target.value;
     if (val !== '') {
@@ -55,18 +49,17 @@ class SignupForm extends React.Component {
     }
   }
 
-  onSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
-      this.props.userSignupRequest(this.state).then(
-        () => {
+      this.props.userSignupRequest(this.state)
+        .then(() => {
           this.props.addFlashMessage({
             type: 'success',
             text: 'Welcome! You have successfully signed up.'
           });
-          this.context.router.push('/');
+          this.props.history.push('/');
         },
         err => this.setState({ errors: err.response.data, isLoading: false })
       );
@@ -74,17 +67,22 @@ class SignupForm extends React.Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const {
+      state: { errors },
+      checkUserExists,
+      handleInputChange,
+    } = this;
+
     const form = (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.handleSubmit}>
 
         <div className="row margin">
           <TextFieldGroup
             icon="perm_identity"
             error={errors.userName}
             label="Username"
-            onChange={this.onChange}
-            checkUserExists={this.checkUserExists}
+            onChange={handleInputChange}
+            checkUserExists={checkUserExists}
             value={this.state.userName}
             field="userName"
             name="userName"
@@ -97,7 +95,7 @@ class SignupForm extends React.Component {
             icon="person"
             error={errors.firstName}
             label="First Name"
-            onChange={this.onChange}
+            onChange={handleInputChange}
             value={this.state.firstName}
             field="firstName"
             name="firstName"
@@ -110,7 +108,7 @@ class SignupForm extends React.Component {
             icon="person_outline"
             error={errors.lastName}
             label="Last Name"
-            onChange={this.onChange}
+            onChange={handleInputChange}
             value={this.state.lastName}
             field="lastName"
             name="lastName"
@@ -123,8 +121,8 @@ class SignupForm extends React.Component {
             icon="email"
             error={errors.email}
             label="Email"
-            onChange={this.onChange}
-            checkUserExists={this.checkUserExists}
+            onChange={handleInputChange}
+            checkUserExists={checkUserExists}
             value={this.state.email}
             field="email"
             type="email"
@@ -136,7 +134,7 @@ class SignupForm extends React.Component {
             icon="lock"
             error={errors.password}
             label="Password"
-            onChange={this.onChange}
+            onChange={handleInputChange}
             value={this.state.password}
             field="password"
             name="password"
@@ -145,10 +143,28 @@ class SignupForm extends React.Component {
         </div>
 
 
+        <div className="row margin">
+          <TextFieldGroup
+            icon="lock"
+            error={errors.passwordConfirmation}
+            label="Confirm Password"
+            onChange={handleInputChange}
+            value={this.state.passwordConfirmation}
+            field="passwordConfirmation"
+            name="passwordConfirmation"
+            type="password"
+          />
+        </div>
+
+
         <div className="center-align">
-          <button disabled={this.state.isLoading || this.state.invalid}
-            className="btn blue-grey" type="submit">
-            Sign Up<i className="material-icons right">thumb_up</i>
+          <button
+            disabled={this.state.isLoading || this.state.invalid}
+            className="btn blue-grey"
+            type="submit"
+          >
+            Sign Up
+            <i className="material-icons right">thumb_up</i>
           </button>
         </div>
 
@@ -165,11 +181,12 @@ class SignupForm extends React.Component {
 SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
   addFlashMessage: PropTypes.func.isRequired,
-  isUserExists: PropTypes.func.isRequired
+  isUserExists: PropTypes.func.isRequired,
+  history: PropTypes.object,
 };
 
 SignupForm.contextTypes = {
   router: PropTypes.object
 };
 
-export default SignupForm;
+export default withRouter(SignupForm);
