@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { addDisabledClass, disabledUsers } from './disabledItems';
 
 const UserList = ({ users, editUser, deleteUser }) => {
-  const handleEditUser = userToBeEdited => editUser(userToBeEdited);
-  const handleDeleteUser = userToBeDeleted => deleteUser(userToBeDeleted);
+  const handleEditUser = (userToBeEdited) => {
+    if (userToBeEdited.Role.title === 'admin') return;
+    editUser(userToBeEdited);
+  };
+
+  const handleDeleteUser = (userToBeDeleted) => {
+    if (userToBeDeleted.Role.title === 'admin') return;
+    deleteUser(userToBeDeleted.id);
+  };
 
   return (
     <div className="user-collection">
@@ -24,7 +31,7 @@ const UserList = ({ users, editUser, deleteUser }) => {
                   </a>
                   <a
                     className={`waves-effect waves-light btn blue-grey ${addDisabledClass(user.Role.title, disabledUsers)}`}
-                    onClick={handleDeleteUser(user.id)}>
+                    onClick={handleDeleteUser(user)}>
                     <i className="tiny material-icons left">delete</i>delete
                   </a>
                 </div>
