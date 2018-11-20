@@ -2,12 +2,11 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import jwtDecode from 'jwt-decode';
 import { setCurrentUser } from './actions/authenticationAction';
 import configureStore from './store/configureStore';
-import routes from './routes';
+import App from './components/App';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 import '../node_modules/materialize-css/dist/js/materialize.min';
 import '../node_modules/materialize-css/dist/css/materialize.min.css';
@@ -24,6 +23,6 @@ if (localStorage.jwtToken) {
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+    <App />
   </Provider>, document.getElementById('app')
 );

@@ -1,6 +1,3 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
-import App from './components/App';
 import HomePage from './components/HomePage/index';
 import AboutPage from './components/AboutPage/index';
 import SignupPage from './components/SignupPage/index';
@@ -13,18 +10,49 @@ import ProfilePage from './components/ProfilePage/index';
 import requireAuth from './components/Utils/RequireAuth';
 import requireAdminAuth from './components/Utils/RequireAdminAuth';
 
-export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="dashboard" component={requireAuth(DashboardPage)} />
-    <Route path="login" component={LoginPage} />
-    <Route path="signup" component={SignupPage} />
-    <Route path="documents" component={requireAuth(DocumentPage)} />
-    <Route path="profilepage" component={requireAuth(ProfilePage)} />
-    <Route path="about" component={AboutPage} />
-    <Route path="admin/manageroles"
-      component={requireAdminAuth(ManangeRolePage)} />
-    <Route path="admin/handleusers"
-      component={requireAdminAuth(HandleUsersPage)} />
-  </Route>
-);
+const routes = [
+  {
+    path: '/',
+    component: HomePage,
+    exact: true,
+  },
+  {
+    path: '/dashboard',
+    component: requireAuth(DashboardPage),
+    exact: true,
+  },
+  {
+    path: '/login',
+    component: LoginPage,
+    exact: true
+  },
+  {
+    path: '/signup',
+    component: SignupPage,
+    exact: true
+  },
+  {
+    path: '/documents',
+    component: requireAuth(DocumentPage),
+    exact: true
+  },
+  {
+    path: '/profilepage',
+    component: requireAuth(ProfilePage),
+    exact: true
+  },
+  {
+    path: '/about',
+    component: AboutPage
+  },
+  {
+    path: '/admin/manageroles',
+    component: requireAdminAuth(ManangeRolePage)
+  },
+  {
+    path: '/admin/handleusers',
+    component: requireAdminAuth(HandleUsersPage)
+  },
+];
+
+export default routes;
