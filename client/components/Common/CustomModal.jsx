@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import DocumentForm from '../DocumentPage/DocumentForm';
 
-class CommonModal extends React.Component {
+class CustomModal extends React.Component {
   componentDidMount() {
     $('.modal').modal();
     $('select').material_select();
@@ -31,19 +31,16 @@ class CommonModal extends React.Component {
   }
 }
 
-CommonModal.propTypes = {
+CustomModal.propTypes = {
   auth: PropTypes.object.isRequired,
   doc: PropTypes.object
 };
 
-/**
- * @param  {object} state
- * @return {object}
- */
+
 function mapStateToProps(state) {
   return {
     auth: state.auth,
   };
 }
 
-export default connect(mapStateToProps)(CommonModal);
+export default connect(mapStateToProps)(CustomModal);
