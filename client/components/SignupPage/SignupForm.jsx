@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../Common/TextFieldGroup';
 
@@ -164,9 +163,9 @@ class SignupForm extends React.Component {
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-  isUserExists: React.PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired
 };
 
 SignupForm.contextTypes = {

@@ -1,7 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import
-{ loadUserDocuments, loadAllDocuments } from '../../actions/documentActions';
+import {
+  loadUserDocuments,
+  loadAllDocuments
+} from '../../actions/documentActions';
 import DocumentList from '../DocumentPage/DocumentList';
 import CommonModal from '../Common/CommonModal';
 

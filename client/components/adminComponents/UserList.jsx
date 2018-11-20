@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { addDisabledClass, disabledUsers } from './disabledItems';
 
 const UserList = ({ users, editUser, deleteUser }) =>
@@ -30,7 +31,7 @@ const UserList = ({ users, editUser, deleteUser }) =>
 UserList.propTypes = {
   editUser: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
-  users: React.PropTypes.array
+  users: PropTypes.array
 };
 
 export default UserList;
