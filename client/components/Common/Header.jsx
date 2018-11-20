@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React, { PropTypes } from 'react';
+import { Link, IndexLink } from 'react-router';
 import { connect } from 'react-redux';
+// import classname from 'classnames';
 import { logout } from '../../actions/authenticationAction';
 import { searchDocuments } from '../../actions/documentActions';
 
-class Header extends Component {
-  logout = (e) => {
+export class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.logout = this.logout.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  logout(e) {
     e.preventDefault();
     this.props.logout();
   }
 
-  handleSearch = (e) => {
-    const path = window.location.pathname.slice(1);
+  handleSearch(e) {
+    const path = this.props.location.pathname.slice(1);
     if (['dashboard', 'documents'].includes(path)) {
       this.props.searchDocuments(e.target.value);
     }
   }
 
   getLinks({ isAuthenticated, user, isAdmin }) {
-    const path = window.location.pathname.slice(1);
+    const path = this.props.location.pathname.slice(1);
     const enabled = ['dashboard', 'documents'].includes(path);
     if (isAuthenticated) {
       return (
@@ -27,35 +33,20 @@ class Header extends Component {
           <li>
             <form className="leftsearchbox">
               <div className="input-field">
-                <input
-                  disabled={!enabled}
-                  id="search"
-                  type="search"
-                  onChange={this.handleSearch}
-                />
-                <label
-                  htmlFor="search"
-                >
-                  <i className="mdi mdi-magnify" />
-                </label>
+                <input disabled={!enabled} id="search" type="search" onChange={this.handleSearch} />
+                <label htmlFor="search"><i className="mdi mdi-magnify"></i></label>
               </div>
             </form>
           </li>
-          <li>
-            <Link
-              to="/dashboard"
-              activeclassname="active"
-            >
-              <i className="material-icons left">dashboard</i>Dashboard
-            </Link>
-          </li>
-          <li activeclassname="active">
+          <li><Link to="/dashboard" activeClassName="active">
+            <i className="material-icons left">dashboard</i>Dashboard</Link></li>
+          <li activeClassName="active">
             <a href="#">Welcome, {user.userName}!</a>
           </li>
-          <li activeclassname="active">
+          <li activeClassName="active">
             <Link to="/profilepage">Profile</Link>
           </li>
-          <li activeclassname="active" id="personalDocs">
+          <li activeClassName="active" id="personalDocs">
             <Link to="/documents">Saved Documents</Link>
           </li>
           {isAdmin &&
@@ -67,15 +58,15 @@ class Header extends Component {
             <Link to="/admin/handleusers">Manage Users</Link>
           </li>}
           <li>
-            <a href="#" activeclassname="active" onClick={this.logout}>Logout</a>
+            <a href="#" activeClassName="active" onClick={this.logout}>Logout</a>
           </li>
         </ul>
       );
     }
     return (
       <ul>
-        <li><Link to="/signup" activeclassname="active">Signup</Link></li>
-        <li><Link to="/login" activeclassname="active">Login</Link></li>
+        <li><Link to="/signup" activeClassName="active">Signup</Link></li>
+        <li><Link to="/login" activeClassName="active">Login</Link></li>
       </ul>
     );
   }
@@ -85,9 +76,8 @@ class Header extends Component {
     return (
       <nav className="blue-grey">
         <div className="nav-wrapper">
-          <Link to="/" activeclassname="active">
-            <i className="material-icons left">home</i>Home
-          </Link>
+          <IndexLink to="/" activeClassName="active">
+            <i className="material-icons left">home</i>Home</IndexLink>
           <ul id="nav-mobile" className="right">
             <li>
               {navLinks}
@@ -101,12 +91,17 @@ class Header extends Component {
 
 Header.propTypes = {
   user: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
+/**
+ * @param {object}
+ * @returns {object} data
+ */
 export const mapStateToProps = (state) => {
   const { auth: { isAuthenticated, user } } = state;
   const isAdmin = isAuthenticated && user.userRoleId === 1;
@@ -117,12 +112,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-const enhance = connect(
-  mapStateToProps,
-  {
-    logout,
-    searchDocuments
-  }
-);
-
-export default enhance(Header);
+export default connect(mapStateToProps, { logout, searchDocuments })(Header);

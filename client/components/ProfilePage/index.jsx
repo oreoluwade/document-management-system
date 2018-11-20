@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint class-methods-use-this: "off"*/
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';

@@ -1,11 +1,8 @@
 {
-  "presets": ["react", "env"],
+  "presets": ["react", "es2015"],
   "env": {
     "development": {
-      "presets": ["react-hmre"]
+      "presets": ["react-hmre"] // Bundles hot-reloading related code
     }
-  },
-  "plugins": [
-    "transform-class-properties"
-  ]
+  }
 }

@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PropTypes } from 'react';
 import toastr from 'toastr';
 import classnames from 'classnames';
 import 'froala-editor/js/froala_editor.pkgd.min';

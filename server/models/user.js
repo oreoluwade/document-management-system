@@ -24,41 +24,54 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: { len: 6 }
     },
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 2
-    },
+    }
   }, {
-      hooks: {
-        beforeCreate(user) {
-          user.hashPassword();
-        }
+    classMethods: {
+      associate: (models) => {
+        // associations can be defined here
+        User.belongsTo(models.Role, {
+          onDelete: 'CASCADE',
+          foreignKey: 'roleId'
+        });
+        User.hasMany(models.Document, {
+          onDelete: 'CASCADE',
+          foreignKey: 'ownerId'
+        });
       }
-    });
+    },
+    freezeTableName: true,
 
-  User.associate = (models) => {
-    User.belongsTo(models.Role, {
-      onDelete: 'CASCADE',
-      foreignKey: 'roleId'
-    });
+    instanceMethods: {
+      /**
+       * Compare plain password to hashed one
+       * @method
+       * @param {String} password
+       * @returns {Boolean} password match
+       */
+      validPassword(password) {
+        return bcrypt.compareSync(password, this.password);
+      },
 
-    User.hasMany(models.Document, {
-      onDelete: 'CASCADE',
-      foreignKey: 'ownerId'
-    });
-  }
-
-  User.prototype.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.password);
-  };
-
-  User.prototype.hashPassword = function () {
-    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(9));
-  };
-
-  freezeTableName: true
-
+      /**
+       * Hash password received from user
+       * @method
+       * @returns {void}
+       */
+      hashPassword() {
+        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(9));
+      }
+    },
+    hooks: {
+      beforeCreate(user) {
+        user.hashPassword();
+      }
+    }
+  });
   return User;
 };

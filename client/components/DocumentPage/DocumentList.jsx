@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { deleteDocument } from '../../actions/documentActions';
@@ -68,9 +67,9 @@ class DocumentList extends Component {
 
 DocumentList.propTypes = {
   deleteDocument: PropTypes.func.isRequired,
-  docs: PropTypes.array.isRequired,
+  docs: React.PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  user: React.PropTypes.object.isRequired,
 };
 
 /**

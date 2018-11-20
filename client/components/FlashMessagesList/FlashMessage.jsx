@@ -1,9 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable import/no-extraneous-dependencies */
+
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
-class FlashMessage extends Component {
-  onClick = () => {
+class FlashMessage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
     this.props.deleteFlashMessage(this.props.message.id);
   }
 
