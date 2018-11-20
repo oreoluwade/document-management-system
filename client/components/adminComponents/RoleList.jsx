@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { addDisabledClass } from './disabledItems';
 
 
-const RoleList = ({ roles, editRole, deleteRole }) =>
-  (
+const RoleList = ({ roles, editRole, deleteRole }) => {
+  const handleEditRole = roleToBeEdited => editRole(roleToBeEdited)
+  const handleDeleteRole = roleToBeDeleted => deleteRole(roleToBeDeleted)
+
+  return (
     <div className="role-collection">
       <ul className="collection">
         {roles
@@ -14,12 +17,18 @@ const RoleList = ({ roles, editRole, deleteRole }) =>
                 <div className="col s4 offset s2 email">{role.title}</div>
                 <div className="col s2 name">{role.id}</div>
                 <div className="user-buttons row col s3">
-                  <a className={`waves-effect waves-light btn blue-grey ${addDisabledClass(role.title)}`}
-                    onClick={() => editRole(role)}>
-                    <i className="tiny material-icons left">edit</i>edit</a>
-                  <a className={`waves-effect waves-light btn blue-grey ${addDisabledClass(role.title)}`}
-                    onClick={() => deleteRole(role.id)}>
-                    <i className="tiny material-icons left">delete</i>delete</a>
+                  <a
+                    className={`waves-effect waves-light btn blue-grey ${addDisabledClass(role.title)}`}
+                    onClick={handleEditRole(role)}>
+                    <i className="tiny material-icons left">edit</i>
+                    edit
+                  </a>
+                  <a
+                    className={`waves-effect waves-light btn blue-grey ${addDisabledClass(role.title)}`}
+                    onClick={handleDeleteRole(role.id)}>
+                    <i className="tiny material-icons left">delete</i>
+                    delete
+                  </a>
                 </div>
               </div>
             </li>
@@ -27,6 +36,7 @@ const RoleList = ({ roles, editRole, deleteRole }) =>
       </ul>
     </div>
   );
+};
 
 RoleList.propTypes = {
   editRole: PropTypes.func.isRequired,

@@ -9,27 +9,17 @@ import { addFlashMessage } from '../../actions/flashMessages';
 import RoleForm from './RoleForm';
 
 class ManangeRolePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayForm: false,
-      role: {}
-    };
-    this.deleteRole = this.deleteRole.bind(this);
-    this.renderRoleForm = this.renderRoleForm.bind(this);
-    this.renderAlert = this.renderAlert.bind(this);
-    this.cancelRoleForm = this.cancelRoleForm.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.loadRoles();
-  }
+  state = {
+    displayForm: false,
+    role: {}
+  };
 
   componentDidMount() {
+    this.props.loadRoles();
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  renderAlert(id) {
+  renderAlert = (id) => {
     this.props.swal({
       title: 'Warning!',
       text: 'Are you sure you want to delete role?',
@@ -40,7 +30,7 @@ class ManangeRolePage extends React.Component {
     });
   }
 
-  deleteRole(id) {
+  deleteRole = (id) => {
     this.props.deleteRole(id)
       .then(() => toastr.success('Role Successfully Deleted'))
       .catch(() => {
@@ -53,19 +43,23 @@ class ManangeRolePage extends React.Component {
       });
   }
 
-  renderRoleForm(role = {}) {
+  renderRoleForm = (role = {}) => {
     const text = 'Update Role Details';
     this.setState({ displayForm: true, text, role });
   }
 
-  cancelRoleForm() {
+  cancelRoleForm = () => {
     this.setState({ displayForm: false, user: {} });
   }
 
-
-
   render() {
-    const { roles } = this.props;
+    const {
+      roles,
+      state: { displayForm, role },
+      renderAlert,
+      renderRoleForm,
+      cancelRoleForm,
+    } = this;
     return (
       <div>
         <div className="row">
@@ -74,12 +68,12 @@ class ManangeRolePage extends React.Component {
               <h4 className="center">Manage Role Details and Permissions</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                  <RoleList editRole={this.renderRoleForm} deleteRole={this.renderAlert} roles={roles} />
+                  <RoleList editRole={renderRoleForm} deleteRole={renderAlert} roles={roles} />
                 </div>
-                {this.state.displayForm && <div className="col s5">
+                {displayForm && <div className="col s5">
                   <div>
                     <h6>{this.state.text}</h6>
-                    <RoleForm cancel={this.cancelRoleForm} role={this.state.role} />
+                    <RoleForm cancel={cancelRoleForm} role={role} />
                   </div>
                 </div>}
               </div>
@@ -101,17 +95,17 @@ ManangeRolePage.propTypes = {
   addFlashMessage: PropTypes.func.isRequired
 };
 
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
-  console.log(state.manageRoles);
   const { roles } = state.manageRoles;
   return {
     roles
   };
 }
 
-export default connect(mapStateToProps,
-  { loadRoles, deleteRole, swal, close, addFlashMessage })(ManangeRolePage);
+export default connect(mapStateToProps, {
+  loadRoles,
+  deleteRole,
+  swal,
+  close,
+  addFlashMessage
+})(ManangeRolePage);

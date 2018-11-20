@@ -8,18 +8,10 @@ import { addFlashMessage } from '../../actions/flashMessages';
 import { loadRoles } from '../../actions/roleActions';
 
 class UserForm extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      errors: {},
-      user: props.user || {},
-    };
-    this.onChange = this.onChange.bind(this);
-    this.updateUser = this.updateUser.bind(this);
-    // this.saveUser = this.saveUser.bind(this);
-    // this.clearError = this.clearError.bind(this);
-  }
+  state = {
+    errors: {},
+    user: this.props.user || {},
+  };
 
   componentDidMount() {
     this.props.loadRoles();
@@ -32,7 +24,7 @@ class UserForm extends React.Component {
     }
   }
 
-  onChange(event) {
+  handleInputChange = (event) => {
     const { name: field, value } = event.target;
     this.setState((state) => {
       const user = Object.assign({},
@@ -43,10 +35,9 @@ class UserForm extends React.Component {
     });
   }
 
-  updateUser(e) {
+  handleUpdateUser = (e) => {
     e.preventDefault();
     const { user } = this.state;
-    // this.props.updateUserAdmin(this.state.user).then(() => {
     this.props.updateUserAdmin(user).then(() => {
       toastr.success('User Updated Successfully');
     }).catch(() => {
@@ -60,8 +51,13 @@ class UserForm extends React.Component {
 
 
   render() {
-    const { userName, firstName, lastName, email, roleId } = this.state.user;
-    const { roles = [] } = this.props;
+    const {
+      state: { userName, firstName, lastName, email, roleId },
+      props: { roles = [], cancel },
+      handleInputChange,
+      handleUpdateUser
+    } = this;
+
     const form = (
       <div className="col s12 z-depth-5 card-panel">
         <form className="login-form">
@@ -73,7 +69,7 @@ class UserForm extends React.Component {
               value={firstName}
               placeholder="first name"
               icon="person_outline"
-              onChange={this.onChange}
+              onChange={handleInputChange}
             />
           </div>
           <div className="row margin">
@@ -84,7 +80,7 @@ class UserForm extends React.Component {
               value={lastName}
               placeholder="last name"
               icon="person_outline"
-              onChange={this.onChange}
+              onChange={handleInputChange}
             />
           </div>
           <div className="row margin">
@@ -95,7 +91,7 @@ class UserForm extends React.Component {
               value={userName}
               placeholder="username"
               icon="person"
-              onChange={this.onChange}
+              onChange={handleInputChange}
             />
           </div>
           <div className="row margin">
@@ -106,15 +102,19 @@ class UserForm extends React.Component {
               value={email}
               placeholder="email"
               icon="email"
-              onChange={this.onChange}
+              onChange={handleInputChange}
             />
           </div>
           <div className="row margin">
             <label>User Role</label>
             <div className="input-field col s12">
-              <select name="roleId" id="mySelectBox"
+              <select
+                name="roleId"
+                id="mySelectBox"
                 value={roleId}
-                className="browser-default" onChange={this.onChange}>
+                className="browser-default"
+                onChange={handleInputChange}
+              >
                 <option value="" disabled >User Role</option>
                 {roles.map(role =>
                   (<option key={role.id}
@@ -131,12 +131,12 @@ class UserForm extends React.Component {
                 type="submit"
                 value="Save"
                 className="btn waves-effect waves-light blue-grey"
-                onClick={this.updateUser} />
+                onClick={handleUpdateUser} />
               <input
                 type="submit"
                 value="Cancel"
                 className="btn waves-effect waves-light blue-grey"
-                onClick={this.props.cancel} />
+                onClick={cancel} />
             </div>
           </div>
         </form>
@@ -150,7 +150,6 @@ class UserForm extends React.Component {
   }
 }
 
-
 UserForm.propTypes = {
   roles: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
@@ -161,10 +160,6 @@ UserForm.propTypes = {
   cancel: PropTypes.func,
 };
 
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
   const { roles } = state.manageRoles;
   return {
@@ -172,5 +167,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,
-  { loadRoles, saveUserAdmin, updateUserAdmin, addFlashMessage })(UserForm);
+export default connect(mapStateToProps, {
+  loadRoles,
+  saveUserAdmin,
+  updateUserAdmin,
+  addFlashMessage
+})(UserForm);
