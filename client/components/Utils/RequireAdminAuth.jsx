@@ -1,30 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addFlashMessage } from '../../actions/flashMessages';
 
 export default function (ComposedComponent) {
   class Authenticate extends React.Component {
-    componentWillMount() {
+    componentDidMount() {
       if (!this.props.isAuthenticated) {
         this.props.addFlashMessage({
           type: 'error',
           text: 'You need to login to access this page'
         });
-        this.context.router.push('/login');
       }
       if (this.props.isAuthenticated && this.props.isAdmin !== 1) {
         this.props.addFlashMessage({
           type: 'error',
           text: 'Only Admin has rights to access this page'
         });
-        this.context.router.push('/login');
       }
+      this.props.history.push('/login');
     }
 
     componentWillUpdate(nextProps) {
       if (!nextProps.isAuthenticated) {
-        this.context.router.push('/login');
+        this.props.history.push('/login');
       }
     }
 
@@ -34,15 +34,11 @@ export default function (ComposedComponent) {
     }
   }
 
-
   Authenticate.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     addFlashMessage: PropTypes.func.isRequired,
-    isAdmin: PropTypes.number.isRequired
-  };
-
-  Authenticate.contextTypes = {
-    router: PropTypes.object.isRequired
+    isAdmin: PropTypes.number.isRequired,
+    history: PropTypes.object
   };
 
   function mapStateToProps(state) {
@@ -56,5 +52,5 @@ export default function (ComposedComponent) {
     };
   }
 
-  return connect(mapStateToProps, { addFlashMessage })(Authenticate);
+  return withRouter(connect(mapStateToProps, { addFlashMessage })(Authenticate));
 }
