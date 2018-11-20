@@ -8,7 +8,6 @@ import { addFlashMessage } from '../../actions/flashMessages';
 class RoleForm extends React.PureComponent {
   state = {
     role: this.props.role || {},
-    // titleValue: Object.assign({}, props.roleValue).title,
   };
 
   componentDidMount() {
@@ -36,29 +35,33 @@ class RoleForm extends React.PureComponent {
   handleSaveRole = (e) => {
     e.preventDefault();
     const { role } = this.state;
-    this.props.saveRole(role).then(() => {
-      toastr.success('Role Successfully Saved!');
-    }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to save role, please try again.'
+    this.props.saveRole(role)
+      .then(() => {
+        toastr.success('Role Successfully Saved!');
+      })
+      .catch(() => {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'Unable to save role, please try again.'
+        });
+        toastr.error('Unable to save role');
       });
-      toastr.error('Unable to save role');
-    });
   }
 
   handleUpdateRole = (e) => {
     e.preventDefault();
     const { role } = this.state;
-    this.props.updateRole(role).then(() => {
-      toastr.success('Role Successfully Updated!');
-    }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update role'
+    this.props.updateRole(role)
+      .then(() => {
+        toastr.success('Role Successfully Updated!');
+      })
+      .catch(() => {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'Unable to update role'
+        });
+        toastr.error('Unable to update role');
       });
-      toastr.error('Unable to update role');
-    });
   }
 
   render() {

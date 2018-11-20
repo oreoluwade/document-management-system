@@ -12,6 +12,7 @@ export default function (ComposedComponent) {
           type: 'error',
           text: 'You need to login to access this page'
         });
+        this.props.history.push('/login');
       }
       if (this.props.isAuthenticated && this.props.isAdmin !== 1) {
         this.props.addFlashMessage({
@@ -19,7 +20,6 @@ export default function (ComposedComponent) {
           text: 'Only Admin has rights to access this page'
         });
       }
-      this.props.history.push('/login');
     }
 
     componentWillUpdate(nextProps) {
@@ -29,15 +29,14 @@ export default function (ComposedComponent) {
     }
 
     render() {
-      return (<ComposedComponent {...this.props} />
-      );
+      return <ComposedComponent {...this.props} />;
     }
   }
 
   Authenticate.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     addFlashMessage: PropTypes.func.isRequired,
-    isAdmin: PropTypes.number.isRequired,
+    isAdmin: PropTypes.number,
     history: PropTypes.object
   };
 

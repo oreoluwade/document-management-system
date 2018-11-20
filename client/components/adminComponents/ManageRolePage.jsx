@@ -54,8 +54,8 @@ class ManangeRolePage extends React.Component {
 
   render() {
     const {
-      roles,
-      state: { displayForm, role },
+      props: { roles },
+      state: { displayForm, role, text },
       renderAlert,
       renderRoleForm,
       cancelRoleForm,
@@ -72,7 +72,7 @@ class ManangeRolePage extends React.Component {
                 </div>
                 {displayForm && <div className="col s5">
                   <div>
-                    <h6>{this.state.text}</h6>
+                    <h6>{text}</h6>
                     <RoleForm cancel={cancelRoleForm} role={role} />
                   </div>
                 </div>}
