@@ -1,23 +1,18 @@
-import React, { PropTypes } from 'react';
-import { Link, IndexLink } from 'react-router';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import classname from 'classnames';
 import { logout } from '../../actions/authenticationAction';
 import { searchDocuments } from '../../actions/documentActions';
 
 export class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.logout = this.logout.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-  }
 
-  logout(e) {
+  logout = (e) => {
     e.preventDefault();
     this.props.logout();
   }
 
-  handleSearch(e) {
+  handleSearch = (e) => {
     const path = this.props.location.pathname.slice(1);
     if (['dashboard', 'documents'].includes(path)) {
       this.props.searchDocuments(e.target.value);
@@ -38,15 +33,15 @@ export class Header extends React.Component {
               </div>
             </form>
           </li>
-          <li><Link to="/dashboard" activeClassName="active">
+          <li><Link to="/dashboard" activeclassname="active">
             <i className="material-icons left">dashboard</i>Dashboard</Link></li>
-          <li activeClassName="active">
+          <li activeclassname="active">
             <a href="#">Welcome, {user.userName}!</a>
           </li>
-          <li activeClassName="active">
+          <li activeclassname="active">
             <Link to="/profilepage">Profile</Link>
           </li>
-          <li activeClassName="active" id="personalDocs">
+          <li activeclassname="active" id="personalDocs">
             <Link to="/documents">Saved Documents</Link>
           </li>
           {isAdmin &&
@@ -58,15 +53,15 @@ export class Header extends React.Component {
             <Link to="/admin/handleusers">Manage Users</Link>
           </li>}
           <li>
-            <a href="#" activeClassName="active" onClick={this.logout}>Logout</a>
+            <a href="#" activeclassname="active" onClick={this.logout}>Logout</a>
           </li>
         </ul>
       );
     }
     return (
       <ul>
-        <li><Link to="/signup" activeClassName="active">Signup</Link></li>
-        <li><Link to="/login" activeClassName="active">Login</Link></li>
+        <li><Link to="/signup" activeclassname="active">Signup</Link></li>
+        <li><Link to="/login" activeclassname="active">Login</Link></li>
       </ul>
     );
   }
@@ -76,8 +71,8 @@ export class Header extends React.Component {
     return (
       <nav className="blue-grey">
         <div className="nav-wrapper">
-          <IndexLink to="/" activeClassName="active">
-            <i className="material-icons left">home</i>Home</IndexLink>
+          <Link to="/" activeclassname="active">
+            <i className="material-icons left">home</i>Home</Link>
           <ul id="nav-mobile" className="right">
             <li>
               {navLinks}
@@ -91,7 +86,7 @@ export class Header extends React.Component {
 
 Header.propTypes = {
   user: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.object,
   isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
@@ -112,4 +107,6 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { logout, searchDocuments })(Header);
+const ConnectedHeader = connect(mapStateToProps, { logout, searchDocuments })(Header);
+
+export default withRouter(ConnectedHeader);

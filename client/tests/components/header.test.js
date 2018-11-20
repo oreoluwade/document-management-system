@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Link, IndexLink } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Header, mapStateToProps } from '../../components/Common/Header';
 
 describe('Header Component', () => {
@@ -19,7 +19,7 @@ describe('Header Component', () => {
     });
     it('should have Links', () => {
       expect(wrapper.find(Link)).to.have.length(2);
-      expect(wrapper.find(IndexLink)).to.have.length(1);
+      // expect(wrapper.find(IndexLink)).to.have.length(1);
     });
   });
 
@@ -38,7 +38,7 @@ describe('Header Component', () => {
     it('should have Links', () => {
       expect(navItem.html()).to.contain(`Hello, ${authProps.user.userName}`);
       expect(wrapper.find(Link)).to.have.length(2);
-      expect(wrapper.find(IndexLink)).to.have.length(1);
+      // expect(wrapper.find(IndexLink)).to.have.length(1);
     });
     it('should trigger logout when clicked', () => {
       const logoutLink = navItem.find('li').last().find('a');

@@ -1,7 +1,5 @@
 /* eslint no-console: "off" */
-
 import express from 'express';
-import parser from 'body-parser';
 import Routes from './routes';
 
 require('dotenv').config();
@@ -14,8 +12,8 @@ const app = express();
 app.set('hiddenDetails', secret);
 
 // Parse incoming requests data
-app.use(parser.json());
-app.use(parser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Requiring the routes into the application
 Routes(app);

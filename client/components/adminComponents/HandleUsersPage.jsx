@@ -1,5 +1,5 @@
-/* eslint class-methods-use-this: "off"*/
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
@@ -96,8 +96,8 @@ HandleUsersPage.propTypes = {
   deleteUser: PropTypes.func.isRequired,
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-  users: React.PropTypes.array,
+  addFlashMessage: PropTypes.func.isRequired,
+  users: PropTypes.array,
 };
 
 
