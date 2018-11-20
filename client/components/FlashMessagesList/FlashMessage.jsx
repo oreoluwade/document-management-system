@@ -2,38 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-class FlashMessage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
+const FlashMessage = ({ message: { id, type, text }, deleteFlashMessage }) => {
+  const handleClick = () => {
+    deleteFlashMessage(id);
+  };
 
-  onClick() {
-    this.props.deleteFlashMessage(this.props.message.id);
-  }
-
-  render() {
-    const { type, text } = this.props.message;
-    return (
-      <div className="row">
-        <div className="col s12 l12">
-          <div id="card-alert" className={classnames('card', {
+  return (
+    <div className="row">
+      <div className="col s12 l12">
+        <div
+          id="card-alert"
+          className={classnames('card', {
             green: type === 'success',
             red: type === 'error'
-          })}>
-            <div className="card-content white-text">
-              <button type="button" id="dismissSignup"
-                onClick={this.onClick} className="close right">
-                <span>&times;</span>
-              </button>
-              <p>{text}</p>
-            </div>
+          })}
+        >
+          <div className="card-content white-text">
+            <button
+              type="button"
+              id="dismissSignup"
+              onClick={handleClick}
+              className="close right"
+            >
+              <span>&times;</span>
+            </button>
+            <p>{text}</p>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 FlashMessage.propTypes = {
   message: PropTypes.object.isRequired,
