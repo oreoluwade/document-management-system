@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint class-methods-use-this: "off"*/
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentForm from '../DocumentPage/DocumentForm';
 
@@ -16,8 +16,7 @@ class CommonModal extends React.Component {
       <div>
         <div id="docDisplayModal" className="modal">
           <div>
-            <a
-              href="#"
+            <a href="#"
               className="btn-floating btn-flat blue-grey closeModal modal-close">
               <i className="material-icons">close</i>
             </a>
@@ -37,8 +36,14 @@ CommonModal.propTypes = {
   doc: PropTypes.object
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
+/**
+ * @param  {object} state
+ * @return {object}
+ */
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
 
 export default connect(mapStateToProps)(CommonModal);

@@ -124,7 +124,7 @@ describe('The User Model Test Suite', () => {
               return User.build(fakeUser).save();
             })
             .catch((error) => {
-              expect(/SequelizeUniqueConstraintError/.test(error.name)).to.be.true;
+              expect(/UniqueConstraintError/.test(error.name)).to.be.true;
             });
         });
       });
@@ -135,7 +135,7 @@ describe('The User Model Test Suite', () => {
         user.email = 'lagbaja tamedo';
         user.save()
           .catch((error) => {
-            expect(/Validation isEmail on email failed/.test(error.message)).to.be.true;
+            expect(/isEmail failed/.test(error.message)).to.be.true;
             expect(/SequelizeValidationError/.test(error.name)).to.be.true;
             done();
           });

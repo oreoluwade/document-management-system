@@ -2,9 +2,7 @@
   "root": true,
   "extends": "airbnb-base",
   "plugins": [
-    "react",
-    "jsx-a11y",
-    "import"
+    "react"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -32,28 +30,19 @@
     "browser": true,
     "node": true,
     "es6": true,
-    "jest": true
+    "mocha": true,
+    "jquery": true
+  },
+  "globals": {
+    "sinon": true,
+    "expect": true
   },
   "rules": {
-    "function-paren-newline": 0,
-    "max-len": [2, 90, 4],
-    "import/no-unresolved": [0],
-    "import/named": 0,
-    "import/extensions": 0,
-    "import/no-extraneous-dependencies": [
-      "error", {
-        "devDependencies": true, "optionalDependencies": true, "peerDependencies": true
-      }
-    ],
     "class-methods-use-this": 0,
     "one-var": 0,
     "one-var-declaration-per-line": 0,
     "new-cap": 0,
-    "consistent-return": 1,
-    "prefer-destructuring": ["error", {
-      "array": true,
-      "object": true
-    }],
+    "consistent-return": 0,
     "no-param-reassign": 0,
     "comma-dangle": 0,
     "curly": [
@@ -108,13 +97,12 @@
     "react/no-set-state": 0,
     "react/no-unknown-property": 1,
     "react/prefer-es6-class": 1,
-    "import/prefer-default-export": 0,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 1,
-    "react/require-extension": 0,
+    "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 0,
+    "react/wrap-multilines": 1,
     "require-jsdoc": [
       0,
       {

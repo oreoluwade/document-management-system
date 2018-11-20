@@ -1,10 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PropTypes } from 'react';
 
-const TextFieldGroup = ({
-  field, value, label, error, type, onChange,
-  checkUserExists, clearError, placeholder, icon
-}) => {
+const TextFieldGroup = ({ field, value, label, error, type, onChange,
+  checkUserExists, clearError, placeholder, icon }) => {
   let errorClass = 'input-field col s12';
   if (error && error.length > 0) {
     errorClass += 'red-text';

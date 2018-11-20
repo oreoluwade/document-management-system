@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint class-methods-use-this: "off"*/
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
@@ -8,7 +8,7 @@ import { loadRoles, deleteRole } from '../../actions/roleActions';
 import { addFlashMessage } from '../../actions/flashMessages';
 import RoleForm from './RoleForm';
 
-class ManangeRolePage extends Component {
+class ManangeRolePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +98,7 @@ ManangeRolePage.propTypes = {
   roles: PropTypes.array.isRequired,
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  addFlashMessage: React.PropTypes.func.isRequired
 };
 
 /**
