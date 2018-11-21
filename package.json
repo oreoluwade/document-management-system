@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node tools/distServer",
+    "start:server": "babel-watch server/server.js",
     "dev:start": "babel-node tools/startLog.js",
     "dev": "npm-run-all dev:start open:src",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
@@ -46,6 +47,8 @@
   },
   "homepage": "https://github.com/andela-oaboluwarin/document-management-system#readme",
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-watch": "^2.0.7",
     "chai": "^3.5.0",
     "compression": "1.6.1",
     "coveralls": "^3.0.2",
