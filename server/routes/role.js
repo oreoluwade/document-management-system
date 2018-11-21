@@ -5,13 +5,13 @@ import authorization from '../middlewares/authorization';
 const router = express.Router();
 
 router.route('/')
-  .all(authorization.validateToken, authorization.validateAdmin)
+  .all(authorization.authenticate, authorization.authorizeAdmin)
   .get(roleController.getAllRoles)
   .post(roleController.createRole);
 
 
 router.route('/:id')
-  .all(authorization.validateToken, authorization.validateAdmin)
+  .all(authorization.authenticate, authorization.authorizeAdmin)
   .get(roleController.getRole)
   .put(roleController.updateRole)
   .delete(roleController.deleteRole);
