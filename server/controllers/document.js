@@ -1,8 +1,6 @@
 import models from '../models';
 
-const Document = models.Document;
-const User = models.User;
-const Role = models.Role;
+const { Role, User, Document } = models;
 
 const accessLevels = {
   public: 'public',
@@ -10,87 +8,72 @@ const accessLevels = {
   role: 'role'
 };
 
-module.exports = {
-  createDocument: (request, response) => {
-    const newDocument = request.body;
-    Document.findOrCreate({
+export default {
+  createDocument(req, res) {
+    const { title, content, access } = req.body;
+    Document.find({
       where: {
-        title: newDocument.title,
-        ownerId: newDocument.ownerId
-      },
-      defaults: {
-        title: newDocument.title,
-        content: newDocument.content,
-        access: newDocument.access,
-        ownerId: newDocument.ownerId
+        $and: [
+          {
+            title,
+            ownerId: req.decoded.id
+          }
+        ]
       }
     })
-      .spread((document, created) => {
-        if (!created) {
-          return response.status(409)
-            .send({ message: 'A Document with that Title already exists' });
+      .then((docFound) => {
+        if (!docFound) {
+          return Document.create({ title, content, access, ownerId: req.decoded.id })
+            .then(document => res.send(document))
+            .catch(err => res.send(err));
         }
-        return response.status(201)
-          .send({ document, message: 'Document successfully created!' });
+        return res.status(409).send({ message: 'You already have a document with that title' });
       })
-      .catch(error => response.status(400).send(error));
+      .catch(error => res.send(error));
   },
 
-  getDocument: (request, response) => {
-    // Shouldn't the user come before the document?
-    Document.findById(request.params.id)
+  getOneDocument(req, res) {
+    Document.findById(req.params.id)
       .then((foundDocument) => {
         if (!foundDocument) {
-          return response.status(404)
-            .send({
-              message: `No document found with id: ${request.params.id}`
-            });
+          return res.status(404).send({ message: `No document found with id: ${req.params.id}` });
         }
 
         if (foundDocument.access === accessLevels.public) {
-          return response.status(200)
-            .send(foundDocument);
+          return res.send(foundDocument);
         }
 
         if ((foundDocument.access === accessLevels.private) &&
-          (foundDocument.ownerId === request.decoded.id)) {
-          return response.status(200)
-            .send(foundDocument);
+          (foundDocument.ownerId === req.decoded.id)) {
+          return res.send(foundDocument);
         }
         if (foundDocument.access === accessLevels.role) {
           return User.findById(foundDocument.ownerId)
             .then((documentOwner) => {
-              if (documentOwner.roleId === request.decoded.roleId) {
-                return response.status(200)
-                  .send(foundDocument);
+              if (documentOwner.roleId === req.decoded.roleId) {
+                return res.send(foundDocument);
               }
-              return response.status(403)
-                .send({
-                  message: 'You are not permitted to access this document'
-                });
+              return res.status(403).send({ message: 'You are not permitted to access this document' });
             });
         }
-        return response.status(403)
-          .send({
-            message: 'You are not permitted to access this document'
-          });
-      });
+        return res.status(403).send({ message: 'You are not permitted to access this document' });
+      })
+      .catch(err => res.send(err));
   },
 
-  getDocuments: (request, response) => {
-    const { id, userRoleId } = request.decoded;
-    if (request.query.limit < 0 || request.query.offset < 0) {
-      return response.status(400)
-        .send({ message: 'Only Positive integers are permitted.' });
+  getAllDocuments(req, res) {
+    const { id, roleId } = req.decoded;
+    if (req.query.limit < 0 || req.query.offset < 0) {
+      return res.status(400).send({ message: 'Limit/Offset must be a positive integer' });
     }
 
     let query = {
-      limit: request.query.limit || null,
-      offset: request.query.offset || null,
+      limit: req.query.limit || null,
+      offset: req.query.offset || null,
       order: [['createdAt', 'DESC']]
     };
 
-    const queryoptions = {
+    const queryOptions = {
       where: {
         $or: [
           { access: 'public' },
@@ -100,83 +83,98 @@ module.exports = {
       },
       include: [{
         model: User,
-        where: { roleId: userRoleId },
+        where: { roleId },
         as: 'owner'
       }]
     };
 
-    if (userRoleId !== 1) {
-      query = Object.assign({}, query, queryoptions);
+    if (roleId !== 1) {
+      query = Object.assign({}, query, queryOptions);
     }
 
     Document.findAll(query)
-      .then(documents => response.status(200).send(documents));
+      .then((documents) => {
+        if (documents.length) return res.send(documents);
+        return res.send({ message: 'No Documents created yet' });
+      })
+      .catch(error => res.send(error));
   },
 
-  editDocument: (request, response) => {
-    Document.findById(request.params.id)
-      .then((documentFound) => {
-        if (!documentFound) {
-          return response.status(404)
-            .send({
-              message:
-              `document with id: ${request.params.id} not found`
-            });
-        }
-        if (documentFound.ownerId === request.decoded.id) {
-          documentFound.update(request.body)
-            .then(editedDocument => response.status(200)
-              .send({ editedDocument, message: 'Update Successful!' }));
+  editDocument(req, res) {
+    Document.findById(req.params.id)
+      .then((document) => {
+        if (!document) return res.status(404).send({ message: `document with id: ${req.params.id} not found` });
+        if (document.ownerId === req.decoded.id) {
+          const updatableObject = {
+            title: req.body.title,
+            content: req.body.content,
+            access: req.body.access
+          };
+
+          document.update(updatableObject)
+            .then((updatedDocument) => {
+              const responseObject = { ...updatedDocument.dataValues, message: 'Update Successful!' };
+              return res.send(responseObject);
+            })
+            .catch(err => res.send(err));
         } else {
-          return response.status(403)
+          return res.status(403)
             .send({ message: 'You are not the owner of this document.' });
         }
       });
   },
 
-  deleteDocument: (request, response) => {
-    Document.findById(request.params.id)
+  deleteDocument(req, res) {
+    Document.findById(req.params.id)
       .then((foundDocument) => {
         if (!foundDocument) {
-          return response.status(404)
+          return res.status(404)
             .send({
               message:
-              `document with id: ${request.params.id} not found`
+              `Document with id: ${req.params.id} not found`
             });
         }
-        if (foundDocument.ownerId === request.decoded.id) {
+        if (foundDocument.ownerId === req.decoded.id) {
           foundDocument.destroy()
-            .then(() => response.status(200)
+            .then(() => res.status(200)
               .send({ message: 'Document successfully deleted' }));
         } else {
-          return response.status(403)
+          return res.status(403)
             .send({
               message:
               'You cannot delete a document that does not belong to you.'
             });
         }
-      });
+      })
+      .catch(err => res.send(err));
   },
 
-  findUserDocuments: (request, response) => {
-    Document.findAll({ where: { ownerId: request.params.id } })
-      .then((foundDocuments) => {
-        if (!foundDocuments) {
-          return response.status(404)
-            .send({
-              message: `No Document(s) found for user with ID
-              ${request.params.id}`
+  getUserDocuments(req, res) {
+    if (req.decoded.id === Number(req.params.id) || req.decoded.id === 1) {
+      return User.findById(req.params.id)
+        .then((user) => {
+          if (!user) return res.status(404).send({ message: `No User with ID: ${req.params.id}` });
+          return Document.findAll({ where: { ownerId: req.params.id } })
+            .then((documents) => {
+              if (!documents.length) {
+                return res.status(404)
+                  .send({
+                    message: `User with (ID: ${req.params.id}) has no documents created yet`
+                  });
+              }
+              return res.send(documents);
             });
-        }
-        return response.status(200)
-          .send(foundDocuments);
-      });
+        });
+    }
+    return res.send({
+      message: `You are not authorized to view the documents for user with ID: ${req.params.id}`
+    });
   },
 
-  searchDocuments: (request, response) => {
-    const queryString = request.query.query;
-    const role = Math.abs(request.query.role, 10);
-    const publishedDate = request.query.publishedDate;
+  searchDocuments(req, res) {
+    const queryString = req.query.query;
+    const role = Math.abs(req.query.role, 10);
+    const publishedDate = req.query.publishedDate;
     const order = /^ASC$/i.test(publishedDate) ? publishedDate : 'DESC';
 
     const query = {
@@ -184,12 +182,12 @@ module.exports = {
         $and: [{
           $or: [
             { access: 'public' },
-            { ownerId: request.decoded.id }
+            { ownerId: req.decoded.id }
           ]
         }],
       },
-      limit: request.query.limit || null,
-      offset: request.query.offset || null,
+      limit: req.query.limit || null,
+      offset: req.query.offset || null,
       order: [['createdAt', order]]
     };
 
@@ -216,8 +214,9 @@ module.exports = {
     }
 
     Document.findAll(query)
-      .then((foundDocuments) => {
-        response.send(foundDocuments);
-      });
+      .then((documents) => {
+        res.send(documents);
+      })
+      .catch(err => res.send(err));
   }
 };

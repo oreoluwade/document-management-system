@@ -1,20 +1,21 @@
 import express from 'express';
-import documentController from '../controllers/document';
-import authorization from '../middlewares/authorization';
+import { documentController } from '../controllers';
+import authorization from '../middlewares';
 
 const router = express.Router();
 
-router.route('/')
-  .all(authorization.validateToken)
-  .get(documentController.getDocuments)
-  .post(documentController.createDocument);
+router.route('/add')
+  .post(authorization.authenticate, documentController.createDocument);
+
+router.route('/all')
+  .get(authorization.authenticate, documentController.getAllDocuments);
 
 router.route('/search')
-  .get(authorization.validateToken, documentController.searchDocuments);
+  .get(authorization.authenticate, documentController.searchDocuments);
 
 router.route('/:id')
-  .all(authorization.validateToken)
-  .get(documentController.getDocument)
+  .all(authorization.authenticate)
+  .get(documentController.getOneDocument)
   .put(documentController.editDocument)
   .delete(documentController.deleteDocument);
 

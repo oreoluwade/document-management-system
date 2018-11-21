@@ -19,8 +19,8 @@ router.route('/:id')
 router.route('/checkUser/:identifier')
   .get(userController.checkUserExistence);
 
-router.route('/:id/document')
-  .get(authorization.authenticate, documentController.findUserDocuments);
+router.route('/:id/documents')
+  .get(authorization.authenticate, documentController.getUserDocuments);
 
 router.route('/login')
   .post(userController.login);
