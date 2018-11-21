@@ -109,7 +109,7 @@
     "font-awesome": "^4.7.0",
     "froala-editor": "^2.5.1",
     "jquery": "2.2.3",
-    "jsonwebtoken": "^7.3.0",
+    "jsonwebtoken": "^7.4.3",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
     "material-icons": "^0.1.0",
