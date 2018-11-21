@@ -1,30 +1,31 @@
 import express from 'express';
-import userController from '../controllers/user';
-import documentController from '../controllers/document';
-import authorization from '../middlewares/authorization';
+import { userController, documentController } from '../controllers';
+import authorization from '../middlewares';
 
 const router = express.Router();
 
-router.route('/')
-  .get(authorization.validateToken, authorization.validateAdmin, userController.getAllUsers)
+router.route('/all')
+  .get(authorization.authenticate, authorization.authorizeAdmin, userController.getAllUsers);
+
+router.route('/register')
   .post(userController.createUser);
 
-
 router.route('/:id')
-  .get(authorization.validateToken, userController.getUser)
-  .put(authorization.validateToken, userController.updateUserDetails)
-  .delete(authorization.validateToken, userController.deleteUser);
+  .all(authorization.authenticate)
+  .get(userController.getOneUser)
+  .put(userController.updateUserDetails)
+  .delete(userController.deleteUser);
 
-router.route('/findUser/:identifier')
-  .get(userController.fetchExistingUser);
+router.route('/checkUser/:identifier')
+  .get(userController.checkUserExistence);
 
 router.route('/:id/document')
-  .get(authorization.validateToken, documentController.findUserDocuments);
+  .get(authorization.authenticate, documentController.findUserDocuments);
 
 router.route('/login')
-  .post(userController.userLogin);
+  .post(userController.login);
 
 router.route('/logout')
-  .post(userController.userLogout);
+  .delete(userController.logout);
 
 export default router;
