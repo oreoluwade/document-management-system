@@ -22,6 +22,7 @@ export class Header extends React.Component {
   getLinks({ isAuthenticated, user, isAdmin }) {
     const path = this.props.location.pathname.slice(1);
     const enabled = ['dashboard', 'documents'].includes(path);
+
     if (isAuthenticated) {
       return (
         <ul>
@@ -36,7 +37,7 @@ export class Header extends React.Component {
           <li><Link to="/dashboard" activeclassname="active">
             <i className="material-icons left">dashboard</i>Dashboard</Link></li>
           <li activeclassname="active">
-            <a href="#">Welcome, {user.userName}!</a>
+            <a href="#" style={{ color: 'black' }}>{user.userName}</a>
           </li>
           <li activeclassname="active">
             <Link to="/profilepage">Profile</Link>
@@ -93,11 +94,7 @@ Header.propTypes = {
   isAdmin: PropTypes.bool.isRequired
 };
 
-/**
- * @param {object}
- * @returns {object} data
- */
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { auth: { isAuthenticated, user } } = state;
   const isAdmin = isAuthenticated && user.userRoleId === 1;
   return {

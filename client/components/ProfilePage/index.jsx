@@ -5,19 +5,14 @@ import { bindActionCreators } from 'redux';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import { updateUserInfo, getUserInfo } from '../../actions/userActions';
 
-class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.state = {
-      user: props.user || user || {}
-    };
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.submitData = this.submitData.bind(this);
-    this.renderAlert = this.renderAlert.bind(this);
-  }
+const localStorageUser = JSON.parse(localStorage.getItem('user'));
 
-  componentWillMount() {
+class ProfilePage extends React.Component {
+  state = {
+    user: this.props.user || localStorageUser || {}
+  };
+
+  componentDidMount() {
     this.props.getUserInfo();
     $('.tooltipped').tooltip({ delay: 50 });
   }
@@ -28,7 +23,7 @@ class ProfilePage extends React.Component {
     });
   }
 
-  handleOnChange(event) {
+  handleInputChange = (event) => {
     const { name: field, value } = event.target;
     return this.setState((state) => {
       const user = Object.assign({}, state.user, { [field]: value });
@@ -36,15 +31,14 @@ class ProfilePage extends React.Component {
     });
   }
 
-  submitData() {
+  handleDataSubmit = () => {
     const userInfo = this.state.user;
     return this.props.updateUserInfo(userInfo);
   }
 
-  renderAlert() {
+  renderAlert = () => {
     this.props.swal({
       title: 'Are you sure you want to update your details?',
-      text: 'yes',
       type: 'warning',
       showCancelButton: true,
       onConfirm: this.submitData,
@@ -53,7 +47,19 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const { firstName = '', lastName = '', userName = '', email = '' } = this.state.user;
+    const {
+      state: {
+        user: {
+          firstName = '',
+          lastName = '',
+          userName = '',
+          email = ''
+        }
+      },
+      renderAlert,
+      handleInputChange
+    } = this;
+
     return (
       <div>
         <div className="row">
@@ -72,7 +78,7 @@ class ProfilePage extends React.Component {
                             name="firstName"
                             value={firstName}
                             className="validate"
-                            onChange={this.handleOnChange}
+                            onChange={handleInputChange}
                           />
                           <label className="active" htmlFor="first_name">First Name</label>
                         </div>
@@ -83,7 +89,7 @@ class ProfilePage extends React.Component {
                             type="text"
                             value={lastName}
                             className="validate"
-                            onChange={this.handleOnChange}
+                            onChange={handleInputChange}
                           />
                           <label className="active" htmlFor="last_name">Last Name</label>
                         </div>
@@ -95,7 +101,7 @@ class ProfilePage extends React.Component {
                             type="text"
                             name="userName"
                             value={userName}
-                            onChange={this.handleOnChange}
+                            onChange={handleInputChange}
                             className="validate"
                           />
                           <label className="active" htmlFor="first_name">Username</label>
@@ -106,7 +112,7 @@ class ProfilePage extends React.Component {
                             type="email"
                             value={email}
                             name="email"
-                            onChange={this.handleOnChange}
+                            onChange={handleInputChange}
                             className="validate"
                           />
                           <label className="active" htmlFor="email">Email</label>
@@ -116,10 +122,10 @@ class ProfilePage extends React.Component {
                             <button
                               className="btn waves-effect blue-grey"
                               type="button"
-                              onClick={() => this.renderAlert()}
+                              onClick={renderAlert}
                             >
                               Update
-                                </button>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -145,11 +151,6 @@ ProfilePage.propTypes = {
   swal: PropTypes.func
 };
 
-
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
   const { user } = state.handleUsers;
   return {

@@ -5,20 +5,12 @@ import toastr from 'toastr';
 import { saveRole, updateRole, loadRoles } from '../../actions/roleActions';
 import { addFlashMessage } from '../../actions/flashMessages';
 
-class RoleForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      role: props.role || {},
-      // titleValue: Object.assign({}, props.roleValue).title,
-    };
+class RoleForm extends React.PureComponent {
+  state = {
+    role: this.props.role || {},
+  };
 
-    this.onChange = this.onChange.bind(this);
-    this.saveRole = this.saveRole.bind(this);
-    this.updateRole = this.updateRole.bind(this);
-  }
-
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadRoles();
   }
 
@@ -28,7 +20,7 @@ class RoleForm extends React.Component {
     }
   }
 
-  onChange(event) {
+  handleInputChange = (event) => {
     event.preventDefault();
     const { name: field, value } = event.target;
     this.setState((state) => {
@@ -40,36 +32,48 @@ class RoleForm extends React.Component {
     });
   }
 
-  saveRole(e) {
+  handleSaveRole = (e) => {
     e.preventDefault();
     const { role } = this.state;
-    this.props.saveRole(role).then(() => {
-      toastr.success('Role Successfully Saved!');
-    }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to save role, please try again.'
+    this.props.saveRole(role)
+      .then(() => {
+        toastr.success('Role Successfully Saved!');
+      })
+      .catch(() => {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'Unable to save role, please try again.'
+        });
+        toastr.error('Unable to save role');
       });
-      toastr.error('Unable to save role');
-    });
   }
 
-  updateRole(e) {
+  handleUpdateRole = (e) => {
     e.preventDefault();
     const { role } = this.state;
-    this.props.updateRole(role).then(() => {
-      toastr.success('Role Successfully Updated!');
-    }).catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update role'
+    this.props.updateRole(role)
+      .then(() => {
+        toastr.success('Role Successfully Updated!');
+      })
+      .catch(() => {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'Unable to update role'
+        });
+        toastr.error('Unable to update role');
       });
-      toastr.error('Unable to update role');
-    });
   }
 
   render() {
-    const { title, id } = this.state.role;
+    const {
+      props: { cancel },
+      state: {
+        role: { title, id }
+      },
+      handleInputChange,
+      handleUpdateRole,
+      handleSaveRole,
+    } = this;
     const form = (
       <div className="col s12 z-depth-5 card-panel">
         <form>
@@ -82,7 +86,7 @@ class RoleForm extends React.Component {
                 value={title}
                 placeholder="title"
                 className="validate"
-                onChange={this.onChange}
+                onChange={handleInputChange}
               />
               <input
                 type="text"
@@ -91,7 +95,7 @@ class RoleForm extends React.Component {
                 value={id}
                 placeholder="id"
                 className="validate"
-                onChange={this.onChange}
+                onChange={handleInputChange}
               />
 
               <label htmlFor="title" className="active">Role Title</label>
@@ -102,12 +106,12 @@ class RoleForm extends React.Component {
                 type="submit"
                 value="Save"
                 className="btn waves-effect waves-light blue-grey"
-                onClick={id ? this.updateRole : this.saveRole} />
+                onClick={id ? handleUpdateRole : handleSaveRole} />
               <input
                 type="submit"
                 value="Cancel"
                 className="btn waves-effect waves-light blue-grey"
-                onClick={this.props.cancel} />
+                onClick={cancel} />
             </div>
           </div>
         </form>
@@ -131,10 +135,6 @@ RoleForm.propTypes = {
   cancel: PropTypes.func
 };
 
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
   const { roles } = state.manageRoles;
   return {
@@ -142,4 +142,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadRoles, saveRole, updateRole, addFlashMessage })(RoleForm);
+export default connect(mapStateToProps, {
+  loadRoles,
+  saveRole,
+  updateRole,
+  addFlashMessage
+})(RoleForm);

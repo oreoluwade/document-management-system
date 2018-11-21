@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,38 +10,29 @@ import { addFlashMessage } from '../../actions/flashMessages';
 import UserForm from './UserForm';
 
 class HandleUsersPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayForm: false,
-      user: {}
-    };
-    this.deleteUser = this.deleteUser.bind(this);
-    this.renderUserForm = this.renderUserForm.bind(this);
-    this.renderAlert = this.renderAlert.bind(this);
-    this.cancelUserForm = this.cancelUserForm.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.retrieveUsers();
-  }
+  state = {
+    text: '',
+    displayForm: false,
+    user: {}
+  };
 
   componentDidMount() {
+    this.props.retrieveUsers();
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  renderAlert(id) {
+  renderAlert = (id) => {
     this.props.swal({
       title: 'Warning!',
       text: 'Are you sure you want to delete user?',
       type: 'info',
       showCancelButton: true,
-      onConfirm: () => this.deleteUser(id),
+      onConfirm: () => this.handleDeleteUser(id),
       onCancel: this.props.close,
     });
   }
 
-  deleteUser(id) {
+  handleDeleteUser = (id) => {
     this.props.deleteUser(id)
       .then(() => toastr.success('User Successfully Deleted'))
       .catch(() => {
@@ -48,22 +40,32 @@ class HandleUsersPage extends React.Component {
           type: 'error',
           text: 'Unable to delete user'
         });
-        toastr.error(
-          'Unable to delete user');
+        toastr.error('Unable to delete user');
       });
   }
 
-  renderUserForm(user = {}) {
+  renderUserForm = (user = {}) => {
     const text = 'Update User Details';
-    this.setState({ displayForm: true, text, user });
+    this.setState(() => ({
+      displayForm: true,
+      text,
+      user
+    }));
   }
 
-  cancelUserForm() {
-    this.setState({ displayForm: false, user: {} });
+  cancelUserForm = () => {
+    this.setState(() => ({ displayForm: false, user: {} }));
   }
 
   render() {
-    const { users } = this.props;
+    const {
+      state: { displayForm, user, text },
+      props: { users },
+      cancelUserForm,
+      renderUserForm,
+      renderAlert,
+    } = this;
+
     return (
       <div>
         <div className="row">
@@ -72,12 +74,16 @@ class HandleUsersPage extends React.Component {
               <h4 className="center">Manage User Details and Permissions</h4>
               <div className="row manage-user">
                 <div className="col user-list">
-                  <UserList editUser={this.renderUserForm} deleteUser={this.renderAlert} users={users} />
+                  <UserList
+                    editUser={() => renderUserForm}
+                    deleteUser={() => renderAlert}
+                    users={users}
+                  />
                 </div>
-                {this.state.displayForm && <div className="col s5">
+                {displayForm && <div className="col s5">
                   <div>
-                    <h6>{this.state.text}</h6>
-                    <UserForm cancel={this.cancelUserForm} user={this.state.user} />
+                    <h6>{text}</h6>
+                    <UserForm cancel={cancelUserForm} user={user} />
                   </div>
                 </div>}
               </div>
@@ -90,7 +96,6 @@ class HandleUsersPage extends React.Component {
   }
 }
 
-
 HandleUsersPage.propTypes = {
   retrieveUsers: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
@@ -100,11 +105,6 @@ HandleUsersPage.propTypes = {
   users: PropTypes.array,
 };
 
-
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
   const { users } = state.handleUsers;
   return {
@@ -112,12 +112,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,
-  {
-    retrieveUsers,
-    deleteUser,
-    swal,
-    close,
-    addFlashMessage
-  })(HandleUsersPage);
+export default connect(mapStateToProps, {
+  retrieveUsers,
+  deleteUser,
+  swal,
+  close,
+  addFlashMessage
+})(HandleUsersPage);
 

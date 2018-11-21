@@ -1,8 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TextFieldGroup = ({ field, value, label, error, type, onChange,
-  checkUserExists, clearError, placeholder, icon }) => {
+const TextFieldGroup = ({
+  field,
+  value,
+  label,
+  error,
+  type,
+  onChange,
+  checkUserExists,
+  clearError,
+  placeholder,
+  icon
+}) => {
   let errorClass = 'input-field col s12';
   if (error && error.length > 0) {
     errorClass += 'red-text';
@@ -31,7 +41,7 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange,
 
 TextFieldGroup.propTypes = {
   field: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   label: PropTypes.string,
   icon: PropTypes.string.isRequired,
   error: PropTypes.string,
@@ -43,7 +53,8 @@ TextFieldGroup.propTypes = {
 };
 
 TextFieldGroup.defaultProps = {
-  type: 'text'
+  type: 'text',
+  value: '',
 };
 
 export default TextFieldGroup;

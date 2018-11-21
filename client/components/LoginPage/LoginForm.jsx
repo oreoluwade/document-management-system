@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import toastr from 'toastr';
 import TextFieldGroup from '../Common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
@@ -8,50 +9,46 @@ import { login } from '../../actions/authenticationAction';
 import { addFlashMessage } from '../../actions/flashMessages';
 
 class LoginForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      identifier: '',
-      password: '',
-      errors: {},
-      isLoading: false
-    };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+  state = {
+    identifier: '',
+    password: '',
+    errors: {},
+    isLoading: false
+  };
 
   isValid() {
     const { errors, isValid } = validateInput(this.state);
-
-    if (!isValid) {
-      return this.setState({ errors });
-    }
-    return isValid;
+    return !isValid ? this.setState({ errors }) : isValid;
   }
 
-  onSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
-      this.props.login(this.state).then(
-        (res) => {
-          this.context.router.push('/dashboard');
-          toastr.success('Logged in Successfully!');
-        },
-        err => this.setState({ errors: err.response.data.errors, isLoading: false })
-      );
+      this.props.login(this.state)
+      .then(() => {
+        this.props.history.push('/dashboard');
+        toastr.success('Logged in Successfully!');
+      },
+      err => this.setState({
+        errors: err.response.data.errors,
+        isLoading: false
+      }));
     }
   }
 
-  onChange(e) {
+  handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
-    const { errors, identifier, password, isLoading } = this.state;
+    const {
+      state: { errors, identifier, password, isLoading },
+      handleInputChange,
+    } = this;
     return (
 
-        <form className="login-form" onSubmit={this.onSubmit}>
+        <form className="login-form" onSubmit={this.handleSubmit}>
 
           <div className="row margin">
           <TextFieldGroup
@@ -60,7 +57,7 @@ class LoginForm extends React.Component {
             label="Username / Email"
             value={identifier}
             error={errors.identifier}
-            onChange={this.onChange}
+            onChange={handleInputChange}
             type="text"
             />
           </div>
@@ -72,7 +69,7 @@ class LoginForm extends React.Component {
             label="Password"
             value={password}
             error={errors.password}
-            onChange={this.onChange}
+            onChange={handleInputChange}
             type="password"
             />
           </div>
@@ -91,11 +88,10 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   login: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  addFlashMessage: PropTypes.func.isRequired,
+  history: PropTypes.object,
 };
 
-LoginForm.contextTypes = {
-  router: PropTypes.object.isRequired
-};
+const ConnectedLoginForm = connect(null, { login, addFlashMessage })(LoginForm);
 
-export default connect(null, { login, addFlashMessage })(LoginForm);
+export default withRouter(ConnectedLoginForm);

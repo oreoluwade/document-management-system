@@ -4,31 +4,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import DocumentList from './DocumentList';
 import * as documentActions from '../../actions/documentActions';
-import CommonModal from '../Common/CommonModal';
+import { CustomModal } from '../Common';
 
 class DocumentPage extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      doc: {}
-    };
-
-    this.addNewDocument = this.addNewDocument.bind(this);
-  }
-
-  componentWillMount() {
-    const { id } = this.props.user;
-    this.props.actions.loadUserDocuments(id);
-  }
+  state = {
+    doc: {}
+  };
 
   componentDidMount() {
+    const { id } = this.props.user;
+    this.props.actions.loadUserDocuments(id);
     $('.modal').modal();
     $('select').material_select();
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  addNewDocument(doc = {}) {
+  addNewDocument = (doc = {}) => {
     this.setState({ doc }, () => {
       $('#docDisplayModal').modal('open');
     });
@@ -36,13 +27,15 @@ class DocumentPage extends React.Component {
 
 
   render() {
-    const { personalDocuments } = this.props;
+    const {
+      props: { personalDocuments },
+      state: { doc }
+    } = this;
     const count = personalDocuments.length;
 
     return (
       <div className="document-page row">
         <div className="col s12 z-depth-5 card-panel">
-          {/* <h4 className="center">MY DOCUMENTS</h4>*/}
           <div className="row">
             <div className="col s12">
               <div className="row">
@@ -59,7 +52,7 @@ class DocumentPage extends React.Component {
               </div>
             </div>
           </div>
-          <CommonModal doc={this.state.doc}/>
+          <CustomModal doc={doc}/>
         </div>
       </div>
     );
@@ -72,22 +65,16 @@ DocumentPage.propTypes = {
   actions: PropTypes.object.isRequired,
 };
 
-/**
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps({
   handleDocuments: { documents, chosenDocument },
   auth: { user, isAuthenticated }
 }) {
   let personalDocuments = [];
   if (isAuthenticated) {
-    personalDocuments = documents.filter(
-      doc => doc.ownerId === user.id);
+    personalDocuments = documents.filter(doc => doc.ownerId === user.id);
   }
 
-  const publicDocuments = documents.filter(
-    doc => doc.access === 'public');
+  const publicDocuments = documents.filter(doc => doc.access === 'public');
 
   return {
     personalDocuments,
@@ -97,10 +84,6 @@ function mapStateToProps({
   };
 }
 
-/**
- * @param {any} dispatch
- * @returns {any}
- */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(documentActions, dispatch)

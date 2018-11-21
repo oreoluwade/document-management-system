@@ -1,14 +1,7 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-/**
- * [documentReducer description]
- * @param  {[type]} [state=initialState.handleDocuments]
- * @param  {object} action
- * @return {[type]}
- */
-export default function
-documentReducer(state = initialState.handleDocuments, action) {
+function documentReducer(state = initialState.handleDocuments, action) {
   switch (action.type) {
     case types.LOAD_DOCUMENT_SUCCESS:
       return Object.assign({}, ...state, { documents: action.document });
@@ -29,3 +22,5 @@ documentReducer(state = initialState.handleDocuments, action) {
       return state;
   }
 }
+
+export default documentReducer;

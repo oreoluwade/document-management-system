@@ -14,9 +14,8 @@ before_script:
   - psql -c 'create database testdb;' -U postgres
   - npm run db:migrate
 
-
 before_deploy:
-  - npm run build && cd dist && ls
+  - npm run build
 
 deploy:
   provider: heroku

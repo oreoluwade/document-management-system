@@ -6,25 +6,17 @@ import {
   loadAllDocuments
 } from '../../actions/documentActions';
 import DocumentList from '../DocumentPage/DocumentList';
-import CommonModal from '../Common/CommonModal';
+import { CustomModal } from '../Common';
 
 
 class DashboardPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isPrivate: false,
-      doc: {}
-    };
-
-    this.renderModal = this.renderModal.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.loadAllDocuments();
-  }
+  state = {
+    isPrivate: false,
+    displayedDocument: {}
+  };
 
   componentDidMount() {
+    this.props.loadAllDocuments();
     $('.modal').modal();
     $('select').material_select();
     $('.tooltipped').tooltip({ delay: 50 });
@@ -33,14 +25,19 @@ class DashboardPage extends React.Component {
     $('ul.tabs').tabs('select_tab', 'public');
   }
 
-  renderModal(doc = {}) {
-    this.setState({ doc }, () => {
+  renderModal = (displayedDocument = {}) => {
+    this.setState({ displayedDocument }, () => {
       $('#docDisplayModal').modal('open');
     });
   }
 
   render() {
-    const { publicDocuments, roleDocuments, privateDocuments } = this.props;
+    const {
+      props: { publicDocuments, roleDocuments, privateDocuments },
+      state: { displayedDocument },
+      renderModal,
+    } = this;
+
     return (
       <div className="dashboard row">
         <div className="col s12">
@@ -66,18 +63,18 @@ class DashboardPage extends React.Component {
                   </ul>
                 </div>
                 <div className="col s12">
-                  <CommonModal doc={this.state.doc}/>
+                  <CustomModal doc={displayedDocument}/>
                   <div id="private" className="col s12 tab-style">
-                    <h6 className="center">All Private Documents</h6>
-                    <DocumentList showModal={this.renderModal} docs={privateDocuments} />
+                    <h6 className="center">Private Documents</h6>
+                    <DocumentList showModal={renderModal} docs={privateDocuments} />
                   </div>
                   <div id="public" className="col s12 tab-style">
-                    <h6 className="center">All Public Documents</h6>
-                    <DocumentList showModal={this.renderModal} docs={publicDocuments} />
+                    <h6 className="center">Public Documents</h6>
+                    <DocumentList showModal={renderModal} docs={publicDocuments} />
                   </div>
                   <div id="role" className="col s12 tab-style">
-                    <h6 className="center">All Accessible Role Documents</h6>
-                    <DocumentList showModal={this.renderModal} docs={roleDocuments} />
+                    <h6 className="center">Documents Accessible to your Role</h6>
+                    <DocumentList showModal={renderModal} docs={roleDocuments} />
                   </div>
                 </div>
               </div>
@@ -98,30 +95,27 @@ DashboardPage.propTypes = {
   loadAllDocuments: PropTypes.func.isRequired,
 };
 
-const filterDocument = (role, documents) =>
-  documents.filter(doc => doc.access === role);
+const filterDocument = (role, documents) => documents.filter(doc => doc.access === role);
 
-
-/**
- * Helper function to get only required properties from state
- * @param {any} state
- * @returns {any}
- */
 function mapStateToProps(state) {
-  const { documents } = state.handleDocuments;
+  const {
+    handleDocuments: { documents },
+    auth
+  } = state;
   const publicDocuments = filterDocument('public', documents);
   const roleDocuments = filterDocument('role', documents);
   const privateDocuments = filterDocument('private', documents);
 
   return {
-    auth: state.auth,
+    auth,
     publicDocuments,
     roleDocuments,
     privateDocuments
   };
 }
 
-
-export default connect(mapStateToProps,
-  { loadUserDocuments, loadAllDocuments })(DashboardPage);
+export default connect(mapStateToProps, {
+  loadUserDocuments,
+  loadAllDocuments
+})(DashboardPage);
 

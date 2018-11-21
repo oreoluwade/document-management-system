@@ -7,7 +7,6 @@ import routes from '../routes';
 
 class App extends React.Component {
   render() {
-    console.log('here');
     return (
       <BrowserRouter>
         <React.Fragment>
@@ -22,9 +21,8 @@ class App extends React.Component {
               />
             ))}
           </Switch>
+          <FlashMessagesList />
         </React.Fragment>
-        {/* <FlashMessagesList />
-        {this.props.children} */}
       </BrowserRouter>
     );
   }
