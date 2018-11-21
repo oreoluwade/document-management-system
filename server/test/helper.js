@@ -1,67 +1,63 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import faker from 'faker';
 
-module.exports = {
-  createAdmin: () => {
-    const roleId = 1;
-    const fakeUser = {
+export default {
+  createAdmin() {
+    const adminUser = {
       userName: faker.internet.userName(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      roleId
+      roleId: 1
     };
-    return fakeUser;
+    return adminUser;
   },
 
-  createUser: () => {
-    const roleId = 2;
-    const fakeUser2 = {
+  createUser() {
+    const newUser = {
       userName: faker.internet.userName(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      roleId
+      roleId: 2
     };
-    return fakeUser2;
+    return newUser;
   },
 
-  createAdminRole: () => {
-    const testRole = {
+  createAdminRole() {
+    const adminRole = {
       title: 'admin',
     };
-    return testRole;
+    return adminRole;
   },
 
-  createRegularRole: () => {
-    const sampleRole = {
+  createRegularRole() {
+    const regularRole = {
       title: 'regular'
     };
-    return sampleRole;
+    return regularRole;
   },
 
-  createDocument: () => {
-    const fakeDocument = {
+  createDocument() {
+    const publicDocument = {
       title: faker.lorem.word(),
       content: faker.lorem.sentences(),
       access: 'public'
     };
-    return fakeDocument;
+    return publicDocument;
   },
 
-  createPrivateDocument: () => {
-    const testDocument = {
+  createPrivateDocument() {
+    const privateDocument = {
       title: faker.company.catchPhrase(),
       content: faker.lorem.paragraph(),
       access: 'private',
     };
-    return testDocument;
+    return privateDocument;
   },
 
-  createRoleDocument: () => {
+  createRoleDocument() {
     const sampleDocument = {
       title: faker.company.catchPhrase(),
       content: faker.lorem.paragraph(),
@@ -71,15 +67,15 @@ module.exports = {
   },
 
   documentsBundle() {
-    const documentProperties = [];
+    const documentArray = [];
     for (let i = 0; i <= 15; i += 1) {
-      documentProperties.push({
+      documentArray.push({
         title: faker.company.catchPhrase(),
         content: faker.lorem.paragraph(),
         ownerId: 1
       });
     }
-    return documentProperties;
+    return documentArray;
   }
 };
 
