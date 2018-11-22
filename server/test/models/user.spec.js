@@ -1,21 +1,26 @@
-/* eslint-disable no-unused-expressions */
-
 import { expect } from 'chai';
+import Sequelize from 'sequelize';
 import model from '../../models';
 import resourceCreator from '../resourceCreator';
 
-const Role = model.Role;
-const User = model.User;
+const { Role, User } = model;
 
-const fakeRole = resourceCreator.createAdminRole();
-const fakeUser = resourceCreator.createUser();
+const sampleAdminRole = resourceCreator.createAdminRole();
+const sampleAdminUser = resourceCreator.createAdmin();
+const sampleUser = resourceCreator.createUser();
 
-const requiredParams = ['userName', 'firstName', 'lastName', 'email',
-  'password', 'roleId'];
+const requiredUserFields = [
+  'userName',
+  'firstName',
+  'lastName',
+  'email',
+  'password',
+  'roleId'
+];
 
-const uniqueParams = ['userName', 'email'];
+const uniqueUserFields = ['userName', 'email'];
 
-describe('The User Model Test Suite', () => {
+describe('THE USER MODEL TEST SUITE', () => {
   before((done) => {
     model.sequelize.sync({ force: true })
       .then(() => {
@@ -26,22 +31,19 @@ describe('The User Model Test Suite', () => {
   describe('Creating a User', () => {
     let user;
     before((done) => {
-      Role.create(fakeRole)
-        .then((createdRole) => {
-          fakeUser.roleId = createdRole.id;
-          return User.create(fakeUser);
+      Role.create(sampleAdminRole)
+        .then(() => {
+          User.create(sampleAdminUser)
+            .then((createdUser) => {
+              user = createdUser;
+              done();
+            });
         })
-        .then((createdUser) => {
-          user = createdUser;
-          done();
-        });
     });
 
     after((done) => {
       model.sequelize.sync({ force: true })
-        .then(() => {
-          done();
-        });
+        .then(() => done());
     });
 
     it('should allow the creation of a user', () => {
@@ -49,35 +51,31 @@ describe('The User Model Test Suite', () => {
       expect(typeof user).to.equal('object');
     });
 
-    it('should ensure that a created user has a userName', () => {
-      expect(user.userName).to.equal(fakeUser.userName);
+    it('should ensure that a created user has all fields on the User model object', (done) => {
+      const userObject = user.dataValues;
+      expect(userObject).to.include.keys('userName');
+      expect(userObject).to.include.keys('firstName');
+      expect(userObject).to.include.keys('lastName');
+      expect(userObject).to.include.keys('email');
+      expect(userObject).to.include.keys('password');
+      expect(userObject).to.include.keys('createdAt');
+      expect(userObject).to.include.keys('updatedAt');
+      expect(userObject).to.include.keys('roleId');
+      expect(userObject).to.include.keys('id');
+      done();
     });
 
-    it('should ensure that a created user has a firstName', () => {
-      expect(user.firstName).to.equal(fakeUser.firstName);
+    it('should ensure that a created user has a defined role', (done) => {
+      User.findByPk(user.id, { include: [Role] })
+        .then((foundUser) => {
+          expect(foundUser.Role.title).to.equal(sampleAdminRole.title);
+        });
+      done();
     });
 
-    it('should ensure that a created user has a lastName', () => {
-      expect(user.lastName).to.equal(fakeUser.lastName);
-    });
-
-    it('should ensure that a created user has a valid email address', () => {
-      expect(user.email).to.equal(fakeUser.email);
-    });
-
-    it('should hash the password of the created user', () => {
-      expect(user.password).to.not.equal(fakeUser.password);
-    });
-
-    it('should ensure that a created user has a defined role', () =>
-      User.findById(user.id, { include: [Role] })
-        .then((createdUser) => {
-          expect(createdUser.Role.title).to.equal(fakeRole.title);
-        }));
-
-    it('should allow updating of a user details', (done) => {
-      User.findById(user.id)
-        .then(createdUser => createdUser.update({ userName: 'oreoluwade' }))
+    it('should allow for the update of user details', (done) => {
+      User.findByPk(user.id)
+        .then(foundUser => foundUser.update({ userName: 'oreoluwade' }))
         .then((updatedUser) => {
           expect(updatedUser.userName).to.equal('oreoluwade');
           done();
@@ -85,14 +83,17 @@ describe('The User Model Test Suite', () => {
     });
   });
 
-  describe('Validation of the User model', () => {
+  describe('User model validations', () => {
     let user;
     beforeEach((done) => {
-      Role.create(fakeRole)
-        .then((role) => {
-          fakeUser.roleId = role.id;
-          user = User.build(fakeUser);
-          done();
+      Role.create(sampleAdminRole)
+        .then(() => {
+          User.build(sampleAdminUser)
+            .save()
+            .then((createdUser) => {
+              user = createdUser;
+              done()
+            })
         });
     });
 
@@ -101,53 +102,54 @@ describe('The User Model Test Suite', () => {
         .then(() => done());
     });
 
-    describe('The fields necessary for user creation', () => {
-      requiredParams.forEach((field) => {
+    describe('The required fields for user creation', () => {
+      requiredUserFields.forEach((field) => {
         it(`requires ${field} to create a user`, (done) => {
           user[field] = null;
           user.save()
             .catch((error) => {
-              expect(/notNull Violation/.test(error.message)).to.be.true;
+              expect(error instanceof Sequelize.ValidationError).to.be.true;
+              expect(error.errors[0].message).to.equal(`User.${field} cannot be null`)
               done();
             });
         });
       });
     });
 
-    describe('Unique fields for user creation', () => {
-      uniqueParams.forEach((field) => {
-        it(`requires ${field} field to be Unique`, () => {
-          user.save()
-            .then((firstUser) => {
-              fakeUser.roleId = firstUser.roleId;
-              // attempt to create another user with same parameters
-              return User.build(fakeUser).save();
-            })
+    describe('The unique fields for user creation', () => {
+      uniqueUserFields.forEach((field) => {
+        it(`requires the ${field} field to be Unique`, () => {
+          User.build(sampleAdminUser).save()
             .catch((error) => {
-              expect(/UniqueConstraintError/.test(error.name)).to.be.true;
+              expect(error instanceof Sequelize.UniqueConstraintError).to.be.true;
+              expect(error.errors[0].message).to.equal('userName must be unique');
             });
         });
       });
     });
 
-    describe('Mail Validation', () => {
+    describe('Email Validation', () => {
       it('should require a properly formatted email', (done) => {
         user.email = 'lagbaja tamedo';
         user.save()
           .catch((error) => {
-            expect(/isEmail failed/.test(error.message)).to.be.true;
-            expect(/SequelizeValidationError/.test(error.name)).to.be.true;
+            expect(error instanceof Sequelize.ValidationError).to.be.true;
+            expect(error.errors[0].message).to.equal('Please, provide a valid email address');
             done();
           });
       });
     });
 
     describe('Password Validation', () => {
-      it('should be valided with the password validation function',
-        () => user.save()
-          .then((createdUser) => {
-            expect(createdUser.validPassword(fakeUser.password)).to.be.true;
-          }));
+      it('Password should be validated with the password validation function', (done) => {
+        expect(user.validPassword(sampleAdminUser.password)).to.be.true;
+        user.password = 'newPasskey';
+        user.save()
+          .then((updatedUser) => {
+            expect(updatedUser.validPassword('newPasskey')).to.be.true;
+          })
+        done();
+      });
     });
   });
 });

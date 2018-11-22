@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: { isEmail: true }
+      validate: {
+        isEmail: {
+          msg: 'Please, provide a valid email address'
+        }
+      }
     },
     password: {
       type: DataTypes.STRING,
@@ -33,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     freezeTableName: true,
-  }, {
     hooks: {
       beforeCreate(user) {
         user.hashPassword();
