@@ -4,7 +4,8 @@ import { expect } from 'chai';
 import supertest from 'supertest';
 import app from '../../app';
 import models from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
+
 
 const request = supertest(app);
 
@@ -12,15 +13,15 @@ const Document = models.Document;
 const User = models.User;
 const Role = models.Role;
 
-const adminRoleParams = helper.createAdminRole();
-const regularRoleParams = helper.createRegularRole();
-const adminUserParams = helper.createAdmin();
-const regularUserParams = helper.createUser();
-const randomUserParams = helper.createUser();
-const publicDocumentParams = helper.createDocument();
-const privateDocumentParams = helper.createPrivateDocument();
-const roleDocumentParams = helper.createRoleDocument();
-const documentsBundleParams = helper.documentsBundle();
+const adminRoleParams = resourceCreator.createAdminRole();
+const regularRoleParams = resourceCreator.createRegularRole();
+const adminUserParams = resourceCreator.createAdmin();
+const regularUserParams = resourceCreator.createUser();
+const randomUserParams = resourceCreator.createUser();
+const publicDocumentParams = resourceCreator.createDocument();
+const privateDocumentParams = resourceCreator.createPrivateDocument();
+const roleDocumentParams = resourceCreator.createRoleDocument();
+const documentsBundleParams = resourceCreator.documentsBundle();
 
 const compareDates = (dateA, dateB) =>
   new Date(dateA).getTime() <= new Date(dateB).getTime();

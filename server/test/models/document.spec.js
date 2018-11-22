@@ -2,14 +2,14 @@
 
 import { expect } from 'chai';
 import model from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
 
 const Role = model.Role;
 const User = model.User;
 const Document = model.Document;
 
-const fakeUser = helper.createUser();
-const fakeDocument = helper.createDocument();
+const fakeUser = resourceCreator.createUser();
+const fakeDocument = resourceCreator.createDocument();
 
 const requiredFields = ['title', 'content', 'access'];
 
@@ -19,7 +19,7 @@ describe('The Document Model Test Suite', () => {
     let owner;
 
     before((done) => {
-      Role.create(helper.createAdminRole())
+      Role.create(resourceCreator.createAdminRole())
         .then((createdRole) => {
           fakeUser.roleId = createdRole.id;
           return User.create(fakeUser);

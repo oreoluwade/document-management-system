@@ -1,15 +1,16 @@
 import { expect } from 'chai';
 import app from '../../app';
 import models from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
+
 
 const request = require('supertest')(app);
 
 const Role = models.Role;
 
-const adminParams = helper.createAdmin();
-const adminRoleParams = helper.createAdminRole();
-const regularRoleParams = helper.createRegularRole();
+const adminParams = resourceCreator.createAdmin();
+const adminRoleParams = resourceCreator.createAdminRole();
+const regularRoleParams = resourceCreator.createRegularRole();
 
 describe('Role API', () => {
   let token;

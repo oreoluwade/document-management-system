@@ -1,14 +1,15 @@
 import { expect } from 'chai';
 import app from '../../app';
 import model from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
+
 
 const request = require('supertest')(app);
 
-const adminUser = helper.createAdmin();
-const regularUser = helper.createUser();
-const firstRole = helper.createAdminRole();
-const secondRole = helper.createRegularRole();
+const adminUser = resourceCreator.createAdmin();
+const regularUser = resourceCreator.createUser();
+const firstRole = resourceCreator.createAdminRole();
+const secondRole = resourceCreator.createRegularRole();
 
 describe('User Authorization', () => {
   let adminToken, adminRole, regularRole, regularToken;

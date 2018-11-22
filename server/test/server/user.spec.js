@@ -3,15 +3,16 @@ import { expect } from 'chai';
 import supertest from 'supertest';
 import app from '../../app';
 import models from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
+
 
 const request = supertest(app);
 
 const Role = models.Role;
 const User = models.User;
 
-const firstRole = helper.createAdminRole();
-const fakeUser = helper.createUser();
+const firstRole = resourceCreator.createAdminRole();
+const fakeUser = resourceCreator.createUser();
 
 describe('User API', () => {
   let user;

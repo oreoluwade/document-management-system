@@ -2,13 +2,13 @@
 
 import { expect } from 'chai';
 import model from '../../models';
-import helper from '../helper';
+import resourceCreator from '../resourceCreator';
 
 const Role = model.Role;
 const User = model.User;
 
-const fakeRole = helper.createAdminRole();
-const fakeUser = helper.createUser();
+const fakeRole = resourceCreator.createAdminRole();
+const fakeUser = resourceCreator.createUser();
 
 const requiredParams = ['userName', 'firstName', 'lastName', 'email',
   'password', 'roleId'];
