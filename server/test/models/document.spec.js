@@ -1,38 +1,34 @@
-/* eslint-disable no-unused-expressions */
-
 import { expect } from 'chai';
+import { ValidationError } from 'sequelize';
 import model from '../../models';
 import resourceCreator from '../resourceCreator';
 
-const Role = model.Role;
-const User = model.User;
-const Document = model.Document;
+const { Role, User, Document } = model;
 
-const fakeUser = resourceCreator.createUser();
-const fakeDocument = resourceCreator.createDocument();
+const adminUser = resourceCreator.createAdmin();
+const sampleDocument = resourceCreator.createDocument();
 
 const requiredFields = ['title', 'content', 'access'];
 
-describe('The Document Model Test Suite', () => {
+describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
   describe('The Document Model', () => {
     let document;
     let owner;
 
     before((done) => {
       Role.create(resourceCreator.createAdminRole())
-        .then((createdRole) => {
-          fakeUser.roleId = createdRole.id;
-          return User.create(fakeUser);
-        })
-        .then((createdUser) => {
-          owner = createdUser;
-          fakeDocument.ownerId = owner.id;
-          done();
+        .then(() => {
+          User.create(adminUser)
+            .then((createdUser) => {
+              owner = createdUser;
+              sampleDocument.ownerId = owner.id;
+              done();
         });
+      });
     });
 
     beforeEach(() => {
-      document = Document.build(fakeDocument);
+      document = Document.build(sampleDocument);
     });
 
     afterEach(() => Document.destroy({ where: {} }));
@@ -40,7 +36,8 @@ describe('The Document Model Test Suite', () => {
     after(() => model.sequelize.sync({ force: true }));
 
     it('should allow a document be created', (done) => {
-      document.save()
+      document
+        .save()
         .then((createdDocument) => {
           expect(createdDocument).to.exist;
           expect(typeof createdDocument).to.equal('object');
@@ -49,10 +46,11 @@ describe('The Document Model Test Suite', () => {
     });
 
     it('should create a document that has both title and content', (done) => {
-      document.save()
+      document
+        .save()
         .then((createdDocument) => {
-          expect(createdDocument.title).to.equal(fakeDocument.title);
-          expect(createdDocument.content).to.equal(fakeDocument.content);
+          expect(createdDocument.title).to.equal(sampleDocument.title);
+          expect(createdDocument.content).to.equal(sampleDocument.content);
           done();
         });
     });
@@ -60,7 +58,7 @@ describe('The Document Model Test Suite', () => {
     it('should note the time the document was created', (done) => {
       document.save()
         .then((createdDocument) => {
-          expect(createdDocument.createdAt).to.exist;
+          expect(createdDocument.dataValues).to.include.keys('createdAt');
           done();
         });
     });
@@ -69,20 +67,22 @@ describe('The Document Model Test Suite', () => {
       (done) => {
         document.save()
           .then((createdDocument) => {
-            expect(createdDocument.access).to.equal('public');
+            expect(createdDocument.dataValues).to.include.keys('access');
+            expect(createdDocument.dataValues.access).to.exist;
             done();
           });
       });
 
     describe('Document Model Validations', () => {
-      describe(`The validation of the required fields for document
-      creation`, () => {
+      describe('Validate required fields for document creation', () => {
         requiredFields.forEach((field) => {
-          it(`requires a ${field} field to create a document`, () => {
+          it(`requires ${field} field to create a document`, (done) => {
             document[field] = null;
             return document.save()
               .catch((error) => {
-                expect(/notNull Violation/.test(error.message)).to.be.true;
+                expect(error instanceof ValidationError).to.be.true;
+                expect(error.errors[0].message).to.equal(`Document.${field} cannot be null`);
+                done();
               });
           });
         });
