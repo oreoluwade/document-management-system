@@ -6,16 +6,17 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     }
   }, {
-    classMethods: {
-      associate(models) {
-          // associations can be defined here
-        Role.hasMany(models.User, {
-          onDelete: 'CASCADE',
-          foreignKey: 'roleId'
-        });
-      }
-    },
     freezeTableName: true
   });
+
+  // Class Methods
+  Role.associate = (models) => {
+      // associations can be defined here
+    Role.hasMany(models.User, {
+      onDelete: 'CASCADE',
+      foreignKey: 'roleId'
+    });
+  }
+
   return Role;
 };

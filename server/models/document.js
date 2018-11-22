@@ -2,22 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const Document = sequelize.define('Document', {
     title: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: 'You must provide a Title'
-        }
-      }
+      allowNull: false
     },
 
     content: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: 'You cannot have an empty Document'
-        }
-      }
+      allowNull: false
     },
 
     access: {
@@ -38,17 +28,17 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   }, {
-    classMethods: {
-      associate(models) {
-          // associations can be defined here
-        Document.belongsTo(models.User, {
-          as: 'owner',
-          onDelete: 'CASCADE',
-          foreignKey: { allowNull: true }
-        });
-      }
-    },
     freezeTableName: true
   });
+
+    // Class Methods
+    Document.associate = (models) => {
+      Document.belongsTo(models.User, {
+        as: 'owner',
+        onDelete: 'CASCADE',
+        foreignKey: { allowNull: true }
+      });
+    }
+
   return Document;
 };

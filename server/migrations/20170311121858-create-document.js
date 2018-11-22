@@ -8,21 +8,11 @@ module.exports = {
     },
     title: {
       type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: 'You must provide a Title.'
-        }
-      }
+      allowNull: false
     },
     content: {
       type: Sequelize.TEXT,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: 'You cannot have an empty Document.'
-        }
-      }
+      allowNull: false
     },
     access: {
       type: Sequelize.STRING,
