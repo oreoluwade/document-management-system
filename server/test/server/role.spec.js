@@ -30,6 +30,8 @@ describe('THE ROLE API', () => {
       });
   });
 
+  after(() => models.sequelize.sync({ force: true }));
+
   describe('Role Requests', () => {
     describe('POST REQUEST: /role', () => {
       it('Should create a role when required params are provided', (done) => {

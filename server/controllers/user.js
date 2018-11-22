@@ -8,13 +8,13 @@ const secret = process.env.SECRET || 'secretconfirmation';
 export default {
   createUser(req, res) {
     const { userName, firstName, lastName, email, password, roleId } = req.body;
-    Role.find({ where: { id: roleId } })
+    Role.findOne({ where: { id: roleId } })
       .then((roleIdExists) => {
-        if (!roleIdExists) return res.status(400).json({ error: 'The role ID is invalid' });
-        User.find({ where: { email } })
+        if (!roleIdExists) return res.status(400).send({ error: 'The role ID is invalid' });
+        User.findOne({ where: { email } })
           .then((userFound) => {
             if (userFound) return res.status(409).send({ message: 'User Already Exists!' });
-            User.create({ userName, firstName, lastName, email, password })
+            User.create({ userName, firstName, lastName, email, password, roleId })
               .then((createdUser) => {
                 const token = jwt.sign({
                   id: createdUser.id,
@@ -23,7 +23,7 @@ export default {
                 }, secret);
 
                 const responseObject = { ...createdUser.dataValues, token };
-                return res.send(responseObject);
+                return res.status(201).send(responseObject);
               })
               .catch(error => res.send(error));
           });
@@ -32,12 +32,12 @@ export default {
   },
 
   getOneUser(req, res) {
-    User.findById(req.params.id)
+    User.findByPk(req.params.id)
       .then((user) => {
+        if (!user) return res.status(404).send({ message: `No user with ID: ${req.params.id}` });
         const responseObject = { ...user.dataValues };
         delete responseObject.password;
-        if (user) return res.send(responseObject);
-        return res.status(404).send({ error: `No user with ID: ${req.params.id}` });
+        return res.send(responseObject);
       });
   },
 
@@ -61,9 +61,11 @@ export default {
   },
 
   updateUserDetails: (req, res) => {
-    User.findById(req.params.id)
+    User.findByPk(req.params.id)
       .then((user) => {
-        if (!user) return res.status(404).send({ error: 'User does not exist' });
+        if (!user) {
+          return res.status(404).send({ message: `No user with ID: ${req.params.id}` });
+        }
         const updateObject = { ...req.body };
         const barredUpdateFields = ['createdAt', 'updatedAt', 'roleId', 'id'];
 
@@ -79,16 +81,16 @@ export default {
 
         if (identifierIsToBeUpdated) {
           if (updateObject.email) {
-            return User.find({ where: { email: updateObject.email } })
+            User.findOne({ where: { email: updateObject.email } })
               .then((result) => {
-                if (result) return res.status(409).send({ error: 'Email already in use' });
+                if (result) return res.status(409).send({ message: 'Email already in use' });
               });
           }
 
           if (updateObject.userName) {
-            return User.find({ where: { userName: updateObject.userName } })
+            User.findOne({ where: { userName: updateObject.userName } })
               .then((result) => {
-                if (result) return res.status(409).send({ error: 'Username already in use' });
+                if (result) return res.status(409).send({ message: 'Username already in use' });
               });
           }
         }
@@ -112,18 +114,24 @@ export default {
 
   deleteUser(req, res) {
     const { id } = req.params;
+    if (req.decoded.roleId !== 1) {
+      return res.status(401).send({ message: 'Only an admin can delete a user' });
+    }
+    if (req.decoded.roleId === Number(id)) {
+      return res.status(403).send({ message: 'You cannot delete an admin' });
+    }
     User.destroy({ where: { id } })
       .then((user) => {
         if (user === 1) {
-          return res.status(200).send({ message: 'User Removed' });
+          return res.status(200).send({ message: 'User Deleted' });
         }
-        return res.status(404).send({ message: 'User Not found' });
+        return res.status(404).send({ message: `No user with ID: ${req.params.id}` });
       });
   },
 
   login(req, res) {
     const { identifier, password } = req.body;
-    User.find({
+    User.findOne({
       where: {
         [Op.or]: [
           { email: identifier },
@@ -132,9 +140,9 @@ export default {
       }
     })
       .then((user) => {
-        if (!user) return res.status(401).send({ error: 'Invalid Credentials' });
+        if (!user) return res.status(401).send({ message: 'Invalid Credentials' });
         if (!user.validPassword(password)) {
-          return res.status(401).send({ error: 'Invalid Credentials' });
+          return res.status(401).send({ message: 'Invalid Credentials' });
         }
 
         const token = jwt.sign({
@@ -155,12 +163,12 @@ export default {
   },
 
   logout(req, res) {
-    return res.send({ message: 'Logout successful.' });
+    return res.send({ message: 'Logout successful' });
   },
 
   checkUserExistence(req, res) {
     const { identifier } = req.params;
-    User.find({
+    User.findOne({
       where: {
         [Op.or]: [
           { email: identifier },

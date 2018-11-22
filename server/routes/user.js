@@ -4,11 +4,17 @@ import authorization from '../middlewares';
 
 const router = express.Router();
 
-router.route('/all')
-  .get(authorization.authenticate, authorization.authorizeAdmin, userController.getAllUsers);
+router.route('/login')
+  .post(userController.login);
+
+router.route('/logout')
+  .delete(userController.logout);
 
 router.route('/register')
   .post(userController.createUser);
+
+router.route('/all')
+  .get(authorization.authenticate, authorization.authorizeAdmin, userController.getAllUsers);
 
 router.route('/:id')
   .all(authorization.authenticate)
@@ -21,11 +27,5 @@ router.route('/checkUser/:identifier')
 
 router.route('/:id/documents')
   .get(authorization.authenticate, documentController.getUserDocuments);
-
-router.route('/login')
-  .post(userController.login);
-
-router.route('/logout')
-  .delete(userController.logout);
 
 export default router;
