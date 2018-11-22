@@ -1,81 +1,86 @@
 import { expect } from 'chai';
+import supertest from 'supertest';
 import app from '../../app';
-import model from '../../models';
+import models from '../../models';
 import resourceCreator from '../resourceCreator';
 
-
-const request = require('supertest')(app);
+const request = supertest(app);
+const { Role } = models;
 
 const adminUser = resourceCreator.createAdmin();
 const regularUser = resourceCreator.createUser();
 const firstRole = resourceCreator.createAdminRole();
 const secondRole = resourceCreator.createRegularRole();
 
-describe('User Authorization', () => {
-  let adminToken, adminRole, regularRole, regularToken;
+describe('AUTHORIZATION TEST SUITE', () => {
+  let adminToken, regularToken;
   before((done) => {
-    model.Role.bulkCreate([firstRole, secondRole], {
-      returning: true
-    })
-      .then((createdRoles) => {
-        adminRole = createdRoles[0];
-        regularRole = createdRoles[1];
-        adminUser.roleId = adminRole.id;
-        regularUser.roleId = regularRole.id;
-
-        request.post('/user')
+    Role.bulkCreate([firstRole, secondRole], { returning: true })
+      .then(() => {
+        request.post('/user/register')
           .send(adminUser)
-          .end((error, response) => {
+          .then((response) => {
             adminToken = response.body.token;
-            request.post('/user')
+            request.post('/user/register')
               .send(regularUser)
-              .end((err, res) => {
+              .then((res) => {
                 regularToken = res.body.token;
                 done();
               });
+          })
+          .catch((error) => {
+            throw new Error(error);
           });
       });
   });
 
-  after(() => model.sequelize.sync({ force: true }));
+  after(() => models.sequelize.sync({ force: true }));
 
   it('should not authorize a user who does not have a token set', (done) => {
-    request.get('/user')
-      .end((error, response) => {
+    request
+      .get('/user/all')
+      .then((response) => {
         expect(response.status).to.equal(401);
+        expect(response.body).to.include.keys('message');
+        expect(response.body.message).to.equal('No token provided!');
         done();
       });
   });
 
-  it('should not authorize a user that has an invalid token', (done) => {
-    request.get('/user')
+  it('should not authorize a user that supplies an invalid token', (done) => {
+    request.get('/user/all')
       .set({ Authorization: 'trinity' })
-      .end((error, response) => {
+      .then((response) => {
         expect(response.status).to.equal(401);
+        expect(response.body).to.include.keys('message');
+        expect(response.body.message).to.equal('Invalid token');
         done();
       });
   });
 
-  it(`should not return all users if the user requesting for them is
-  not an admin user`, (done) => {
-    request.get('/user')
+  it('Should not permit fetching of all users for a non-admin user', (done) => {
+    request
+      .get('/user/all')
       .set({ Authorization: regularToken })
-      .expect(403, done);
+      .expect(403)
+      .then((response) => {
+        expect(response.body).to.include.keys('message');
+        expect(response.body.message).to.equal('Unauthorized');
+        done();
+      });
   });
 
-  it(`should correctly return all users when required valid token
-  and access levels are set`,
-    (done) => {
-      request.get('/user')
-        .set({ Authorization: adminToken })
-        .end((error, response) => {
-          expect(response.status).to.equal(200);
-          // eslint-disable-next-line no-unused-expressions
-          expect(Array.isArray(response.body.usersFound)).to.be.true;
-          expect(response.body.usersFound.length).to.be.greaterThan(0);
-          expect(response.body.usersFound[0].userName)
-            .to.equal(adminUser.userName);
-          done();
-        });
-    });
+  it('Should return all users when a valid admin token is supplied', (done) => {
+    request
+      .get('/user/all')
+      .set({ Authorization: adminToken })
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).to.equal(true);
+        expect(response.body.length).to.be.greaterThan(0);
+        expect(response.body.length).to.equal(2);
+        expect(response.body[0].userName).to.equal(adminUser.userName);
+        done();
+      });
+  });
 });
