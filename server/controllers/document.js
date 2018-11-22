@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import models from '../models';
 
 const { Role, User, Document } = models;
@@ -13,7 +14,7 @@ export default {
     const { title, content, access } = req.body;
     Document.find({
       where: {
-        $and: [
+        [Op.and]: [
           {
             title,
             ownerId: req.decoded.id
@@ -75,7 +76,7 @@ export default {
 
     const queryOptions = {
       where: {
-        $or: [
+        [Op.or]: [
           { access: 'public' },
           { access: 'role' },
           { ownerId: id }
@@ -179,8 +180,8 @@ export default {
 
     const query = {
       where: {
-        $and: [{
-          $or: [
+        [Op.and]: [{
+          [Op.or]: [
             { access: 'public' },
             { ownerId: req.decoded.id }
           ]
@@ -193,9 +194,9 @@ export default {
 
     if (queryString) {
       query.where.$and.push({
-        $or: [
-          { title: { $iLike: `%${queryString}%` } },
-          { content: { $iLike: `%${queryString}%` } }
+        [Op.or]: [
+          { title: { [Op.iLike]: `%${queryString}%` } },
+          { content: { [Op.iLike]: `%${queryString}%` } }
         ]
       });
     }

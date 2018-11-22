@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import models from '../models';
 
 const { Role, User } = models;
@@ -124,7 +125,7 @@ export default {
     const { identifier, password } = req.body;
     User.find({
       where: {
-        $or: [
+        [Op.or]: [
           { email: identifier },
           { userName: identifier }
         ]
@@ -161,7 +162,7 @@ export default {
     const { identifier } = req.params;
     User.find({
       where: {
-        $or: [
+        [Op.or]: [
           { email: identifier },
           { userName: identifier }
         ]
