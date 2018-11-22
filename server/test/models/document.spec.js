@@ -10,7 +10,7 @@ const sampleDocument = resourceCreator.createDocument();
 
 const requiredFields = ['title', 'content', 'access'];
 
-describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
+describe('THE DOCUMENT MODEL TEST SUITE', () => {
   describe('The Document Model', () => {
     let document;
     let owner;
@@ -23,8 +23,8 @@ describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
               owner = createdUser;
               sampleDocument.ownerId = owner.id;
               done();
+            });
         });
-      });
     });
 
     beforeEach(() => {
@@ -39,7 +39,6 @@ describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
       document
         .save()
         .then((createdDocument) => {
-          expect(createdDocument).to.exist;
           expect(typeof createdDocument).to.equal('object');
           done();
         });
@@ -68,7 +67,6 @@ describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
         document.save()
           .then((createdDocument) => {
             expect(createdDocument.dataValues).to.include.keys('access');
-            expect(createdDocument.dataValues.access).to.exist;
             done();
           });
       });
@@ -80,7 +78,7 @@ describe.only('THE DOCUMENT MODEL TEST SUITE', () => {
             document[field] = null;
             return document.save()
               .catch((error) => {
-                expect(error instanceof ValidationError).to.be.true;
+                expect(error instanceof ValidationError).to.equal(true);
                 expect(error.errors[0].message).to.equal(`Document.${field} cannot be null`);
                 done();
               });
