@@ -5,10 +5,12 @@ const { Role } = models;
 export default {
   createRole(req, res) {
     const { title } = req.body;
+    const bodyIncludesTitle = Object.keys(req.body).includes('title');
+    if (!!title.trim() || !bodyIncludesTitle) return res.send({ message: 'You must supply a valid title' });
     Role.findOne({ where: { title } })
       .then((roleExists) => {
         if (roleExists) {
-          return res.status(409).json({ message: 'Role Already Exists!' })
+          return res.status(409).json({ message: 'Role Already Exists!' });
         }
         Role.create({ title })
           .then((role) => {
