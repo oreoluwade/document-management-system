@@ -39,7 +39,7 @@ describe('THE DOCUMENT MODEL TEST SUITE', () => {
       document
         .save()
         .then((createdDocument) => {
-          expect(typeof createdDocument).to.equal('object');
+          expect(createdDocument.dataValues).to.include.keys('title');
           done();
         });
     });

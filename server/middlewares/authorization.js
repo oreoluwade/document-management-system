@@ -20,7 +20,6 @@ export default {
       .then((role) => {
         if (role.title.toLowerCase() === 'admin') return next();
         return res.status(403).send({ message: 'Unauthorized' });
-      })
-      .catch(err => res.send(err));
+      });
   }
 };

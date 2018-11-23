@@ -4,12 +4,8 @@ import { userRoutes, roleRoutes, documentRoutes } from './routes';
 
 dotenv.config();
 
-const secret = process.env.SECRET || 'secretconfirmation';
-
 // Set up the express app
 const app = express();
-
-app.set('hiddenDetails', secret);
 
 // Parse requests body&url
 app.use(express.json());

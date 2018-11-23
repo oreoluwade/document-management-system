@@ -46,9 +46,10 @@ describe('THE USER MODEL TEST SUITE', () => {
         .then(() => done());
     });
 
-    it('should allow the creation of a user', () => {
-      expect(user).to.exist;
-      expect(typeof user).to.equal('object');
+    it('should allow the creation of a user', (done) => {
+      expect(user.dataValues).to.include.keys('userName');
+      expect(Object.keys(user.dataValues).length).to.equal(9)
+      done();
     });
 
     it('should ensure that a created user has all fields on the User model object', (done) => {

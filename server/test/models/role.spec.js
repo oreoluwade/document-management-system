@@ -21,9 +21,9 @@ describe('THE ROLE MODEL TEST SUITE', () => {
 
     after(() => model.sequelize.sync({ force: true }));
 
-    it('Should allow the creation of a role', () => {
-      expect(role).to.exist;
-      expect(typeof role).to.equal('object');
+    it('Should allow the creation of a role', (done) => {
+      expect(role.dataValues).to.include.keys('title');
+      done();
     });
 
     it('should allow creation of a role once title is defined', () => {

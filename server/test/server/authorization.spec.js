@@ -27,9 +27,6 @@ describe('AUTHORIZATION TEST SUITE', () => {
                 regularToken = res.body.token;
                 done();
               });
-          })
-          .catch((error) => {
-            throw new Error(error);
           });
       });
   });

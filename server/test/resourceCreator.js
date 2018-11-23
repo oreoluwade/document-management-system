@@ -48,14 +48,6 @@ export default {
     return publicDocument;
   },
 
-  createRoleDocument() {
-    const sampleDocument = {
-      title: faker.company.catchPhrase(),
-      content: faker.lorem.paragraph(),
-    };
-    return sampleDocument;
-  },
-
   documentsBundle() {
     const documentArray = [];
     for (let i = 0; i <= 15; i += 1) {
