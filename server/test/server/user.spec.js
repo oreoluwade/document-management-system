@@ -14,7 +14,7 @@ const sampleRegularRole = resourceCreator.createRegularRole();
 const sampleRegularUser = resourceCreator.createUser();
 const sampleAdminUser = resourceCreator.createAdmin();
 
-describe.only('THE USER API', () => {
+describe('THE USER API', () => {
   let user;
   let token;
   let dbAdmin;

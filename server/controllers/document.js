@@ -9,23 +9,43 @@ const accessLevels = {
   role: 'role'
 };
 
+const isEmpty = (value) => value.trim() === '';
+
+const requiredFields = ['title', 'content'];
+
 export default {
   createDocument(req, res) {
+    const unsuppliedRequiredFields = [];
+    const emptyFields = [];
+
+    const { id: ownerId } = req.decoded;
     const { title, content, access } = req.body;
-    Document.find({
-      where: {
-        [Op.and]: [
-          {
-            title,
-            ownerId: req.decoded.id
-          }
-        ]
+
+    requiredFields.forEach(field => {
+      if (!(field in (req.body))) {
+        unsuppliedRequiredFields.push(`${field} is required`);
       }
-    })
+    });
+
+    if (unsuppliedRequiredFields.length) {
+      return res.status(403).send({ message: unsuppliedRequiredFields });
+    }
+
+    requiredFields.forEach(field => {
+      if (isEmpty(req.body[field])) {
+        emptyFields.push(`${field} cannot be empty`);
+      }
+    });
+
+    if (emptyFields.length) {
+      return res.status(403).send({ message: emptyFields });
+    }
+
+    return Document.findOne({ where: { [Op.and]: [{ title, ownerId }] } })
       .then((docFound) => {
         if (!docFound) {
-          return Document.create({ title, content, access, ownerId: req.decoded.id })
-            .then(document => res.send(document))
+          return Document.create({ title, content, access, ownerId })
+            .then(document => res.status(201).send(document))
             .catch(err => res.send(err));
         }
         return res.status(409).send({ message: 'You already have a document with that title' });
@@ -34,10 +54,10 @@ export default {
   },
 
   getOneDocument(req, res) {
-    Document.findById(req.params.id)
+    Document.findByPk(req.params.id)
       .then((foundDocument) => {
         if (!foundDocument) {
-          return res.status(404).send({ message: `No document found with id: ${req.params.id}` });
+          return res.status(404).send({ message: `No document found with ID: ${req.params.id}` });
         }
 
         if (foundDocument.access === accessLevels.public) {
@@ -49,7 +69,7 @@ export default {
           return res.send(foundDocument);
         }
         if (foundDocument.access === accessLevels.role) {
-          return User.findById(foundDocument.ownerId)
+          return User.findByPk(foundDocument.ownerId)
             .then((documentOwner) => {
               if (documentOwner.roleId === req.decoded.roleId) {
                 return res.send(foundDocument);
@@ -93,7 +113,7 @@ export default {
       query = Object.assign({}, query, queryOptions);
     }
 
-    Document.findAll(query)
+    return Document.findAll(query)
       .then((documents) => {
         if (documents.length) return res.send(documents);
         return res.send({ message: 'No Documents created yet' });
@@ -102,14 +122,16 @@ export default {
   },
 
   editDocument(req, res) {
-    Document.findById(req.params.id)
+    Document.findByPk(req.params.id)
       .then((document) => {
-        if (!document) return res.status(404).send({ message: `document with id: ${req.params.id} not found` });
+        if (!document) {
+          return res.status(404).send({ message: `document with id: ${req.params.id} does not exist` });
+        }
         if (document.ownerId === req.decoded.id) {
           const updatableObject = {
-            title: req.body.title,
-            content: req.body.content,
-            access: req.body.access
+            title: req.body.title || document.title,
+            content: req.body.content || document.content,
+            access: req.body.access || document.access
           };
 
           document.update(updatableObject)
@@ -119,14 +141,13 @@ export default {
             })
             .catch(err => res.send(err));
         } else {
-          return res.status(403)
-            .send({ message: 'You are not the owner of this document.' });
+          return res.status(403).send({ message: 'You cannot update a document that isn\'t yours' });
         }
       });
   },
 
   deleteDocument(req, res) {
-    Document.findById(req.params.id)
+    Document.findByPk(req.params.id)
       .then((foundDocument) => {
         if (!foundDocument) {
           return res.status(404)
@@ -141,10 +162,7 @@ export default {
               .send({ message: 'Document successfully deleted' }));
         } else {
           return res.status(403)
-            .send({
-              message:
-              'You cannot delete a document that does not belong to you.'
-            });
+            .send({ message: 'You cannot delete a document that does not belong to you' });
         }
       })
       .catch(err => res.send(err));
@@ -178,14 +196,22 @@ export default {
     const publishedDate = req.query.publishedDate;
     const order = /^ASC$/i.test(publishedDate) ? publishedDate : 'DESC';
 
+    if (req.query.limit < 0 || req.query.offset < 0) {
+      return res.status(400).send({ message: 'Limit/Offset must be a positive integer' });
+    }
+
+    if (isNaN(role) || role < 0) {
+      return res.status(400).send({ message: 'Role must be a positive integer' });
+    }
+
     const query = {
       where: {
-        [Op.and]: [{
-          [Op.or]: [
-            { access: 'public' },
-            { ownerId: req.decoded.id }
-          ]
-        }],
+        // [Op.and]: [{
+        [Op.or]: [
+          { access: 'public' },
+          { ownerId: req.decoded.id }
+        ]
+        // }],
       },
       limit: req.query.limit || null,
       offset: req.query.offset || null,
@@ -193,7 +219,7 @@ export default {
     };
 
     if (queryString) {
-      query.where.$and.push({
+      query.where.Op.and.push({
         [Op.or]: [
           { title: { [Op.iLike]: `%${queryString}%` } },
           { content: { [Op.iLike]: `%${queryString}%` } }
@@ -216,7 +242,9 @@ export default {
 
     Document.findAll(query)
       .then((documents) => {
-        res.send(documents);
+        console.log('=========', documents);
+        if (!documents.length) return res.status(404).send({ message: 'No matching document found' });
+        return res.send(documents);
       })
       .catch(err => res.send(err));
   }

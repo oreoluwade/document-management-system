@@ -6,7 +6,7 @@ import resourceCreator from '../resourceCreator';
 const { Role, User, Document } = model;
 
 const adminUser = resourceCreator.createAdmin();
-const sampleDocument = resourceCreator.createDocument();
+const sampleDocument = resourceCreator.createPublicDocument();
 
 const requiredFields = ['title', 'content', 'access'];
 

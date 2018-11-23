@@ -39,7 +39,7 @@ export default {
     return regularRole;
   },
 
-  createDocument() {
+  createPublicDocument() {
     const publicDocument = {
       title: faker.lorem.word(),
       content: faker.lorem.sentences(),
@@ -48,20 +48,10 @@ export default {
     return publicDocument;
   },
 
-  createPrivateDocument() {
-    const privateDocument = {
-      title: faker.company.catchPhrase(),
-      content: faker.lorem.paragraph(),
-      access: 'private',
-    };
-    return privateDocument;
-  },
-
   createRoleDocument() {
     const sampleDocument = {
       title: faker.company.catchPhrase(),
       content: faker.lorem.paragraph(),
-      // access: 'role',
     };
     return sampleDocument;
   },
