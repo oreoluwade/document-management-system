@@ -8,21 +8,18 @@ import { setCurrentUser } from './actions/authenticationAction';
 import configureStore from './store/configureStore';
 import App from './components/App';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-import '../node_modules/materialize-css/dist/js/materialize.min';
-import '../node_modules/materialize-css/dist/css/materialize.min.css';
-import '../node_modules/material-icons/css/material-icons.css';
-import '../node_modules/sweetalert/dist/sweetalert.css';
-import './styles/styles.css';
+import './styles/index.scss';
 
 const store = configureStore();
 
 if (localStorage.jwtToken) {
-  setAuthorizationToken(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+    setAuthorizationToken(localStorage.jwtToken);
+    store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
 }
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>, document.getElementById('app')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
 );
