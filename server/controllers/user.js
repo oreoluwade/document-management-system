@@ -2,178 +2,210 @@
 import jwt from 'jsonwebtoken';
 import models from '../models';
 
-const Role = models.Role;
-const User = models.User;
+const { Role, User } = models;
 const secret = process.env.SECRET || 'secretconfirmation';
 
-module.exports = {
-  createUser: (request, response) => {
-    const newUser = request.body;
-    // Find user with the aid of role ID
-    Role.find({ where: { id: newUser.roleId } })
-      .then((userFound) => {
-        if (!userFound) {
-          response.status(400).json({ error: 'The role ID is invalid' });
-        }
+export default {
+    async createUser(req, res) {
+        const {
+            email,
+            username,
+            firstname,
+            lastname,
+            password,
+            roleId
+        } = req.body;
 
-        User.findOrCreate({
-          where: {
-            email: newUser.email
-          },
-          defaults: {
-            userName: newUser.userName,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            email: newUser.email,
-            password: newUser.password,
-            roleId: newUser.roleId
-          },
-        })
-          .spread((user, created) => {
-            if (created) {
-              const token = jwt.sign({
-                id: user.id,
-                userName: user.userName,
-                userRoleId: user.roleId
-              }, secret);
-              return response.status(201).json({
-                user: {
-                  id: user.id,
-                  userName: user.userName,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  userRoleId: user.roleId,
-                  email: user.email
+        try {
+            await Role.findById(roleId);
+            User.findOrCreate({
+                where: {
+                    email
                 },
-                token
-              });
-            }
-            return response.status(409).send({ message: 'User Already Exists!' });
-          });
-      });
-  },
-
-  getUser: (request, response) => {
-    User.findById(request.params.id)
-      .then((userFound) => {
-        if (userFound) {
-          return response.status(200).json(userFound);
-        }
-        response.status(404).json({ error: 'User Not Found' });
-      });
-  },
-
-  getAllUsers: (request, response) => {
-    User.findAll({ include: [{ model: Role }] }).then((usersFound) => {
-      if (usersFound) {
-        return response.status(200).json({ usersFound });
-      }
-      response.status(404).json({ message: 'No Users Found' });
-    });
-  },
-
-  updateUserDetails: (request, response) => {
-    User.findById(request.params.id)
-      .then((user) => {
-        if (!user) {
-          response.status(404).json({ error: 'User not found' });
-        }
-        user.update(request.body)
-          .then((updatedUser) => {
-            const token = jwt.sign({
-              id: updatedUser.id,
-              userName: updatedUser.userName,
-              userRoleId: updatedUser.roleId
-            }, secret);
-            return response.status(200).json({
-              user: {
-                id: updatedUser.id,
-                userName: updatedUser.userName,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                userRoleId: updatedUser.userId,
-                email: updatedUser.email
-              },
-              token
+                defaults: {
+                    username,
+                    firstname,
+                    lastname,
+                    email,
+                    password,
+                    roleId
+                }
+            }).spread((user, created) => {
+                if (created) {
+                    const token = jwt.sign(
+                        {
+                            id: user.id,
+                            username: user.username,
+                            roleId: user.roleId
+                        },
+                        secret
+                    );
+                    return res.status(201).send({
+                        id: user.id,
+                        username: user.username,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        roleId: user.roleId,
+                        email: user.email,
+                        token
+                    });
+                }
+                return res.status(409).send({ error: 'User already exists!' });
             });
-          });
-      });
-  },
+        } catch (error) {
+            return res.status(400).send({ error: 'Role does not exist' });
+        }
+    },
 
-  deleteUser: (request, response) => {
-    User.destroy({
-      where: {
-        id: request.params.id
-      }
-    })
-      .then((userFound) => {
-        if (userFound === 1) {
-          return response.status(200).send({ message: 'User Removed' });
+    async getUser(req, res) {
+        try {
+            const user = await User.findOne({
+                where: { id: req.params.id },
+                attributes: [
+                    'id',
+                    'username',
+                    'firstname',
+                    'lastname',
+                    'roleId',
+                    'createdAt',
+                    'updatedAt'
+                ]
+            });
+            return res.send(user);
+        } catch (error) {
+            res.status(404).send({ error: 'User does not exist' });
         }
-        return response.status(404).send({ message: 'User Not found' });
-      });
-  },
+    },
 
-  userLogin: (request, response) => {
-    const { identifier, password } = request.body;
-    User.find({
-      where: {
-        $or: [
-          { email: identifier },
-          { userName: identifier }
-        ]
-      }
-    })
-      .then((user) => {
-        if (!user) {
-          return response.status(401)
-            .json({ errors: { form: 'Invalid Credentials' } });
+    async getAllUsers(req, res) {
+        try {
+            const users = await User.findAll({
+                include: [{ model: Role }],
+                attributes: [
+                    'id',
+                    'username',
+                    'firstname',
+                    'lastname',
+                    'roleId',
+                    'createdAt',
+                    'updatedAt'
+                ]
+            });
+            if (users.length) {
+                return res.send(users);
+            } else {
+                return res.status(404).send({ message: 'No users found' });
+            }
+        } catch (error) {
+            res.status(500).send({ error: 'An error occured' });
         }
-        if (!user.validPassword(password)) {
-          return response.status(401)
-            .json({ errors: { form: 'Invalid Credentials' } });
-        }
-        const token = jwt.sign({
-          id: user.id,
-          userName: user.userName,
-          userRoleId: user.roleId
-        }, secret);
-        return response.status(200).send({
-          user: {
-            id: user.id,
-            userName: user.userName,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            userRoleId: user.roleId,
-            email: user.email
-          },
-          token,
-          message: 'Login Successful! Token expires in one day.'
+    },
+
+    updateUserDetails(req, res) {
+        User.findByPk(req.params.id).then(user => {
+            if (!user) {
+                return res.status(404).send({ error: 'User not found' });
+            } else {
+                user.update(req.body).then(
+                    ({ id, username, roleId, firstname, lastname, email }) => {
+                        const token = jwt.sign(
+                            {
+                                id,
+                                username,
+                                roleId
+                            },
+                            secret
+                        );
+                        return res.send({
+                            id,
+                            username,
+                            firstname,
+                            lastname,
+                            roleId,
+                            email,
+                            token
+                        });
+                    }
+                );
+            }
         });
-      });
-  },
+    },
 
-  userLogout: (request, response) => {
-    response.status(200).send({ message: 'User Successfully logged out!' });
-  },
+    deleteUser(req, res) {
+        User.destroy({
+            where: {
+                id: req.params.id
+            }
+        }).then(userFound => {
+            if (userFound === 1) {
+                return res.send({ message: 'User deleted!' });
+            }
+            return res.status(404).send({ message: 'User not found' });
+        });
+    },
 
-  fetchExistingUser: (request, response) =>
-    User
-      .find({
-        where: {
-          $or: [
-            { email: request.params.identifier },
-            { userName: request.params.identifier }
-          ]
-        }
-      })
-      .then((user) => {
-        if (!user) {
-          return response.status(200).json({ message: 'User can be created' });
-        }
-        return response.status(400).json({ error: 'User already exists' });
-      })
-      .catch(error => response.status(501).json({
-        error, err: 'An error occurred while retrieving the user'
-      }))
+    userLogin: (req, res) => {
+        const { identifier, password } = req.body;
+        User.find({
+            where: {
+                $or: [{ email: identifier }, { userName: identifier }]
+            }
+        }).then(user => {
+            if (!user) {
+                return res
+                    .status(401)
+                    .json({ errors: { form: 'Invalid Credentials' } });
+            }
+            if (!user.validPassword(password)) {
+                return res
+                    .status(401)
+                    .json({ errors: { form: 'Invalid Credentials' } });
+            }
+            const token = jwt.sign(
+                {
+                    id: user.id,
+                    username: user.username,
+                    roleId: user.roleId
+                },
+                secret
+            );
+            return res.send({
+                id: user.id,
+                username: user.username,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                roleId: user.roleId,
+                email: user.email,
+                token,
+                message: 'Login Successful! Token expires in one day.'
+            });
+        });
+    },
+
+    userLogout(req, res) {
+        res.send({ message: 'User Successfully logged out!' });
+    },
+
+    fetchExistingUser(req, res) {
+        User.find({
+            where: {
+                $or: [
+                    { email: req.params.identifier },
+                    { username: req.params.identifier }
+                ]
+            }
+        })
+            .then(user => {
+                if (!user) {
+                    return res.send({ message: 'User can be created' });
+                }
+                return res.status(400).send({ error: 'User already exists' });
+            })
+            .catch(error =>
+                res.status(501).json({
+                    error,
+                    err: 'An error occurred while retrieving the user'
+                })
+            );
+    }
 };

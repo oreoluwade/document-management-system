@@ -1,70 +1,61 @@
 import models from '../models';
 
-const Role = models.Role;
+const { Role } = models;
 
-module.exports = {
-  createRole: (request, response) => {
-    Role.findOrCreate({
-      where: {
-        title: request.body.title
-      }
-    })
-      .spread((role, created) => {
-        if (!created) {
-          return response.status(409)
-            .send({ message: 'Role Already Exists!' });
+export default {
+    async createRole(req, res) {
+        const { title } = req.body;
+        if (!title.trim().length) {
+            return res
+                .status(400)
+                .send({ error: 'Please provide a valid title' });
+        } else {
+            try {
+                await Role.create({ title: title.trim() });
+                return res.status(201).send({ message: 'Success' });
+            } catch (error) {
+                return res
+                    .status(409)
+                    .send({ message: 'Role already exists!' });
+            }
         }
-        return response.status(201)
-          .send({ role, message: 'Role Successfully Created!' });
-      });
-  },
+    },
 
-  updateRole: (request, response) => {
-    Role.findById(request.params.id)
-      .then((role) => {
-        if (!role) {
-          return response.status(404)
-          .send({ message: `No role with id: ${request.params.role}` });
+    async updateRole(req, res) {
+        try {
+            const role = await Role.findById(req.params.id);
+            const updatedRole = await role.update(req.body);
+            return res.send(updatedRole);
+        } catch (error) {
+            return res.status(404).send({ error: 'Role does not exist' });
         }
+    },
 
-        role.update(request.body)
-          .then(updatedRole => response.status(200)
-          .send(updatedRole));
-      });
-  },
-
-  deleteRole: (request, response) => {
-    Role.findById(request.params.id)
-      .then((role) => {
-        if (!role) {
-          return response.status(404)
-            .send({ message: `No role with id: ${request.params.role}` });
+    async deleteRole(req, res) {
+        try {
+            const role = await Role.findById(req.params.id);
+            await role.destroy();
+            return res.send({ message: 'Role deleted!' });
+        } catch (error) {
+            return res.status(404).send({ error: 'Role does not exist' });
         }
-        role.destroy()
-          .then(() => response.status(200)
-            .send({ message: 'Role Successfully Deleted' }));
-      });
-  },
+    },
 
-  getRole: (request, response) => {
-    Role.findById(request.params.id)
-      .then((role) => {
-        if (!role) {
-          return response.status(404)
-            .send({ message: `No role with id: ${request.params.role}` });
+    async getRole(req, res) {
+        try {
+            const role = await Role.findById(req.params.id);
+            return res.status(200).send(role);
+        } catch (error) {
+            return res.status(404).send({ error: 'Role does not exist' });
         }
-        return response.status(200)
-          .send(role);
-      });
-  },
+    },
 
-  getAllRoles: (request, response) => {
-    Role.findAll()
-      .then((roles) => {
-        if (!roles) {
-          return response.status(404).send({ message: 'No Roles Found' });
+    async getAllRoles(req, res) {
+        try {
+            const roles = await Roles.findAll();
+            return res.status(200).send(roles);
+        } catch (error) {
+            return res.status(404).send({ error: 'No Roles Found' });
         }
-        return response.status(200).send(roles);
-      });
-  }
+    }
 };

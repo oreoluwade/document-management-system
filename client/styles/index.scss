@@ -19,6 +19,43 @@
     }
 }
 
+.auth {
+    &-panel {
+        height: 100%;
+    }
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+
+        height: 25rem;
+        width: 35rem;
+        padding: 2rem;
+
+        background-color: #CDCDCD;
+
+        margin: 0 auto;
+        margin-top: 5rem;
+        overflow: hidden;
+        box-shadow: 0 10px 6px -6px #777;
+
+        &-login {
+            height: 20rem;
+        }
+    }
+}
+
+.input {
+    &-field {
+        width: 50%;
+        display: flex;
+
+        &-icon {
+            margin-right: 1rem;
+        }
+    }
+}
+
 a.active {
   color: black;
 }

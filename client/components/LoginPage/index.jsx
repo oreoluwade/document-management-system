@@ -2,9 +2,9 @@ import React from 'react';
 import LoginForm from './LoginForm';
 
 const LoginPage = () => (
-  <div className="card" id="logincard">
-    <LoginForm />
-  </div>
+    <div className="auth-panel">
+        <LoginForm />
+    </div>
 );
 
 export default LoginPage;
