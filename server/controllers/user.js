@@ -148,40 +148,44 @@ export default {
 
     userLogin: (req, res) => {
         const { identifier, password } = req.body;
-        User.find({
+        User.findOne({
             where: {
-                $or: [{ email: identifier }, { userName: identifier }]
+                [Op.or]: [{ email: identifier }, { username: identifier }]
             }
-        }).then(user => {
-            if (!user) {
-                return res
-                    .status(401)
-                    .json({ errors: { form: 'Invalid Credentials' } });
-            }
-            if (!user.validPassword(password)) {
-                return res
-                    .status(401)
-                    .json({ errors: { form: 'Invalid Credentials' } });
-            }
-            const token = jwt.sign(
-                {
+        })
+            .then(user => {
+                if (!user) {
+                    return res
+                        .status(401)
+                        .send({ errors: { form: 'Invalid Credentials' } });
+                }
+                if (!user.validPassword(password)) {
+                    return res
+                        .status(401)
+                        .send({ errors: { form: 'Invalid Credentials' } });
+                }
+                const token = jwt.sign(
+                    {
+                        id: user.id,
+                        username: user.username,
+                        roleId: user.roleId
+                    },
+                    secret
+                );
+                return res.send({
                     id: user.id,
                     username: user.username,
-                    roleId: user.roleId
-                },
-                secret
-            );
-            return res.send({
-                id: user.id,
-                username: user.username,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                roleId: user.roleId,
-                email: user.email,
-                token,
-                message: 'Login Successful! Token expires in one day.'
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    roleId: user.roleId,
+                    email: user.email,
+                    token,
+                    message: 'Login Successful! Token expires in one day.'
+                });
+            })
+            .catch(err => {
+                console.log('Err', err);
             });
-        });
     },
 
     userLogout(req, res) {

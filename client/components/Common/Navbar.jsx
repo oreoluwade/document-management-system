@@ -13,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { logout } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -99,6 +100,10 @@ const Navbar = props => {
 
     const handleMobileMenuOpen = event => {
         setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const handleLogout = () => {
+        props.logout();
     };
 
     const isOnDashboard =
@@ -200,10 +205,8 @@ const Navbar = props => {
                                         Manage Roles
                                     </Link>
                                 </Button>
-                                <Button color="inherit">
-                                    <Link to="/login" className="navbar-link">
-                                        Logout
-                                    </Link>
+                                <Button color="inherit" onClick={handleLogout}>
+                                    Logout
                                 </Button>
                             </Fragment>
                         )}
@@ -248,4 +251,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, null)(Navbar));
+export default withRouter(connect(mapStateToProps, { logout })(Navbar));

@@ -1,7 +1,7 @@
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER } from './actionTypes';
+import { retrieveUserFromToken } from '../utils';
 
 export function setCurrentUser(user) {
     return {
@@ -12,34 +12,33 @@ export function setCurrentUser(user) {
     };
 }
 
-/**
- * logout action creator
- * @export
- * @returns {function}
- */
 export function logout() {
     return dispatch => {
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('user');
         setAuthorizationToken(false);
-        dispatch(setCurrentUser({}));
+        dispatch(setCurrentUser({ username: '', id: '', roleId: '' }));
     };
 }
 
-/**
- * login action creator
- * @export
- * @param {object} data
- * @returns {function}
- */
 export function login(data) {
     return dispatch =>
         axios.post('/user/login', data).then(response => {
-            const token = response.data.token;
-            const user = response.data.user;
+            const {
+                token,
+                username,
+                email,
+                firstname,
+                lastname,
+                roleId,
+                id
+            } = response.data;
+            const user = { username, email, firstname, lastname, roleId, id };
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('jwtToken', token);
             setAuthorizationToken(token);
-            dispatch(setCurrentUser(jwtDecode(token)));
+            retrieveUserFromToken(token).then(decodedUser => {
+                dispatch(setCurrentUser(decodedUser));
+            });
         });
 }
