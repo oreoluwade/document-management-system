@@ -1,5 +1,6 @@
 // import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import models from '../models';
 
 const { Role, User } = models;
@@ -17,7 +18,7 @@ export default {
         } = req.body;
 
         try {
-            await Role.findById(roleId);
+            await Role.findByPk(roleId);
             User.findOrCreate({
                 where: {
                     email
@@ -53,6 +54,7 @@ export default {
                 return res.status(409).send({ error: 'User already exists!' });
             });
         } catch (error) {
+            console.log('Error', error);
             return res.status(400).send({ error: 'Role does not exist' });
         }
     },
@@ -187,9 +189,9 @@ export default {
     },
 
     fetchExistingUser(req, res) {
-        User.find({
+        User.findOne({
             where: {
-                $or: [
+                [Op.or]: [
                     { email: req.params.identifier },
                     { username: req.params.identifier }
                 ]
@@ -201,11 +203,12 @@ export default {
                 }
                 return res.status(400).send({ error: 'User already exists' });
             })
-            .catch(error =>
-                res.status(501).json({
+            .catch(error => {
+                console.log(error);
+                return res.status(501).send({
                     error,
                     err: 'An error occurred while retrieving the user'
-                })
-            );
+                });
+            });
     }
 };

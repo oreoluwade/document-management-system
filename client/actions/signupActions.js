@@ -5,15 +5,17 @@ import { SET_CURRENT_USER } from './actionTypes';
 export function setCurrentUser(user) {
     return {
         type: SET_CURRENT_USER,
-        user
+        payload: {
+            user
+        }
     };
 }
 
-export function isUserExists(identifier) {
+export function userAlreadyExists(identifier) {
     return dispatch => axios.get(`/user/findUser/${identifier}`);
 }
 
-export function userSignupRequest(userData) {
+export function registerUser(userData) {
     return dispatch =>
         axios.post('/user', userData).then(response => {
             const {

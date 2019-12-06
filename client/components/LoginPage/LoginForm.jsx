@@ -8,14 +8,13 @@ import Lock from '@material-ui/icons/Lock';
 import TextFieldGroup from '../Common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
 import { login } from '../../actions/authenticationAction';
-import { addFlashMessage } from '../../actions/flashMessages';
 
 class LoginForm extends React.Component {
     state = {
         identifier: '',
         password: '',
         errors: {},
-        isLoading: false
+        submitting: false
     };
 
     isValid() {
@@ -26,7 +25,7 @@ class LoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         if (this.isValid()) {
-            this.setState({ errors: {}, isLoading: true });
+            this.setState({ errors: {}, submitting: true });
             this.props.login(this.state).then(
                 () => {
                     this.props.history.push('/dashboard');
@@ -35,7 +34,7 @@ class LoginForm extends React.Component {
                 err =>
                     this.setState({
                         errors: err.response.data.errors,
-                        isLoading: false
+                        submitting: false
                     })
             );
         }
@@ -47,14 +46,16 @@ class LoginForm extends React.Component {
 
     render() {
         const {
-            state: { errors, identifier, password, isLoading },
-            handleInputChange
+            state: { errors, identifier, password, submitting },
+            handleInputChange,
+            handleSubmit
         } = this;
+
+        const emptyFields =
+            !identifier.trim().length || !password.trim().length;
+
         return (
-            <form
-                className="auth-form auth-form-login"
-                onSubmit={this.handleSubmit}
-            >
+            <form className="auth-form auth-form-login">
                 <TextFieldGroup
                     icon={<AccountCircle />}
                     field="identifier"
@@ -63,6 +64,8 @@ class LoginForm extends React.Component {
                     error={errors.identifier}
                     onChange={handleInputChange}
                     type="text"
+                    placeholder="Username / Email"
+                    inputClass="auth-input-box"
                 />
 
                 <TextFieldGroup
@@ -73,22 +76,18 @@ class LoginForm extends React.Component {
                     error={errors.password}
                     onChange={handleInputChange}
                     type="password"
+                    placeholder="Password"
+                    inputClass="auth-input-box"
                 />
 
-                <div className="center-align">
-                    <button
-                        disabled={isLoading}
-                        className="btn blue-grey"
-                        type="submit"
-                    >
-                        Login<i className="material-icons right">thumb_up</i>
-                    </button>
-                    {errors.form && (
-                        <div className="card-panel red darken-1">
-                            {errors.form}
-                        </div>
-                    )}
-                </div>
+                <button
+                    disabled={submitting || emptyFields}
+                    className="btn btn-default"
+                    type="button"
+                    onClick={handleSubmit}
+                >
+                    LOGIN
+                </button>
             </form>
         );
     }
@@ -96,10 +95,9 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
     login: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired,
     history: PropTypes.object
 };
 
-const ConnectedLoginForm = connect(null, { login, addFlashMessage })(LoginForm);
+const ConnectedLoginForm = connect(null, { login })(LoginForm);
 
 export default withRouter(ConnectedLoginForm);

@@ -1,8 +1,7 @@
 import Validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 
-export default function validateInput(data) {
-    console.log('Supplied Data', data);
+export const signupValidator = data => {
     const errors = {};
 
     if (Validator.isEmpty(data.username)) {
@@ -37,4 +36,4 @@ export default function validateInput(data) {
         errors,
         isValid: isEmpty(errors)
     };
-}
+};

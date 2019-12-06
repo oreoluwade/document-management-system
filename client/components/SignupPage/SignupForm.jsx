@@ -1,189 +1,230 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import validateInput from '../../../server/shared/validations/signup';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import FaceIcon from '@material-ui/icons/Face';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockSharpIcon from '@material-ui/icons/LockSharp';
+import EmailIcon from '@material-ui/icons/Email';
 import TextFieldGroup from '../Common/TextFieldGroup';
+import { signupValidator } from '../../utils';
 
 class SignupForm extends React.Component {
-  state = {
-    userName: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    roleId: 2,
-    errors: {},
-    isLoading: false,
-    invalid: false
-  };
+    state = {
+        username: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        roleId: 1,
+        errors: {},
+        submitting: false,
+        invalid: false
+    };
 
-  handleInputChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+    handleInputChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
 
-  isValid() {
-    const { errors, isValid } = validateInput(this.state);
-    return !isValid ? this.setState({ errors }) : isValid;
-  }
+    isValid() {
+        const {
+            username,
+            firstname,
+            lastname,
+            email,
+            password,
+            confirmPassword
+        } = this.state;
 
-  checkUserExists = (e) => {
-    const { name: field, value: val } = e.target;
-    if (val !== '') {
-      this.props.isUserExists(val)
-        .then((response) => {
-          const errors = this.state.errors;
-          let invalid;
-          if (response.data.user) {
-            errors[field] = `A user already exists with that ${field}`;
-            invalid = true;
-          } else {
-            errors[field] = '';
-            invalid = false;
-          }
-          this.setState({ errors, invalid });
-        });
+        const payload = {
+            username,
+            firstname,
+            lastname,
+            email,
+            password,
+            confirmPassword
+        };
+        const { errors, isValid } = signupValidator(payload);
+        console.log('Validation', errors, isValid);
+        return !isValid ? this.setState({ errors }) : isValid;
     }
-  }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (this.isValid()) {
-      this.setState({ errors: {}, isLoading: true });
-      this.props.userSignupRequest(this.state)
-        .then(() => {
-          this.props.addFlashMessage({
-            type: 'success',
-            text: 'Welcome! You have successfully signed up.'
-          });
-          this.props.history.push('/');
-        },
-        err => this.setState({ errors: err.response.data, isLoading: false })
-      );
+    checkUserExists = e => {
+        const { name: field, value: val } = e.target;
+        if (val !== '') {
+            this.props.userAlreadyExists(val).then(response => {
+                const { errors } = this.state;
+                let invalid;
+                if (response.data.user) {
+                    errors[field] = `A user already exists with that ${field}`;
+                    invalid = true;
+                } else {
+                    errors[field] = '';
+                    invalid = false;
+                }
+                this.setState({ errors, invalid });
+            });
+        }
+    };
+
+    handleSubmit = e => {
+        const {
+            username,
+            firstname,
+            lastname,
+            email,
+            password,
+            roleId
+        } = this.state;
+
+        e.preventDefault();
+
+        if (this.isValid()) {
+            this.setState({ errors: {}, submitting: true });
+
+            const payload = {
+                username,
+                firstname,
+                lastname,
+                email,
+                password,
+                roleId
+            };
+
+            this.props
+                .registerUser(payload)
+                .then(
+                    () => {
+                        this.props.history.push('/');
+                    },
+                    err =>
+                        this.setState({
+                            errors: err.response.data,
+                            submitting: false
+                        })
+                )
+                .catch(err => {
+                    console.log('Error after registering', err);
+                });
+        }
+    };
+
+    render() {
+        const {
+            state: {
+                errors,
+                password,
+                submitting,
+                invalid,
+                username,
+                email,
+                firstname,
+                lastname,
+                confirmPassword
+            },
+            checkUserExists,
+            handleInputChange,
+            handleSubmit
+        } = this;
+
+        return (
+            <form className="auth-form">
+                <TextFieldGroup
+                    icon={<FaceIcon />}
+                    error={errors.username}
+                    onChange={handleInputChange}
+                    onBlur={checkUserExists}
+                    value={username}
+                    field="username"
+                    name="username"
+                    type="text"
+                    inputClass="auth-input-box"
+                    placeholder="Username"
+                />
+
+                <TextFieldGroup
+                    icon={<PermIdentityIcon />}
+                    error={errors.firstname}
+                    onChange={handleInputChange}
+                    value={firstname}
+                    field="firstname"
+                    name="firstname"
+                    type="text"
+                    inputClass="auth-input-box"
+                    placeholder="First Name"
+                />
+
+                <TextFieldGroup
+                    icon={<AccountCircleIcon />}
+                    error={errors.lastname}
+                    onChange={handleInputChange}
+                    value={lastname}
+                    field="lastname"
+                    name="lastname"
+                    type="text"
+                    inputClass="auth-input-box"
+                    placeholder="Last Name"
+                />
+
+                <TextFieldGroup
+                    icon={<EmailIcon />}
+                    error={errors.email}
+                    onChange={handleInputChange}
+                    checkUserExists={checkUserExists}
+                    value={email}
+                    field="email"
+                    type="email"
+                    inputClass="auth-input-box"
+                    placeholder="Email"
+                />
+
+                <TextFieldGroup
+                    icon={<LockOutlinedIcon />}
+                    error={errors.password}
+                    onChange={handleInputChange}
+                    value={password}
+                    field="password"
+                    name="password"
+                    type="password"
+                    inputClass="auth-input-box"
+                    placeholder="Password"
+                />
+
+                <TextFieldGroup
+                    icon={<LockSharpIcon />}
+                    error={errors.confirmPassword}
+                    onChange={handleInputChange}
+                    value={confirmPassword}
+                    field="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    inputClass="auth-input-box"
+                    placeholder="Confirm Password"
+                />
+
+                <button
+                    disabled={submitting || invalid}
+                    className="btn btn-default"
+                    type="button"
+                    onClick={handleSubmit}
+                >
+                    REGISTER
+                </button>
+            </form>
+        );
     }
-  }
-
-  render() {
-    const {
-      state: { errors },
-      checkUserExists,
-      handleInputChange,
-    } = this;
-
-    const form = (
-      <form onSubmit={this.handleSubmit}>
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="perm_identity"
-            error={errors.userName}
-            label="Username"
-            onChange={handleInputChange}
-            checkUserExists={checkUserExists}
-            value={this.state.userName}
-            field="userName"
-            name="userName"
-            type="text"
-          />
-        </div>
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="person"
-            error={errors.firstName}
-            label="First Name"
-            onChange={handleInputChange}
-            value={this.state.firstName}
-            field="firstName"
-            name="firstName"
-            type="text"
-          />
-        </div>
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="person_outline"
-            error={errors.lastName}
-            label="Last Name"
-            onChange={handleInputChange}
-            value={this.state.lastName}
-            field="lastName"
-            name="lastName"
-            type="text"
-          />
-        </div>
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="email"
-            error={errors.email}
-            label="Email"
-            onChange={handleInputChange}
-            checkUserExists={checkUserExists}
-            value={this.state.email}
-            field="email"
-            type="email"
-          />
-        </div>
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="lock"
-            error={errors.password}
-            label="Password"
-            onChange={handleInputChange}
-            value={this.state.password}
-            field="password"
-            name="password"
-            type="password"
-          />
-        </div>
-
-
-        <div className="row margin">
-          <TextFieldGroup
-            icon="lock"
-            error={errors.passwordConfirmation}
-            label="Confirm Password"
-            onChange={handleInputChange}
-            value={this.state.passwordConfirmation}
-            field="passwordConfirmation"
-            name="passwordConfirmation"
-            type="password"
-          />
-        </div>
-
-
-        <div className="center-align">
-          <button
-            disabled={this.state.isLoading || this.state.invalid}
-            className="btn blue-grey"
-            type="submit"
-          >
-            Sign Up
-            <i className="material-icons right">thumb_up</i>
-          </button>
-        </div>
-
-      </form>
-    );
-    return (
-      <div>
-        {form}
-      </div>
-    );
-  }
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired,
-  isUserExists: PropTypes.func.isRequired,
-  history: PropTypes.object,
+    registerUser: PropTypes.func.isRequired,
+    userAlreadyExists: PropTypes.func.isRequired,
+    history: PropTypes.object
 };
 
 SignupForm.contextTypes = {
-  router: PropTypes.object
+    router: PropTypes.object
 };
 
 export default withRouter(SignupForm);

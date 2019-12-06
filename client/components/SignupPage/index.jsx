@@ -2,28 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SignupForm from './SignupForm';
-import { userSignupRequest, isUserExists } from '../../actions/signupActions';
-import { addFlashMessage } from '../../actions/flashMessages';
+import { userAlreadyExists, registerUser } from '../../actions';
 
 const SignupPage = props => (
-  <div className="card" id="signupcard">
-    <div>
-      <SignupForm
-        isUserExists={props.isUserExists}
-        userSignupRequest={props.userSignupRequest}
-        addFlashMessage={props.addFlashMessage} />
+    <div className="auth-panel">
+        <SignupForm
+            userAlreadyExists={props.userAlreadyExists}
+            registerUser={props.registerUser}
+        />
     </div>
-  </div>
 );
 
 SignupPage.propTypes = {
-  userSignupRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired,
-  isUserExists: PropTypes.func.isRequired
+    registerUser: PropTypes.func.isRequired,
+    userAlreadyExists: PropTypes.func.isRequired
 };
 
 export default connect(null, {
-  userSignupRequest,
-  addFlashMessage,
-  isUserExists
+    registerUser,
+    userAlreadyExists
 })(SignupPage);

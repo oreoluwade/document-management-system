@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Link, withRouter } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -241,4 +241,11 @@ const Navbar = props => {
     );
 };
 
-export default withRouter(Navbar);
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        isAdmin: state.auth.user.roleId === 1
+    };
+};
+
+export default withRouter(connect(mapStateToProps, null)(Navbar));

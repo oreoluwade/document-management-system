@@ -1,21 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define('Role', {
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    }
-  }, {
-    classMethods: {
-      associate(models) {
-          // associations can be defined here
+    const Role = sequelize.define(
+        'Role',
+        {
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true
+            }
+        },
+        {
+            freezeTableName: true
+        }
+    );
+
+    Role.associate = models => {
         Role.hasMany(models.User, {
-          onDelete: 'CASCADE',
-          foreignKey: 'roleId'
+            onDelete: 'CASCADE',
+            foreignKey: 'roleId'
         });
-      }
-    },
-    freezeTableName: true
-  });
-  return Role;
+    };
+
+    return Role;
 };

@@ -1,6 +1,9 @@
 import webpack from 'webpack';
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -31,6 +34,9 @@ export default {
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css'
+        }),
+        new webpack.DefinePlugin({
+            'process.env.SECRET': JSON.stringify(process.env.SECRET)
         })
     ],
 
