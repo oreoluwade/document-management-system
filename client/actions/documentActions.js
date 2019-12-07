@@ -78,7 +78,7 @@ export function loadAllDocuments() {
 export function saveDocument(document, id) {
   return dispatch =>
     axios
-      .post('/document/', document)
+      .post('/document', document)
       .then(() => {
         dispatch(loadUserDocuments(id));
       })
