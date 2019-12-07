@@ -16,51 +16,49 @@ import { saveDocument, updateDocument } from '../../actions';
 class RenderDocument extends React.Component {
   state = {
     errors: {},
-    doc: this.props.doc || {},
+    document: this.props.document || {},
     editable: true,
     documentId: ''
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   const editable =
-  //     nextProps.doc.ownerId === this.props.auth.user.id || !nextProps.doc.id;
-  //   if (!editable) {
-  //     $('.fr-wrapper').froalaEditor('edit.off');
-  //   }
-  //   this.setState({
-  //     doc: nextProps.doc,
-  //     editable: editable
-  //   });
-  // }
+  componentDidMount() {
+    if (this.props.match.params.id) {
+      const {
+        match: {
+          params: { id: documentId }
+        },
+        user
+      } = this.props;
+      this.setState({
+        documentId,
+        editable: this.props.document && this.props.document.ownerId === user.id
+      });
+    }
+  }
 
   handleInputChange = event => {
     const { id: ownerId, roleId } = this.props.user;
     const { name: field, value } = event.target;
     const role = String(roleId);
     this.setState(state => {
-      const doc = Object.assign({}, state.doc, {
-        [field]: value,
-        ownerId,
-        role
-      });
-      return { doc };
+      const document = { ...state.document, [field]: value, ownerId, role };
+      return { document };
     });
   };
 
   handleModelChange = model => {
-    console.log(model);
     this.setState(state => {
-      const doc = Object.assign({}, state.doc, { content: model });
-      return { doc };
+      const document = { ...state.document, content: model };
+      return { document };
     });
   };
 
   createDocument = event => {
     event.preventDefault();
     this.props
-      .saveDocument(this.state.doc, this.props.user.id)
+      .saveDocument(this.state.document, this.props.user.id)
       .then(() => {
-        toastr.success('Document Successfully Saved');
+        this.redirect();
       })
       .catch(() => {
         toastr.error('Cannot save Document');
@@ -70,9 +68,9 @@ class RenderDocument extends React.Component {
   editDocument = event => {
     event.preventDefault();
     this.props
-      .updateDocument(this.state.doc, this.props.user.id)
+      .updateDocument(this.state.document, this.props.user.id)
       .then(() => {
-        toastr.success('Document Successfully Updated');
+        this.redirect();
       })
       .catch(() => {
         toastr.error('Unable to update document');
@@ -87,7 +85,9 @@ class RenderDocument extends React.Component {
   render() {
     const {
       state: {
-        doc: { documentId, title = '', content = '', access }
+        document: { title = '', content = '', access },
+        documentId,
+        editable
       },
       handleInputChange,
       handleModelChange,
@@ -107,12 +107,14 @@ class RenderDocument extends React.Component {
             type="text"
             placeholder="Document Title"
             inputClass="document-form-input"
+            disabled={!editable}
           />
 
           <FroalaEditor
             tag="textarea"
             model={content}
             onModelChange={handleModelChange}
+            contenteditable={!editable}
           />
 
           <div className="document-form__select__wrapper">
@@ -122,6 +124,7 @@ class RenderDocument extends React.Component {
               value={access}
               className="document-form__select"
               onChange={handleInputChange}
+              disabled={!editable}
             >
               <option value="" disabled>
                 Document Visibility Access
@@ -152,8 +155,13 @@ RenderDocument.propTypes = {
   history: PropTypes.object
 };
 
-const mapStateToProps = state => {
-  return { user: state.user.details };
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user.details,
+    document: state.user.documents.find(
+      item => item.id === Number(ownProps.match.params.id)
+    )
+  };
 };
 
 export default withRouter(

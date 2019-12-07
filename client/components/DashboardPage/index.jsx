@@ -13,12 +13,6 @@ class DashboardPage extends React.Component {
     isPrivate: false
   };
 
-  componentDidMount() {
-    this.props.loadAllDocuments().then(() => {
-      console.log('yeyenatu', this.props.user.documents);
-    });
-  }
-
   render() {
     const {
       props: { publicDocuments, roleDocuments, privateDocuments }
@@ -50,8 +44,7 @@ const filterDocument = (role, documents) =>
 
 const mapStateToProps = state => {
   const {
-    admin: { documents },
-    user,
+    user: { documents },
     auth
   } = state;
   const publicDocuments = filterDocument('public', documents);
@@ -60,7 +53,6 @@ const mapStateToProps = state => {
 
   return {
     auth,
-    user,
     publicDocuments,
     roleDocuments,
     privateDocuments

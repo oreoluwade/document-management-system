@@ -68,13 +68,13 @@ const TabsPanel = ({ privateDocuments, publicDocuments, roleDocuments }) => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <DocumentList />
+        <DocumentList documents={privateDocuments} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <DocumentList />
+        <DocumentList documents={publicDocuments} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <DocumentList />
+        <DocumentList documents={roleDocuments} />
       </TabPanel>
     </div>
   );

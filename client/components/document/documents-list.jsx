@@ -23,13 +23,12 @@ class DocumentList extends Component {
   };
 
   render() {
-    const { docs, showModal } = this.props;
+    const { documents } = this.props;
     return (
       <div className="doc-collection">
-        <DocumentCard />
-        <DocumentCard />
-        <DocumentCard />
-        <DocumentCard />
+        {documents.map(document => (
+          <DocumentCard document={document} key={document.id} />
+        ))}
       </div>
     );
   }
@@ -42,10 +41,4 @@ DocumentList.propTypes = {
   user: PropTypes.object
 };
 
-const mapStateToProps = ({ user }) => {
-  return {
-    user
-  };
-};
-
-export default connect(mapStateToProps, { deleteDocument })(DocumentList);
+export default connect(null, { deleteDocument })(DocumentList);

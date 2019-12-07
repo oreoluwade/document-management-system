@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   card: {
@@ -25,18 +26,20 @@ const useStyles = makeStyles({
   }
 });
 
-const DocumentCard = () => {
+const DocumentCard = ({ document }) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary">
-          Document One
+          {document.title}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Open Document</Button>
+        <Link to={`/render-document/${document.id}`} className="navbar-link">
+          <Button size="small">View Document</Button>
+        </Link>
       </CardActions>
     </Card>
   );

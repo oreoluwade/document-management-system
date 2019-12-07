@@ -43,6 +43,11 @@ const routes = [
     exact: true
   },
   {
+    path: '/render-document/:id',
+    component: requireAuth(RenderDocument),
+    exact: true
+  },
+  {
     path: '/profile',
     component: requireAuth(ProfilePage),
     exact: true
