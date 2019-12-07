@@ -11,12 +11,14 @@ import TitleIcon from '@material-ui/icons/Title';
 import { connect } from 'react-redux';
 import './index.scss';
 import TextFieldGroup from '../Common/TextFieldGroup';
+import { saveDocument, updateDocument } from '../../actions';
 
 class RenderDocument extends React.Component {
   state = {
     errors: {},
     doc: this.props.doc || {},
-    editable: true
+    editable: true,
+    documentId: ''
   };
 
   // componentWillReceiveProps(nextProps) {
@@ -32,9 +34,9 @@ class RenderDocument extends React.Component {
   // }
 
   handleInputChange = event => {
+    const { id: ownerId, roleId } = this.props.user;
     const { name: field, value } = event.target;
-    const ownerId = this.props.auth.user.id;
-    const role = String(this.props.auth.user.roleId);
+    const role = String(roleId);
     this.setState(state => {
       const doc = Object.assign({}, state.doc, {
         [field]: value,
@@ -55,32 +57,24 @@ class RenderDocument extends React.Component {
 
   createDocument = event => {
     event.preventDefault();
-    this.props.actions
-      .saveDocument(this.state.doc, this.props.auth.user.id)
+    this.props
+      .saveDocument(this.state.doc, this.props.user.id)
       .then(() => {
         toastr.success('Document Successfully Saved');
       })
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Cannot save Document'
-        });
         toastr.error('Cannot save Document');
       });
   };
 
-  updateDocument = event => {
+  editDocument = event => {
     event.preventDefault();
-    this.props.actions
-      .updateDocument(this.state.doc, this.props.auth.user.id)
+    this.props
+      .updateDocument(this.state.doc, this.props.user.id)
       .then(() => {
         toastr.success('Document Successfully Updated');
       })
       .catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to update document'
-        });
         toastr.error('Unable to update document');
       });
   };
@@ -93,12 +87,11 @@ class RenderDocument extends React.Component {
   render() {
     const {
       state: {
-        editable,
-        doc: { id, title = '', content = '', access }
+        doc: { documentId, title = '', content = '', access }
       },
       handleInputChange,
       handleModelChange,
-      updateDocument,
+      editDocument,
       createDocument
     } = this;
 
@@ -107,7 +100,7 @@ class RenderDocument extends React.Component {
         <form className="document-form">
           <TextFieldGroup
             icon={<TitleIcon />}
-            field="identifier"
+            field="title"
             label="Title"
             value={title}
             onChange={handleInputChange}
@@ -142,7 +135,7 @@ class RenderDocument extends React.Component {
           <button
             type="button"
             className="btn-default document-form__button"
-            onClick={id ? updateDocument : createDocument}
+            onClick={Boolean(documentId) ? editDocument : createDocument}
           >
             SAVE DOCUMENT
           </button>
@@ -159,4 +152,10 @@ RenderDocument.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(connect(null, null)(RenderDocument));
+const mapStateToProps = state => {
+  return { user: state.user.details };
+};
+
+export default withRouter(
+  connect(mapStateToProps, { saveDocument, updateDocument })(RenderDocument)
+);

@@ -39,7 +39,7 @@ const routes = [
   // },
   {
     path: '/render-document',
-    component: RenderDocument,
+    component: requireAuth(RenderDocument),
     exact: true
   },
   {

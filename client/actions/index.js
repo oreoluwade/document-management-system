@@ -3,7 +3,8 @@ export { login, logout } from './authenticationAction';
 export {
   SET_CURRENT_USER,
   LOAD_DOCUMENT_SUCCESS,
-  LOAD_DOCUMENTS
+  LOAD_ALL_DOCUMENTS,
+  LOAD_USER_DOCUMENTS
 } from './actionTypes';
 export {
   saveDocument,

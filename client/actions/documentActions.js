@@ -3,7 +3,8 @@ import {
   LOAD_DOCUMENT_SUCCESS,
   CHOOSE_AS_CURRENT_DOCUMENT,
   DELETE_CURRENT_DOCUMENT,
-  LOAD_DOCUMENTS
+  LOAD_ALL_DOCUMENTS,
+  LOAD_USER_DOCUMENTS
 } from './actionTypes';
 
 export function loadDocument(document) {
@@ -15,9 +16,18 @@ export function loadDocument(document) {
   };
 }
 
-export function retrieveDocuments(documents) {
+export function retrieveAllDocuments(documents) {
   return {
-    type: LOAD_DOCUMENTS,
+    type: LOAD_ALL_DOCUMENTS,
+    payload: {
+      documents
+    }
+  };
+}
+
+export function retrieveUserDocuments(documents) {
+  return {
+    type: LOAD_USER_DOCUMENTS,
     payload: {
       documents
     }
@@ -56,7 +66,8 @@ export function loadUserDocuments(id) {
     axios
       .get(`user/${id}/document`)
       .then(response => {
-        dispatch(loadDocument(response.data));
+        console.log('Repo?', response.data);
+        dispatch(retrieveUserDocuments(response.data));
       })
       .catch(error => {
         throw error;
@@ -68,19 +79,19 @@ export function loadAllDocuments() {
     axios
       .get('/document')
       .then(response => {
-        dispatch(loadDocument(response.data));
+        dispatch(retrieveAllDocuments(response.data));
       })
       .catch(error => {
         throw error;
       });
 }
 
-export function saveDocument(document, id) {
+export function saveDocument(document, userId) {
   return dispatch =>
     axios
       .post('/document', document)
       .then(() => {
-        dispatch(loadUserDocuments(id));
+        dispatch(loadUserDocuments(userId));
       })
       .catch(error => {
         throw error;
