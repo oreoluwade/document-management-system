@@ -2,23 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 
-export default function (ComposedComponent) {
-  class Authenticate extends React.Component {
+export default function(ComposedComponent) {
+  class RequireAdminAuth extends React.Component {
     componentDidMount() {
       if (!this.props.isAuthenticated) {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'You need to login to access this page'
-        });
         this.props.history.push('/login');
       }
-      if (this.props.isAuthenticated && this.props.isAdmin !== 1) {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Only Admin has rights to access this page'
-        });
+      if (this.props.isAuthenticated && !this.props.isAdmin) {
+        console.log('Not admin, no access');
       }
     }
 
@@ -33,23 +25,18 @@ export default function (ComposedComponent) {
     }
   }
 
-  Authenticate.propTypes = {
+  RequireAdminAuth.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
-    addFlashMessage: PropTypes.func.isRequired,
-    isAdmin: PropTypes.number,
+    isAdmin: PropTypes.bool,
     history: PropTypes.object
   };
 
-  function mapStateToProps(state) {
-    let admin;
-    if (state.auth.isAuthenticated) {
-      admin = state.auth.user.userRoleId;
-    }
+  const mapStateToProps = state => {
     return {
       isAuthenticated: state.auth.isAuthenticated,
-      isAdmin: admin
+      isAdmin: state.user.roleId === 1
     };
-  }
+  };
 
-  return withRouter(connect(mapStateToProps, { addFlashMessage })(Authenticate));
+  return withRouter(connect(mapStateToProps, null)(RequireAdminAuth));
 }

@@ -182,12 +182,12 @@ const Navbar = props => {
                         {isAuthenticated && (
                             <Fragment>
                                 <Button color="inherit">
-                                    <Link to="/login" className="navbar-link">
+                                    <Link to="/dashboard" className="navbar-link">
                                         Dashboard
                                     </Link>
                                 </Button>
                                 <Button color="inherit">
-                                    <Link to="/login" className="navbar-link">
+                                    <Link to="/profile" className="navbar-link">
                                         Profile
                                     </Link>
                                 </Button>
@@ -196,12 +196,12 @@ const Navbar = props => {
                         {isAuthenticated && isAdmin && (
                             <Fragment>
                                 <Button color="inherit">
-                                    <Link to="/login" className="navbar-link">
+                                    <Link to="/admin/users" className="navbar-link">
                                         Manage Users
                                     </Link>
                                 </Button>
                                 <Button color="inherit">
-                                    <Link to="/login" className="navbar-link">
+                                    <Link to="/admin/roles" className="navbar-link">
                                         Manage Roles
                                     </Link>
                                 </Button>
@@ -247,7 +247,7 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        isAdmin: state.auth.user.roleId === 1
+        isAdmin: state.user.roleId === 1
     };
 };
 

@@ -2,16 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 
-export default function (ComposedComponent) {
-  class Authenticate extends React.Component {
+export default function(ComposedComponent) {
+  class RequireAuth extends React.Component {
     componentDidMount() {
       if (!this.props.isAuthenticated) {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'You need to login to access this page'
-        });
         this.props.history.push('/login');
       }
     }
@@ -22,16 +17,13 @@ export default function (ComposedComponent) {
       }
     }
     render() {
-      return (
-        <ComposedComponent {...this.props} />
-      );
+      return <ComposedComponent {...this.props} />;
     }
   }
 
-  Authenticate.propTypes = {
+  RequireAuth.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
-    addFlashMessage: PropTypes.func.isRequired,
-    history: PropTypes.object,
+    history: PropTypes.object
   };
 
   function mapStateToProps(state) {
@@ -40,6 +32,5 @@ export default function (ComposedComponent) {
     };
   }
 
-  return withRouter(connect(mapStateToProps, { addFlashMessage })(Authenticate));
+  return withRouter(connect(mapStateToProps, null)(RequireAuth));
 }
-

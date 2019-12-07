@@ -14,12 +14,12 @@ const routes = [
   {
     path: '/',
     component: HomePage,
-    exact: true,
+    exact: true
   },
   {
     path: '/dashboard',
     component: requireAuth(DashboardPage),
-    exact: true,
+    exact: true
   },
   {
     path: '/login',
@@ -37,7 +37,7 @@ const routes = [
     exact: true
   },
   {
-    path: '/profilepage',
+    path: '/profile',
     component: requireAuth(ProfilePage),
     exact: true
   },
@@ -46,13 +46,13 @@ const routes = [
     component: AboutPage
   },
   {
-    path: '/admin/manageroles',
+    path: '/admin/roles',
     component: requireAdminAuth(ManangeRolePage)
   },
   {
-    path: '/admin/handleusers',
+    path: '/admin/users',
     component: requireAdminAuth(HandleUsersPage)
-  },
+  }
 ];
 
 export default routes;
