@@ -5,7 +5,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
-import MenuBookIcon from '@material-ui/icons/MenuBookSharp';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { formatRelative } from 'date-fns';
 
@@ -15,15 +17,17 @@ const useStyles = makeStyles({
     backgroundColor: '#CDCDCD',
     marginBottom: '0.4rem',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: '7rem',
+    padding: '0.4rem'
   },
   title: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: 'bold'
   },
   date: {
-    color: 'blue',
-    fontSize: 10,
+    color: 'rgb(49, 150, 175)',
+    fontSize: 14,
     fontStyle: 'italic'
   },
   textContent: {
@@ -32,7 +36,22 @@ const useStyles = makeStyles({
   },
   action: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  view: {
+    color: 'green',
+    height: '3rem',
+    width: '3rem'
+  },
+  viewLink: {
+    textDecoration: 'none'
+  },
+  delete: {
+    height: '2.5rem',
+    width: '3rem',
+    color: '#8B0000',
+    marginBottom: '0.7rem'
   }
 });
 
@@ -52,8 +71,13 @@ const DocumentCard = ({ document }) => {
         )}`}</Typography>
       </CardContent>
       <CardActions className={classes.action}>
-        <Link to={`/render-document/${document.id}`} className="navbar-link">
-          <MenuBookIcon />
+        <Tooltip title="Delete Document">
+          <DeleteIcon className={classes.delete} />
+        </Tooltip>
+        <Link to={`/render-document/${document.id}`} className="">
+          <Tooltip title="View Document">
+            <VisibilityIcon className={classes.view} />
+          </Tooltip>
         </Link>
       </CardActions>
     </Card>

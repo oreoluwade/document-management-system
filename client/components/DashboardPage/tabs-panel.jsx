@@ -62,16 +62,16 @@ const TabsPanel = ({ privateDocuments, publicDocuments, roleDocuments }) => {
           onChange={handleTabChange}
           aria-label="documents tab"
         >
-          <Tab label="Private Documents" {...a11yProps(0)} />
           <Tab label="Public Documents" {...a11yProps(1)} />
+          <Tab label="Private Documents" {...a11yProps(0)} />
           <Tab label="Role Documents" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <DocumentList documents={privateDocuments} />
+        <DocumentList documents={publicDocuments} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <DocumentList documents={publicDocuments} />
+        <DocumentList documents={privateDocuments} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <DocumentList documents={roleDocuments} />

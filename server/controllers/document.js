@@ -109,7 +109,7 @@ module.exports = {
   },
 
   editDocument: (req, res) => {
-    Document.findById(req.params.id).then(documentFound => {
+    Document.findByPk(req.params.id).then(documentFound => {
       if (!documentFound) {
         return res.status(404).send({
           message: `document with id: ${req.params.id} not found`

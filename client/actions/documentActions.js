@@ -101,7 +101,8 @@ export function updateDocument(document, userId) {
   return dispatch =>
     axios
       .put(`/document/${document.id}`, document)
-      .then(() => {
+      .then(res => {
+        console.log('res', res);
         dispatch(loadUserDocuments(userId));
       })
       .catch(error => {

@@ -140,7 +140,7 @@ class RenderDocument extends React.Component {
             className="btn-default document-form__button"
             onClick={Boolean(documentId) ? editDocument : createDocument}
           >
-            SAVE DOCUMENT
+            {Boolean(documentId) ? 'UPDATE' : 'SAVE DOCUMENT'}
           </button>
         </form>
       </div>
