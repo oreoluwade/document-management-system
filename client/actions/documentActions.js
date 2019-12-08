@@ -66,7 +66,6 @@ export function loadUserDocuments(id) {
     axios
       .get(`user/${id}/document`)
       .then(response => {
-        console.log('Repo?', response.data);
         dispatch(retrieveUserDocuments(response.data));
       })
       .catch(error => {
