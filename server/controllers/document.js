@@ -1,217 +1,138 @@
 import models from '../models';
 
-const Document = models.Document;
-const User = models.User;
-const Role = models.Role;
+const { Document, User, Role } = models;
 
-const accessLevels = {
-  public: 'public',
-  private: 'private',
-  role: 'role'
-};
+export default {
+    createDocument(req, res) {
+        const { title, ownerId, content, access } = req.body;
+        Document.findOrCreate({
+            where: { title, ownerId },
+            defaults: { title, content, access, ownerId }
+        })
+            .spread((document, created) => {
+                if (!created) {
+                    return res.status(409).send({
+                        message: 'A Document with that title already exists'
+                    });
+                }
+                return res.status(201).send({
+                    document,
+                    message: 'Document successfully created!'
+                });
+            })
+            .catch(error => res.status(400).send(error));
+    },
 
-module.exports = {
-  createDocument: (req, res) => {
-    const newDocument = req.body;
-    Document.findOrCreate({
-      where: {
-        title: newDocument.title,
-        ownerId: newDocument.ownerId
-      },
-      defaults: {
-        title: newDocument.title,
-        content: newDocument.content,
-        access: newDocument.access,
-        ownerId: newDocument.ownerId
-      }
-    })
-      .spread((document, created) => {
-        if (!created) {
-          return res.status(409).send({
-            message: 'A Document with that Title already exists'
-          });
+    async getDocument(req, res) {
+        const document = await Document.findByPk(req.params.id);
+        return res.send(document);
+    },
+
+    getDocuments(req, res) {
+        const { id, roleId } = req.decoded;
+        if (req.query.limit < 0 || req.query.offset < 0) {
+            return res
+                .status(400)
+                .send({ message: 'Only Positive integers are permitted.' });
         }
-        return res.status(201).send({
-          document,
-          message: 'Document successfully created!'
-        });
-      })
-      .catch(error => res.status(400).send(error));
-  },
 
-  getDocument: (req, res) => {
-    // Shouldn't the user come before the document?
-    Document.findByPk(req.params.id).then(foundDocument => {
-      if (!foundDocument) {
-        return res.status(404).send({
-          message: `No document found with id: ${req.params.id}`
-        });
-      }
+        let query = {
+            limit: req.query.limit || null,
+            offset: req.query.offset || null,
+            order: [['createdAt', 'DESC']]
+        };
 
-      if (foundDocument.access === accessLevels.public) {
-        return res.status(200).send(foundDocument);
-      }
+        const queryoptions = {
+            where: {
+                $or: [{ access: 'public' }, { access: 'role' }, { ownerId: id }]
+            },
+            include: [
+                {
+                    model: User,
+                    where: { roleId },
+                    as: 'owner'
+                }
+            ]
+        };
 
-      if (
-        foundDocument.access === accessLevels.private &&
-        foundDocument.ownerId === req.decoded.id
-      ) {
-        return res.status(200).send(foundDocument);
-      }
-      if (foundDocument.access === accessLevels.role) {
-        return User.findByPk(foundDocument.ownerId).then(documentOwner => {
-          if (documentOwner.roleId === req.decoded.roleId) {
-            return res.status(200).send(foundDocument);
-          }
-          return res.status(403).send({
-            message: 'You are not permitted to access this document'
-          });
-        });
-      }
-      return res.status(403).send({
-        message: 'You are not permitted to access this document'
-      });
-    });
-  },
-
-  getDocuments: (req, res) => {
-    const { id, roleId } = req.decoded;
-    if (req.query.limit < 0 || req.query.offset < 0) {
-      return res
-        .status(400)
-        .send({ message: 'Only Positive integers are permitted.' });
-    }
-
-    let query = {
-      limit: req.query.limit || null,
-      offset: req.query.offset || null,
-      order: [['createdAt', 'DESC']]
-    };
-
-    const queryoptions = {
-      where: {
-        $or: [{ access: 'public' }, { access: 'role' }, { ownerId: id }]
-      },
-      include: [
-        {
-          model: User,
-          where: { roleId },
-          as: 'owner'
+        if (roleId !== 1) {
+            query = { ...query, ...queryoptions };
         }
-      ]
-    };
 
-    if (roleId !== 1) {
-      query = Object.assign({}, query, queryoptions);
-    }
-
-    Document.findAll(query).then(documents => res.status(200).send(documents));
-  },
-
-  editDocument: (req, res) => {
-    Document.findByPk(req.params.id).then(documentFound => {
-      if (!documentFound) {
-        return res.status(404).send({
-          message: `document with id: ${req.params.id} not found`
+        Document.findAll(query).then(documents => {
+            res.status(200).send(documents);
         });
-      }
-      if (documentFound.ownerId === req.decoded.id) {
-        documentFound.update(req.body).then(editedDocument =>
-          res.status(200).send({
-            editedDocument,
+    },
+
+    async editDocument(req, res) {
+        const document = await Document.findByPk(req.params.id);
+        const updatedDocument = await document.update(req.body);
+        return res.send({
+            document: updatedDocument,
             message: 'Update Successful!'
-          })
-        );
-      } else {
-        return res.status(403).send({
-          message: 'You are not the owner of this document.'
         });
-      }
-    });
-  },
+    },
 
-  deleteDocument: (req, res) => {
-    Document.findByPk(req.params.id).then(foundDocument => {
-      if (!foundDocument) {
-        return res.status(404).send({
-          message: `document with id: ${req.params.id} not found`
-        });
-      }
-      if (foundDocument.ownerId === req.decoded.id) {
-        foundDocument
-          .destroy()
-          .then(() =>
-            res.status(200).send({ message: 'Document successfully deleted' })
-          );
-      } else {
-        return res.status(403).send({
-          message: 'You cannot delete a document that does not belong to you.'
-        });
-      }
-    });
-  },
+    async deleteDocument(req, res) {
+        const document = await Document.findByPk(req.params.id);
+        await document.destroy();
+        res.send({ message: 'Document successfully deleted' });
+    },
 
-  findUserDocuments: (req, res) => {
-    Document.findAll({ where: { ownerId: req.params.id } }).then(
-      foundDocuments => {
-        if (!foundDocuments) {
-          return res.status(404).send({
-            message: `No Document(s) found for user with ID
-              ${req.params.id}`
-          });
+    async findUserDocuments(req, res) {
+        const documents = await Document.findAll({
+            where: { ownerId: req.params.id }
+        });
+        return res.send(documents);
+    },
+
+    searchDocuments(req, res) {
+        const queryString = req.query.query;
+        const role = Math.abs(req.query.role, 10);
+        const { publishedDate } = req.query;
+        const order = /^ASC$/i.test(publishedDate) ? publishedDate : 'DESC';
+
+        const query = {
+            where: {
+                $and: [
+                    {
+                        $or: [{ access: 'public' }, { ownerId: req.decoded.id }]
+                    }
+                ]
+            },
+            limit: req.query.limit || null,
+            offset: req.query.offset || null,
+            order: [['createdAt', order]]
+        };
+
+        if (queryString) {
+            query.where.$and.push({
+                $or: [
+                    { title: { $iLike: `%${queryString}%` } },
+                    { content: { $iLike: `%${queryString}%` } }
+                ]
+            });
         }
-        return res.send(foundDocuments);
-      }
-    );
-  },
 
-  searchDocuments: (req, res) => {
-    const queryString = req.query.query;
-    const role = Math.abs(req.query.role, 10);
-    const publishedDate = req.query.publishedDate;
-    const order = /^ASC$/i.test(publishedDate) ? publishedDate : 'DESC';
-
-    const query = {
-      where: {
-        $and: [
-          {
-            $or: [{ access: 'public' }, { ownerId: req.decoded.id }]
-          }
-        ]
-      },
-      limit: req.query.limit || null,
-      offset: req.query.offset || null,
-      order: [['createdAt', order]]
-    };
-
-    if (queryString) {
-      query.where.$and.push({
-        $or: [
-          { title: { $iLike: `%${queryString}%` } },
-          { content: { $iLike: `%${queryString}%` } }
-        ]
-      });
-    }
-
-    if (role) {
-      query.include = [
-        {
-          model: User,
-          as: 'owner',
-          attributes: [],
-          include: [
-            {
-              model: Role,
-              attributes: [],
-              where: { id: role }
-            }
-          ]
+        if (role) {
+            query.include = [
+                {
+                    model: User,
+                    as: 'owner',
+                    attributes: [],
+                    include: [
+                        {
+                            model: Role,
+                            attributes: [],
+                            where: { id: role }
+                        }
+                    ]
+                }
+            ];
         }
-      ];
-    }
 
-    Document.findAll(query).then(foundDocuments => {
-      res.send(foundDocuments);
-    });
-  }
+        Document.findAll(query).then(foundDocuments => {
+            res.send(foundDocuments);
+        });
+    }
 };

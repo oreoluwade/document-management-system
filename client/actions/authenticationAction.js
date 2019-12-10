@@ -3,6 +3,8 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER } from './actionTypes';
 import { retrieveUserFromToken } from '../utils';
 
+const apiUrlPrefix = '/api';
+
 export function setCurrentUser(user) {
     return {
         type: SET_CURRENT_USER,
@@ -22,8 +24,8 @@ export function logout() {
 }
 
 export function login(data) {
-    return dispatch =>
-        axios.post('/user/login', data).then(response => {
+    return dispatch => {
+        axios.post(`${apiUrlPrefix}/user/login`, data).then(response => {
             const {
                 token,
                 username,
@@ -41,4 +43,5 @@ export function login(data) {
                 dispatch(setCurrentUser(decodedUser));
             });
         });
+    };
 }

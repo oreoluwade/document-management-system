@@ -2,6 +2,8 @@ import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER } from './actionTypes';
 
+const apiUrlPrefix = '/api';
+
 export function setCurrentUser(user) {
     return {
         type: SET_CURRENT_USER,
@@ -12,12 +14,12 @@ export function setCurrentUser(user) {
 }
 
 export function userAlreadyExists(identifier) {
-    return dispatch => axios.get(`/user/findUser/${identifier}`);
+    return () => axios.get(`${apiUrlPrefix}/user/findUser/${identifier}`);
 }
 
 export function registerUser(userData) {
-    return dispatch =>
-        axios.post('/user', userData).then(response => {
+    return dispatch => {
+        axios.post(`${apiUrlPrefix}/user`, userData).then(response => {
             const {
                 username,
                 firstname,
@@ -33,4 +35,5 @@ export function registerUser(userData) {
             setAuthorizationToken(token);
             dispatch(setCurrentUser(user));
         });
+    };
 }

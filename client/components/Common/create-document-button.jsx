@@ -6,27 +6,27 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const CreateDocumentButton = ({ location }) => {
-  const unincludedPaths = ['/render-document', '/documents', '/'];
+    const unincludedPaths = ['/document', '/documents', '/'];
 
-  const isVisible = !unincludedPaths.includes(location.pathname);
+    const isVisible = !unincludedPaths.includes(location.pathname);
 
-  return isVisible ? (
-    <Link to="/render-document">
-      <Tooltip title="Create New Document">
-        <AddCircleIcon className="create-document__button" />
-      </Tooltip>
-    </Link>
-  ) : null;
+    return isVisible ? (
+        <Link to="/document">
+            <Tooltip title="Create New Document">
+                <AddCircleIcon className="create-document__button" />
+            </Tooltip>
+        </Link>
+    ) : null;
 };
 
 CreateDocumentButton.propTypes = {
-  isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated
-  };
+    return {
+        isAuthenticated: state.auth.isAuthenticated
+    };
 };
 
 export default withRouter(connect(mapStateToProps, null)(CreateDocumentButton));

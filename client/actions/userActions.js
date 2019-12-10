@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { RETRIEVE_USERS_SUCCESS, GET_USER_INFO_SUCCESS } from './actionTypes';
 
+const apiUrlPrefix = '/api';
+
 export function retrieveUsersSuccess(users) {
-  return {
-    type: RETRIEVE_USERS_SUCCESS,
-    payload: {
-      users
-    }
-  };
+    return {
+        type: RETRIEVE_USERS_SUCCESS,
+        payload: {
+            users
+        }
+    };
 }
 
 // export function updateUserSuccess(user) {
@@ -18,53 +20,56 @@ export function retrieveUsersSuccess(users) {
 // }
 
 export function getUserInfoSuccess(user) {
-  return {
-    type: GET_USER_INFO_SUCCESS,
-    user
-  };
+    return {
+        type: GET_USER_INFO_SUCCESS,
+        user
+    };
 }
 
 export function retrieveUsers() {
-  return dispatch =>
-    axios
-      .get('/user')
-      .then(response => {
-        dispatch(retrieveUsersSuccess(response.data));
-      })
-      .catch(error => {
-        throw error;
-      });
+    return dispatch => {
+        axios
+            .get(`${apiUrlPrefix}/user`)
+            .then(response => {
+                dispatch(retrieveUsersSuccess(response.data));
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 }
 
 export function deleteUser(id) {
-  return dispatch =>
-    axios
-      .delete(`/user/${id}`)
-      .then(() => {
-        dispatch(retrieveUsers());
-      })
-      .catch(error => {
-        throw error;
-      });
+    return dispatch => {
+        axios
+            .delete(`${apiUrlPrefix}/user/${id}`)
+            .then(() => {
+                dispatch(retrieveUsers());
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 }
 
 export function updateUserAdmin(user) {
-  return dispatch =>
-    axios
-      .put(`/user/${user.id}`, user)
-      .then(() => {
-        dispatch(retrieveUsers());
-      })
-      .catch(error => {
-        throw error;
-      });
+    return dispatch => {
+        axios
+            .put(`${apiUrlPrefix}/user/${user.id}`, user)
+            .then(() => {
+                dispatch(retrieveUsers());
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 }
 
 // export function updateUserInfo(userInfo) {
 //   const user = JSON.parse(localStorage.getItem('user'));
 //   return dispatch =>
 //     axios
-//       .put(`/user/${user.id}`, userInfo)
+//       .put(`${apiUrlPrefix}/user/${user.id}`, userInfo)
 //       .then(response => {
 //         dispatch(updateUserSuccess(userInfo));
 //       })
@@ -74,14 +79,15 @@ export function updateUserAdmin(user) {
 // }
 
 export function getUserInfo() {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return dispatch =>
-    axios
-      .get(`/user/${user.id}`)
-      .then(response => {
-        dispatch(getUserInfoSuccess(response.data));
-      })
-      .catch(error => {
-        throw error;
-      });
+    const user = JSON.parse(localStorage.getItem('user'));
+    return dispatch => {
+        axios
+            .get(`${apiUrlPrefix}/user/${user.id}`)
+            .then(response => {
+                dispatch(getUserInfoSuccess(response.data));
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 }
