@@ -1,69 +1,55 @@
 import axios from 'axios';
-import * as types from './actionTypes';
+import { LOAD_ROLES_SUCCESS } from './actionTypes';
 
-/**
- * action to successfully load a role from state
- * @param  {object} role
- * @return {object}
- */
-export function loadRoleSuccess(roles) {
+export function loadRolesSuccess(roles) {
   return {
-    type: types.LOAD_ROLE_SUCCESS,
-    roles
+    type: LOAD_ROLES_SUCCESS,
+    payload: {
+      roles
+    }
   };
 }
 
-/**
- * load roles
- * @return {object}
- */
 export function loadRoles() {
-  return dispatch => axios.get('/role')
-    .then((response) => {
-      dispatch(loadRoleSuccess(response.data)
-      );
-    }).catch((error) => {
-      throw (error);
+  return dispatch =>
+    axios.get('/role').then(response => {
+      console.log('Roles?', response.data);
+      dispatch(loadRolesSuccess(response.data));
     });
 }
 
-/**
- * save new role
- * @param  {object} role
- * @return {object}
- */
-export function saveRole(role) {
-  return dispatch => axios.post('/role', role)
-    .then(() => {
-      dispatch(loadRoles());
-    }).catch((error) => {
-      throw (error);
-    });
+export function saveRole(rolePayload) {
+  return dispatch =>
+    axios
+      .post('/role', rolePayload)
+      .then(() => {
+        dispatch(loadRoles());
+      })
+      .catch(error => {
+        throw error;
+      });
 }
 
-/**
- * @param  {object} role
- * @return {function}
- */
-export function updateRole(role) {
-  return dispatch => axios.put(`/role/${role.id}`, role)
-    .then(() => {
-      dispatch(loadRoles());
-    }).catch((error) => {
-      throw (error);
-    });
+export function updateRole(updateData) {
+  return dispatch =>
+    axios
+      .put(`/role/${updateData.id}`, rolupdateDatae)
+      .then(() => {
+        dispatch(loadRoles());
+      })
+      .catch(error => {
+        throw error;
+      });
 }
 
-/**
- * delete role from db
- * @param  {number} id
- * @return {object}
- */
 export function deleteRole(id) {
-  return dispatch => axios.delete(`/role/${id}`)
-    .then(() => {
-      dispatch(loadRoles());
-    }).catch((error) => {
-      throw (error);
-    });
+  return dispatch =>
+    axios
+      .delete(`/role/${id}`)
+      .then(() => {
+        dispatch(loadRoles());
+      })
+      .catch(error => {
+        throw error;
+      });
 }

@@ -4,7 +4,9 @@ export {
   SET_CURRENT_USER,
   LOAD_DOCUMENT_SUCCESS,
   LOAD_ALL_DOCUMENTS,
-  LOAD_USER_DOCUMENTS
+  LOAD_USER_DOCUMENTS,
+  RETRIEVE_USERS_SUCCESS,
+  LOAD_ROLES_SUCCESS
 } from './actionTypes';
 export {
   saveDocument,
@@ -14,4 +16,5 @@ export {
   searchDocuments,
   updateDocument
 } from './documentActions';
-export { getUserInfo } from './userActions';
+export { getUserInfo, retrieveUsers, deleteUser } from './userActions';
+export { loadRoles } from './roleActions';

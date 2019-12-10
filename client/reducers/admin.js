@@ -1,12 +1,15 @@
 import initialState from './initialState';
+import { RETRIEVE_USERS_SUCCESS, LOAD_ROLES_SUCCESS } from '../actions';
 
 export default (state = initialState.admin, action) => {
-  // switch (action.type) {
-  //   case types.LOAD_ROLE_SUCCESS:
-  //     return Object.assign({}, ...state, { roles: action.roles });
+  switch (action.type) {
+    case RETRIEVE_USERS_SUCCESS:
+      return { ...state, users: action.payload.users };
 
-  //   default:
-  //     return state;
-  // }
-  return state;
+    case LOAD_ROLES_SUCCESS:
+      return { ...state, roles: action.payload.roles };
+
+    default:
+      return state;
+  }
 };

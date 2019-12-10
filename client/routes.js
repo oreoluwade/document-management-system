@@ -5,8 +5,7 @@ import LoginPage from './components/LoginPage';
 // import DocumentPage from './components/DocumentPage';
 import RenderDocument from './components/document/render-document';
 import DashboardPage from './components/DashboardPage';
-import ManangeRolePage from './components/adminComponents/ManageRolePage';
-import HandleUsersPage from './components/adminComponents/HandleUsersPage';
+import { Users, Roles } from './components/adminComponents';
 import ProfilePage from './components/ProfilePage';
 import requireAuth from './components/Utils/RequireAuth';
 import requireAdminAuth from './components/Utils/RequireAdminAuth';
@@ -58,11 +57,11 @@ const routes = [
   },
   {
     path: '/admin/roles',
-    component: requireAdminAuth(ManangeRolePage)
+    component: requireAdminAuth(Roles)
   },
   {
     path: '/admin/users',
-    component: requireAdminAuth(HandleUsersPage)
+    component: requireAdminAuth(Users)
   }
 ];
 
