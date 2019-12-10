@@ -31,11 +31,12 @@ class LoginForm extends React.Component {
                     this.props.history.push('/dashboard');
                     toastr.success('Logged in Successfully!');
                 },
-                err =>
+                err => {
                     this.setState({
                         errors: err.response.data.errors,
                         submitting: false
-                    })
+                    });
+                }
             );
         }
     };
