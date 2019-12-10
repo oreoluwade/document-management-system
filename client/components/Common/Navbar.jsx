@@ -111,6 +111,7 @@ const Navbar = props => {
 
     const handleLogout = () => {
         props.logout();
+        props.history.push('/');
     };
 
     const isOnDashboard = isAuthenticated && pathname === '/dashboard';
@@ -200,18 +201,28 @@ const Navbar = props => {
                                 </Button>
                             </Fragment>
                         )}
-                        {isAuthenticated && isAdmin && (
+                        {isAuthenticated && (
                             <Fragment>
-                                <Button color="inherit">
-                                    <Link to="/users" className="navbar-link">
-                                        Manage Users
-                                    </Link>
-                                </Button>
-                                <Button color="inherit">
-                                    <Link to="/roles" className="navbar-link">
-                                        Manage Roles
-                                    </Link>
-                                </Button>
+                                {isAdmin && (
+                                    <Fragment>
+                                        <Button color="inherit">
+                                            <Link
+                                                to="/users"
+                                                className="navbar-link"
+                                            >
+                                                Users
+                                            </Link>
+                                        </Button>
+                                        <Button color="inherit">
+                                            <Link
+                                                to="/roles"
+                                                className="navbar-link"
+                                            >
+                                                Roles
+                                            </Link>
+                                        </Button>
+                                    </Fragment>
+                                )}
                                 <Button color="inherit" onClick={handleLogout}>
                                     Logout
                                 </Button>
@@ -255,7 +266,8 @@ Navbar.propTypes = {
     isAuthenticated: PropTypes.bool,
     isAdmin: PropTypes.bool,
     logout: PropTypes.func,
-    location: PropTypes.object
+    location: PropTypes.object,
+    history: PropTypes.object
 };
 
 const mapStateToProps = state => ({

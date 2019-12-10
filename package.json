@@ -94,6 +94,7 @@
     "babel-plugin-react-display-name": "^2.0.0",
     "babel-polyfill": "6.26.0",
     "babel-register": "^6.23.0",
+    "bcrypt": "^3.0.7",
     "bcrypt-nodejs": "0.0.3",
     "cheerio": "^1.0.0-rc.3",
     "classnames": "^2.2.5",

@@ -43,6 +43,9 @@ const Routes = app => {
         userController.fetchExistingUser
     );
 
+    // login
+    app.route(`${apiUrlPrefix}/user/login`).post(userController.userLogin);
+
     // Route for single user
     app.route(`${apiUrlPrefix}/user/:id`)
         .all(validateToken, userIdExists)
@@ -55,9 +58,6 @@ const Routes = app => {
         validateToken,
         documentController.findUserDocuments
     );
-
-    // login
-    app.route(`${apiUrlPrefix}/user/login`).post(userController.userLogin);
 
     // logout
     app.route(`${apiUrlPrefix}/user/logout`).post(userController.userLogout);

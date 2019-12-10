@@ -24,24 +24,23 @@ export function logout() {
 }
 
 export function login(data) {
-    return dispatch => {
-        axios.post(`${apiUrlPrefix}/user/login`, data).then(response => {
-            const {
-                token,
-                username,
-                email,
-                firstname,
-                lastname,
-                roleId,
-                id
-            } = response.data;
-            const user = { username, email, firstname, lastname, roleId, id };
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('jwtToken', token);
-            setAuthorizationToken(token);
-            retrieveUserFromToken(token).then(decodedUser => {
-                dispatch(setCurrentUser(decodedUser));
-            });
+    return async dispatch => {
+        const response = await axios.post(`${apiUrlPrefix}/user/login`, data);
+        const {
+            token,
+            username,
+            email,
+            firstname,
+            lastname,
+            roleId,
+            id
+        } = response.data;
+        const user = { username, email, firstname, lastname, roleId, id };
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
+        retrieveUserFromToken(token).then(decodedUser => {
+            dispatch(setCurrentUser(decodedUser));
         });
     };
 }

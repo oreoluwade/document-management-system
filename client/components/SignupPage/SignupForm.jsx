@@ -28,7 +28,7 @@ class SignupForm extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     };
 
-    isValid() {
+    isValid = () => {
         const {
             username,
             firstname,
@@ -48,7 +48,7 @@ class SignupForm extends React.Component {
         };
         const { errors, isValid } = signupValidator(payload);
         return !isValid ? this.setState({ errors }) : isValid;
-    }
+    };
 
     checkUserExists = e => {
         const { name: field, value: val } = e.target;

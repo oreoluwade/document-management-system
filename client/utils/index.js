@@ -1,2 +1,2 @@
-export { signupValidator } from './validator';
+export { signupValidator, loginValidator } from './validator';
 export { retrieveUserFromToken } from './retrieveUserFromToken';

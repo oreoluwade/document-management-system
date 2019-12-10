@@ -18,22 +18,21 @@ export function userAlreadyExists(identifier) {
 }
 
 export function registerUser(userData) {
-    return dispatch => {
-        axios.post(`${apiUrlPrefix}/user`, userData).then(response => {
-            const {
-                username,
-                firstname,
-                lastname,
-                roleId,
-                email,
-                id,
-                token
-            } = response.data;
-            const user = { username, firstname, lastname, roleId, email, id };
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('jwtToken', token);
-            setAuthorizationToken(token);
-            dispatch(setCurrentUser(user));
-        });
+    return async dispatch => {
+        const response = await axios.post(`${apiUrlPrefix}/user`, userData);
+        const {
+            username,
+            firstname,
+            lastname,
+            roleId,
+            email,
+            id,
+            token
+        } = response.data;
+        const user = { username, firstname, lastname, roleId, email, id };
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
+        dispatch(setCurrentUser(user));
     };
 }

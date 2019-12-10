@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
@@ -61,7 +61,8 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     User.prototype.validPassword = async function validPassword(password) {
-        return bcrypt.compareSync(password, this.password);
+        const match = await bcrypt.compare(password, this.password);
+        return match;
     };
     return User;
 };

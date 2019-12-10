@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Lock from '@material-ui/icons/Lock';
 import TextFieldGroup from '../Common/TextFieldGroup';
-import validateInput from '../../../server/shared/validations/login';
+import { loginValidator } from '../../utils';
 import { login } from '../../actions/authenticationAction';
 
 class LoginForm extends React.Component {
@@ -18,26 +18,25 @@ class LoginForm extends React.Component {
     };
 
     isValid() {
-        const { errors, isValid } = validateInput(this.state);
+        const { identifier, password } = this.state;
+        const { errors, isValid } = loginValidator({ identifier, password });
         return !isValid ? this.setState({ errors }) : isValid;
     }
 
     handleSubmit = e => {
+        const { identifier, password } = this.state;
         e.preventDefault();
-        if (this.isValid()) {
+        if (this.isValid() === true) {
             this.setState({ errors: {}, submitting: true });
-            this.props.login(this.state).then(
-                () => {
-                    this.props.history.push('/dashboard');
-                    toastr.success('Logged in Successfully!');
-                },
-                err => {
-                    this.setState({
-                        errors: err.response.data.errors,
-                        submitting: false
-                    });
-                }
-            );
+            this.props.login({ identifier, password }).then(() => {
+                this.props.history.push('/dashboard');
+                toastr.success('Logged in Successfully!');
+            });
+        } else {
+            this.setState({
+                submitting: false,
+                errors: 'Invalid Credentials'
+            });
         }
     };
 
@@ -80,6 +79,10 @@ class LoginForm extends React.Component {
                     placeholder="Password"
                     inputClass="auth-input-box"
                 />
+
+                {this.state.errors === 'Invalid Credentials' && (
+                    <p>{this.state.errors}</p>
+                )}
 
                 <button
                     disabled={submitting || emptyFields}

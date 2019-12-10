@@ -121,41 +121,41 @@ export default {
         return res.send({ message: 'User deleted!' });
     },
 
-    userLogin: (req, res) => {
+    async userLogin(req, res) {
         const { identifier, password } = req.body;
-        User.findOne({
+        const user = await User.findOne({
             where: {
                 [Op.or]: [{ email: identifier }, { username: identifier }]
             }
-        }).then(user => {
-            if (!user) {
-                return res
-                    .status(401)
-                    .send({ errors: { form: 'Invalid Credentials' } });
-            }
-            if (!user.validPassword(password)) {
-                return res
-                    .status(401)
-                    .send({ errors: { form: 'Invalid Credentials' } });
-            }
-            const token = jwt.sign(
-                {
-                    id: user.id,
-                    username: user.username,
-                    roleId: user.roleId
-                },
-                secret
-            );
-            return res.send({
+        });
+
+        if (!user) {
+            return res.status(404).send({ error: 'Invalid Credentials' });
+        }
+        const passwordIsValid = await user.validPassword(password);
+
+        if (!passwordIsValid) {
+            return res.status(401).send({ error: 'Invalid Credentials' });
+        }
+
+        const token = jwt.sign(
+            {
                 id: user.id,
                 username: user.username,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                roleId: user.roleId,
-                email: user.email,
-                token,
-                message: 'Login Successful! Token expires in one day.'
-            });
+                roleId: user.roleId
+            },
+            secret
+        );
+
+        return res.send({
+            id: user.id,
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            roleId: user.roleId,
+            email: user.email,
+            token,
+            message: 'Login Successful! Token expires in one day.'
         });
     },
 
@@ -176,7 +176,7 @@ export default {
                 if (!user) {
                     return res.send({ message: 'User can be created' });
                 }
-                return res.status(400).send({ error: 'User already exists' });
+                return res.status(409).send({ error: 'User already exists' });
             })
             .catch(error => res.status(501).send({ error }));
     }
