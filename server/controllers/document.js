@@ -41,7 +41,7 @@ module.exports = {
 
   getDocument: (req, res) => {
     // Shouldn't the user come before the document?
-    Document.findById(req.params.id).then(foundDocument => {
+    Document.findByPk(req.params.id).then(foundDocument => {
       if (!foundDocument) {
         return res.status(404).send({
           message: `No document found with id: ${req.params.id}`
@@ -59,7 +59,7 @@ module.exports = {
         return res.status(200).send(foundDocument);
       }
       if (foundDocument.access === accessLevels.role) {
-        return User.findById(foundDocument.ownerId).then(documentOwner => {
+        return User.findByPk(foundDocument.ownerId).then(documentOwner => {
           if (documentOwner.roleId === req.decoded.roleId) {
             return res.status(200).send(foundDocument);
           }
@@ -131,7 +131,7 @@ module.exports = {
   },
 
   deleteDocument: (req, res) => {
-    Document.findById(req.params.id).then(foundDocument => {
+    Document.findByPk(req.params.id).then(foundDocument => {
       if (!foundDocument) {
         return res.status(404).send({
           message: `document with id: ${req.params.id} not found`

@@ -19,7 +19,7 @@ export default {
 
   async updateRole(req, res) {
     try {
-      const role = await Role.findById(req.params.id);
+      const role = await Role.findByPk(req.params.id);
       const updatedRole = await role.update(req.body);
       return res.send(updatedRole);
     } catch (error) {
@@ -29,7 +29,7 @@ export default {
 
   async deleteRole(req, res) {
     try {
-      const role = await Role.findById(req.params.id);
+      const role = await Role.findByPk(req.params.id);
       await role.destroy();
       return res.send({ message: 'Role deleted!' });
     } catch (error) {
@@ -39,7 +39,7 @@ export default {
 
   async getRole(req, res) {
     try {
-      const role = await Role.findById(req.params.id);
+      const role = await Role.findByPk(req.params.id);
       return res.status(200).send(role);
     } catch (error) {
       return res.status(404).send({ error: 'Role does not exist' });
