@@ -11,6 +11,7 @@ import './profile.scss';
 
 const Profile = ({ getUserDetails, userDetails, updateUserDetails }) => {
     const [user, setUser] = useState({});
+    const [updatePayload, setUpdatePayload] = useState({});
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
 
@@ -22,12 +23,14 @@ const Profile = ({ getUserDetails, userDetails, updateUserDetails }) => {
 
     const handleInputChange = e => {
         setUser({ ...user, [e.target.name]: e.target.value });
+        setUpdatePayload({ ...updatePayload, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async e => {
         e.preventDefault();
         setSubmitting(true);
-        await updateUserDetails(user.id, user);
+        console.log('Userrrrrrr', user, updatePayload);
+        await updateUserDetails(user.id, updatePayload);
         setSubmitting(false);
     };
 

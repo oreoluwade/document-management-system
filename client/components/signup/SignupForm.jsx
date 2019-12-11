@@ -130,7 +130,7 @@ class SignupForm extends React.Component {
         } = this;
 
         return (
-            <form className="auth-form">
+            <form className="auth-form auth-form-signup">
                 <TextFieldGroup
                     icon={<FaceIcon />}
                     error={errors.username}

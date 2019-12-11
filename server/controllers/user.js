@@ -139,6 +139,8 @@ export default {
         }
         const passwordIsValid = await user.validPassword(password);
 
+        console.log(password);
+
         if (!passwordIsValid) {
             return res.status(401).send({ error: 'Invalid Credentials' });
         }

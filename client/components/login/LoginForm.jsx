@@ -61,7 +61,7 @@ class LoginForm extends React.Component {
             !identifier.trim().length || !password.trim().length;
 
         return (
-            <form className="auth-form auth-form-login">
+            <form className="auth-form">
                 <TextFieldGroup
                     icon={<AccountCircle />}
                     field="identifier"
