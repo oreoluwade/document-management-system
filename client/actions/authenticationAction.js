@@ -1,7 +1,7 @@
 import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER } from './actionTypes';
-import { retrieveUserFromToken } from '../utils';
+import { loadUserDocuments } from './documentActions';
 
 const apiUrlPrefix = '/api';
 
@@ -39,8 +39,7 @@ export function login(data) {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
-        retrieveUserFromToken(token).then(decodedUser => {
-            dispatch(setCurrentUser(decodedUser));
-        });
+        dispatch(setCurrentUser(user));
+        dispatch(loadUserDocuments(id));
     };
 }

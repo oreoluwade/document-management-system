@@ -14,7 +14,7 @@ class RoleForm extends React.PureComponent {
     this.props.loadRoles();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.role.id !== nextProps.role.id) {
       this.setState({ role: nextProps.role });
     }

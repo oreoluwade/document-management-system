@@ -1,7 +1,20 @@
 import axios from 'axios';
-import { RETRIEVE_USERS_SUCCESS, GET_USER_INFO_SUCCESS } from './actionTypes';
+import {
+    RETRIEVE_USERS_SUCCESS,
+    GET_USER_INFO_SUCCESS,
+    SET_CURRENT_USER
+} from './actionTypes';
 
 const apiUrlPrefix = '/api';
+
+export function setCurrentUser(user) {
+    return {
+        type: SET_CURRENT_USER,
+        payload: {
+            user
+        }
+    };
+}
 
 export function retrieveUsersSuccess(users) {
     return {
@@ -11,13 +24,6 @@ export function retrieveUsersSuccess(users) {
         }
     };
 }
-
-// export function updateUserSuccess(user) {
-//   return {
-//     type: types.UPDATE_USER_SUCCESS,
-//     user
-//   };
-// }
 
 export function getUserInfoSuccess(user) {
     return {
@@ -65,29 +71,17 @@ export function updateUserAdmin(user) {
     };
 }
 
-// export function updateUserInfo(userInfo) {
-//   const user = JSON.parse(localStorage.getItem('user'));
-//   return dispatch =>
-//     axios
-//       .put(`${apiUrlPrefix}/user/${user.id}`, userInfo)
-//       .then(response => {
-//         dispatch(updateUserSuccess(userInfo));
-//       })
-//       .catch(error => {
-//         throw error;
-//       });
-// }
+export const updateUserInfo = (userId, updatePayload) => async dispatch =>
+    axios
+        .put(`${apiUrlPrefix}/user/${userId}`, updatePayload)
+        .then(response => {
+            console.log('After update', response.data);
+            dispatch(setCurrentUser(response.data));
+        });
 
-export function getUserInfo() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return dispatch => {
-        axios
-            .get(`${apiUrlPrefix}/user/${user.id}`)
-            .then(response => {
-                dispatch(getUserInfoSuccess(response.data));
-            })
-            .catch(error => {
-                throw error;
-            });
-    };
-}
+export const getUserInfo = userId => async dispatch => {
+    axios.get(`${apiUrlPrefix}/user/${userId}`).then(response => {
+        console.log('userinfo', response.data);
+        dispatch(setCurrentUser(response.data));
+    });
+};

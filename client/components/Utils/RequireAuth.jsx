@@ -1,50 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loadUserDocuments, loadAllDocuments } from '../../actions';
 
 export default function(ComposedComponent) {
-  class RequireAuth extends React.Component {
-    componentDidMount() {
-      if (this.props.isAuthenticated) {
-        this.props.loadAllDocuments();
-        this.props.loadUserDocuments(this.props.userId);
-      }
+    class RequireAuth extends React.Component {
+        render() {
+            return this.props.isAuthenticated ? (
+                <ComposedComponent {...this.props} />
+            ) : (
+                <Redirect to="/login" />
+            );
+        }
     }
 
-    componentDidUpdate(prevProps) {
-      if (this.props.userId !== prevProps.userId) {
-        this.props.loadUserDocuments(this.props.userId);
-        this.props.loadAllDocuments();
-      }
-    }
-
-    // componentWillUpdate(nextProps) {
-    //   if (!nextProps.isAuthenticated) {
-    //     this.props.history.push('/');
-    //   }
-    // }
-    render() {
-      return <ComposedComponent {...this.props} />;
-    }
-  }
-
-  RequireAuth.propTypes = {
-    isAuthenticated: PropTypes.bool,
-    history: PropTypes.object
-  };
-
-  const mapStateToProps = state => {
-    return {
-      isAuthenticated: state.auth.isAuthenticated,
-      userId: state.user.details.id
+    RequireAuth.propTypes = {
+        isAuthenticated: PropTypes.bool,
+        history: PropTypes.object
     };
-  };
 
-  return withRouter(
-    connect(mapStateToProps, { loadUserDocuments, loadAllDocuments })(
-      RequireAuth
-    )
-  );
+    const mapStateToProps = state => ({
+        isAuthenticated: state.auth.isAuthenticated
+    });
+
+    return withRouter(connect(mapStateToProps, null)(RequireAuth));
 }

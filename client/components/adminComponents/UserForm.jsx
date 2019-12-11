@@ -18,7 +18,7 @@ class UserForm extends React.Component {
         $('#mySelectBox').on('change', this.updateSelectState);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.user.id !== nextProps.user.id) {
             this.setState({ user: nextProps.user });
         }

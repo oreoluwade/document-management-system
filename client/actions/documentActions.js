@@ -36,14 +36,14 @@ export function retrieveUserDocuments(documents) {
     };
 }
 
-export function updateDocumentSuccess(document) {
-    return {
-        type: UPDATE_DOCUMENT_SUCCESS,
-        payload: {
-            document
-        }
-    };
-}
+// export function updateDocumentSuccess(document) {
+//     return {
+//         type: UPDATE_DOCUMENT_SUCCESS,
+//         payload: {
+//             document
+//         }
+//     };
+// }
 
 export function chooseAsCurrentDocument(id) {
     return {
@@ -89,8 +89,8 @@ export function loadAllDocuments() {
     };
 }
 
-export function saveDocument(document, userId) {
-    return dispatch => {
+export const saveDocument = (document, userId) => {
+    return async dispatch => {
         axios
             .post(`${apiUrlPrefix}/document`, document)
             .then(() => {
@@ -100,10 +100,10 @@ export function saveDocument(document, userId) {
                 throw error;
             });
     };
-}
+};
 
-export function updateDocument(document, userId) {
-    return dispatch => {
+export const updateDocument = (document, userId) => {
+    return async dispatch => {
         axios
             .put(`${apiUrlPrefix}/document/${document.id}`, document)
             .then(res => {
@@ -114,7 +114,7 @@ export function updateDocument(document, userId) {
                 throw error;
             });
     };
-}
+};
 
 export function deleteDocument(id, userId) {
     return dispatch => {

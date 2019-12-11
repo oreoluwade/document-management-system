@@ -8,6 +8,7 @@ import Lock from '@material-ui/icons/Lock';
 import TextFieldGroup from '../Common/TextFieldGroup';
 import { loginValidator } from '../../utils';
 import { login } from '../../actions/authenticationAction';
+import './login.scss';
 
 class LoginForm extends React.Component {
     state = {
@@ -28,20 +29,25 @@ class LoginForm extends React.Component {
         e.preventDefault();
         if (this.isValid() === true) {
             this.setState({ errors: {}, submitting: true });
-            this.props.login({ identifier, password }).then(() => {
-                this.props.history.push('/dashboard');
-                toastr.success('Logged in Successfully!');
-            });
+            this.props
+                .login({ identifier, password })
+                .then(() => {
+                    this.props.history.push('/dashboard');
+                    toastr.success('Logged in Successfully!');
+                })
+                .catch(err => {
+                    this.setState({
+                        submitting: false,
+                        errors: err.response.data.error
+                    });
+                });
         } else {
-            this.setState({
-                submitting: false,
-                errors: 'Invalid Credentials'
-            });
+            console.log('Invalid login data', this.isValid());
         }
     };
 
     handleInputChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [e.target.name]: e.target.value, errors: '' });
     };
 
     render() {
@@ -81,7 +87,7 @@ class LoginForm extends React.Component {
                 />
 
                 {this.state.errors === 'Invalid Credentials' && (
-                    <p>{this.state.errors}</p>
+                    <p className="login-form-error">{this.state.errors}</p>
                 )}
 
                 <button

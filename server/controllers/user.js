@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
 import models from '../models';
 
-const { Role, User } = models;
+const { Role, User, Document } = models;
 const secret = process.env.SECRET || 'secretconfirmation';
 
 export default {
@@ -48,6 +48,11 @@ export default {
     async getUser(req, res) {
         const user = await User.findOne({
             where: { id: req.params.id },
+            include: [
+                {
+                    model: Document
+                }
+            ],
             attributes: [
                 'id',
                 'username',

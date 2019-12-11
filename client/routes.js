@@ -4,7 +4,7 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 // import DocumentPage from './components/DocumentPage';
 import RenderDocument from './components/document/render-document';
-import DashboardPage from './components/DashboardPage';
+import Dashboard from './components/dashboard';
 import { Users, Roles } from './components/adminComponents';
 import ProfilePage from './components/ProfilePage';
 import requireAuth from './components/Utils/RequireAuth';
@@ -18,7 +18,7 @@ const routes = [
     },
     {
         path: '/dashboard',
-        component: requireAuth(DashboardPage),
+        component: requireAuth(Dashboard),
         exact: true
     },
     {

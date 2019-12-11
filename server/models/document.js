@@ -30,9 +30,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Document.associate = models => {
         Document.belongsTo(models.User, {
-            as: 'owner',
             onDelete: 'CASCADE',
-            foreignKey: { allowNull: true }
+            foreignKey: 'ownerId'
         });
     };
 
