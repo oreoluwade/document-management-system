@@ -1,19 +1,19 @@
-import HomePage from './components/HomePage';
-import AboutPage from './components/AboutPage';
-import SignupPage from './components/SignupPage';
-import LoginPage from './components/LoginPage';
+import Home from './components/home';
+import About from './components/about';
+import Signup from './components/signup';
+import Login from './components/login';
 // import DocumentPage from './components/DocumentPage';
 import RenderDocument from './components/document/render-document';
 import Dashboard from './components/dashboard';
 import { Users, Roles } from './components/adminComponents';
-import ProfilePage from './components/ProfilePage';
+import Profile from './components/profile';
 import requireAuth from './components/Utils/RequireAuth';
 import requireAdminAuth from './components/Utils/RequireAdminAuth';
 
 const routes = [
     {
         path: '/',
-        component: HomePage,
+        component: Home,
         exact: true
     },
     {
@@ -23,12 +23,12 @@ const routes = [
     },
     {
         path: '/login',
-        component: LoginPage,
+        component: Login,
         exact: true
     },
     {
         path: '/signup',
-        component: SignupPage,
+        component: Signup,
         exact: true
     },
     // {
@@ -48,12 +48,12 @@ const routes = [
     },
     {
         path: '/profile',
-        component: requireAuth(ProfilePage),
+        component: requireAuth(Profile),
         exact: true
     },
     {
         path: '/about',
-        component: AboutPage
+        component: About
     },
     {
         path: '/roles',

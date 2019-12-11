@@ -1,0 +1,39 @@
+.profile {
+    &-root {
+        display: grid;
+        // grid-template-columns: 1fr 1fr 1fr 1fr;
+
+        height: 80%;
+        width: 100%;
+
+        margin-top: 1rem;
+
+        overflow: scroll;
+        background-color: #CDCDCD;
+    }
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        justify-self: center;
+        align-self: center;
+        justify-content: center;
+
+        &-input {
+            &-box {
+                width: 100%;
+                outline: none;
+                border-radius: 2rem;
+                border: none;
+                font-size: 1rem;
+                padding-left: 0.8rem;
+                height: 2.5rem;
+            }
+        }
+    }
+
+    &-btn {
+        margin: 0 auto;
+    }
+}
