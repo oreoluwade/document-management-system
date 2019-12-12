@@ -1,17 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
-const HomePage = () => (
-  <div className="card-panel z-depth-8" id="homecard">
-    <h3>DOCUMENT MANAGEMENT SYSTEM</h3>
-    <p>Create, Edit and Delete Documents for all purposes</p>
-    <Link
-      to="about"
-      className="btn waves-effect waves-light blue-grey"
-    >
-      Learn More
-    </Link>
-  </div>
-);
+const useStyles = makeStyles({
+    title: {
+        color: 'white',
+        letterSpacing: '0.2rem'
+    }
+});
 
-export default HomePage;
+const Home = () => {
+    const classes = useStyles();
+
+    return (
+        <div>
+            <h1 className={classes.title}>DOCUMENT MANAGEMENT SYSTEM</h1>
+        </div>
+    );
+};
+
+export default Home;

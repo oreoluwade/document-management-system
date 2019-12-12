@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
@@ -11,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { formatRelative } from 'date-fns';
+import stripHtmlTags from '../../utils/stripHtmlTags';
 
 const useStyles = makeStyles({
     card: {
@@ -19,8 +19,9 @@ const useStyles = makeStyles({
         marginBottom: '0.4rem',
         display: 'flex',
         flexDirection: 'column',
-        height: '7rem',
-        padding: '0.4rem'
+        paddingLeft: '0.4rem',
+        paddingRight: '0.4rem',
+        paddingTop: '0.4rem'
     },
     title: {
         fontSize: 20,
@@ -31,26 +32,31 @@ const useStyles = makeStyles({
         fontSize: 14,
         fontStyle: 'italic'
     },
-    textContent: {
+    titleContent: {
+        display: 'flex'
+    },
+    docContent: {
+        fontStyle: 'italic',
+        fontSize: '0.8rem'
+    },
+    footerConent: {
         display: 'flex',
-        justifyContent: 'space-between'
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingBottom: '0px !important'
     },
     action: {
         display: 'flex',
-        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     view: {
         color: 'green',
-        height: '3rem',
-        width: '3rem'
-    },
-    viewLink: {
-        textDecoration: 'none'
+        height: '1.8rem',
+        width: '1.8rem'
     },
     delete: {
-        height: '2.5rem',
-        width: '3rem',
+        height: '1.5rem',
+        width: '2rem',
         color: '#8B0000',
         marginBottom: '0.7rem'
     }
@@ -65,24 +71,31 @@ const DocumentCard = ({ document }) => {
 
     return (
         <Card className={classes.card}>
-            <CardContent className={classes.textContent}>
+            <CardContent className={classes.titleContent}>
                 <Typography className={classes.title}>
                     {document.title}
                 </Typography>
+            </CardContent>
+            <CardContent>
+                <Typography className={classes.docContent}>
+                    {stripHtmlTags(document.content)}
+                </Typography>
+            </CardContent>
+            <CardContent className={classes.footerConent}>
                 <Typography className={classes.date}>{`Created ${getDate(
                     document
                 )}`}</Typography>
-            </CardContent>
-            <CardActions className={classes.action}>
-                <Tooltip title="Delete Document">
-                    <DeleteIcon className={classes.delete} />
-                </Tooltip>
-                <Link to={`/document/${document.id}`} className="">
-                    <Tooltip title="View Document">
-                        <VisibilityIcon className={classes.view} />
+                <div className={classes.action}>
+                    <Tooltip title="Delete Document">
+                        <DeleteIcon className={classes.delete} />
                     </Tooltip>
-                </Link>
-            </CardActions>
+                    <Link to={`/document/${document.id}`}>
+                        <Tooltip title="View Document">
+                            <VisibilityIcon className={classes.view} />
+                        </Tooltip>
+                    </Link>
+                </div>
+            </CardContent>
         </Card>
     );
 };
