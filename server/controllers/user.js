@@ -74,6 +74,7 @@ export default {
                 'username',
                 'firstname',
                 'lastname',
+                'email',
                 'roleId',
                 'createdAt',
                 'updatedAt'

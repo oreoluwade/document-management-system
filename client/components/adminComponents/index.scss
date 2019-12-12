@@ -27,4 +27,31 @@
             font-size: 1.5rem !important;
         }
     }
+
+    &-id {
+        font-weight: bold !important;
+
+        &__wrapper {
+            font-size: 1rem !important;
+        }
+    }
+
+    &-card {
+        min-width: 275;
+
+        @media all and (max-width: 300px) {
+            // margin-bottom: .5em;
+            min-width: 275px !important;
+        }
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            @media all and (max-width: 300px) {
+                // margin-bottom: .5em;
+            }
+        }
+    }
 }
