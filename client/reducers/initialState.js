@@ -1,18 +1,20 @@
 export default {
-    isAuthenticated: false,
-    user: {
-        details: {
-            id: '',
-            roleId: '',
-            username: '',
-            Documents: []
-        },
-        documents: [],
-        selectedDocument: {}
+  auth: {
+    isAuthenticated: false
+  },
+  user: {
+    details: {
+      id: '',
+      roleId: '',
+      username: '',
+      Documents: []
     },
-    admin: {
-        users: [],
-        documents: [],
-        roles: []
-    }
+    documents: [],
+    selectedDocument: {}
+  },
+  admin: {
+    users: [],
+    documents: [],
+    roles: []
+  }
 };

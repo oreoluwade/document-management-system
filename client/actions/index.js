@@ -5,7 +5,8 @@ export {
   LOAD_ALL_DOCUMENTS,
   LOAD_USER_DOCUMENTS,
   RETRIEVE_USERS_SUCCESS,
-  LOAD_ROLES_SUCCESS
+  LOAD_ROLES_SUCCESS,
+  RESET
 } from './actionTypes';
 export {
   saveDocument,

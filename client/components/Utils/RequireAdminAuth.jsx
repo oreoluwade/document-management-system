@@ -14,8 +14,8 @@ export default function(ComposedComponent) {
       }
     }
 
-    UNSAFE_componentWillUpdate(nextProps) {
-      if (!nextProps.isAuthenticated) {
+    componentDidUpdate(prevProps) {
+      if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
         this.props.history.push('/login');
       }
     }

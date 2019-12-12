@@ -1,12 +1,7 @@
-import { SET_CURRENT_USER } from '../actions';
+import { SET_CURRENT_USER, RESET } from '../actions';
 import initialState from './initialState';
 
-export default (
-  state = {
-    isAuthenticated: initialState.isAuthenticated
-  },
-  action
-) => {
+export default (state = initialState.auth, action) => {
   switch (action.type) {
     case SET_CURRENT_USER:
       return {
@@ -15,6 +10,9 @@ export default (
           item => !!item
         )
       };
+
+    case RESET:
+      return initialState.auth;
 
     default:
       return state;

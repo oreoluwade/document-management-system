@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { RETRIEVE_USERS_SUCCESS, LOAD_ROLES_SUCCESS } from '../actions';
+import { RETRIEVE_USERS_SUCCESS, LOAD_ROLES_SUCCESS, RESET } from '../actions';
 
 export default (state = initialState.admin, action) => {
   switch (action.type) {
@@ -8,6 +8,9 @@ export default (state = initialState.admin, action) => {
 
     case LOAD_ROLES_SUCCESS:
       return { ...state, roles: action.payload.roles };
+
+    case RESET:
+      return initialState.admin;
 
     default:
       return state;

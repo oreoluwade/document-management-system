@@ -10,7 +10,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div className="app-root">
-          <Navbar />
+          <Header />
           <Switch>
             {routes.map(({ component, exact, path }, index) => (
               <Route
