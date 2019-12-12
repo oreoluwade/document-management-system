@@ -80,4 +80,10 @@ const TabsPanel = ({ privateDocuments, publicDocuments, roleDocuments }) => {
     );
 };
 
+TabsPanel.propTypes = {
+    privateDocuments: PropTypes.array,
+    publicDocuments: PropTypes.array,
+    roleDocuments: PropTypes.array
+};
+
 export default TabsPanel;

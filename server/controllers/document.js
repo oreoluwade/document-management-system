@@ -29,7 +29,7 @@ export default {
         return res.send(document);
     },
 
-    getDocuments(req, res) {
+    async getDocuments(req, res) {
         const { id, roleId } = req.decoded;
         if (req.query.limit < 0 || req.query.offset < 0) {
             return res
@@ -37,36 +37,30 @@ export default {
                 .send({ message: 'Only Positive integers are permitted.' });
         }
 
-        let query = {
+        const query = {
             limit: req.query.limit || null,
             offset: req.query.offset || null,
-            order: [['createdAt', 'DESC']]
-        };
-
-        const queryoptions = {
-            where: {
-                [Op.or]: [
-                    { access: 'public' },
-                    { access: 'role' },
-                    { ownerId: id }
-                ]
-            },
+            order: [['createdAt', 'DESC']],
             include: [
                 {
-                    model: User,
-                    where: { roleId },
-                    as: 'owner'
+                    model: User
                 }
             ]
         };
 
-        if (roleId !== 1) {
-            query = { ...query, ...queryoptions };
-        }
+        const allDocuments = await Document.findAll(query);
 
-        Document.findAll(query).then(documents => {
-            res.status(200).send(documents);
-        });
+        if (roleId !== 1) {
+            const filteredDocuments = allDocuments.filter(
+                doc =>
+                    doc.access === 'public' ||
+                    doc.ownerId === id ||
+                    (doc.access === 'role' && doc.User.roleId === roleId)
+            );
+            return res.send(filteredDocuments);
+        } else {
+            return res.send(alldocuments);
+        }
     },
 
     async editDocument(req, res) {

@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Navbar = props => {
+const Header = props => {
     const {
         isAuthenticated,
         isAdmin,
@@ -188,6 +188,14 @@ const Navbar = props => {
                             <Fragment>
                                 <Button color="inherit">
                                     <Link
+                                        to="/documents"
+                                        className="navbar-link"
+                                    >
+                                        Documents
+                                    </Link>
+                                </Button>
+                                <Button color="inherit">
+                                    <Link
                                         to="/dashboard"
                                         className="navbar-link"
                                     >
@@ -262,7 +270,7 @@ const Navbar = props => {
     );
 };
 
-Navbar.propTypes = {
+Header.propTypes = {
     isAuthenticated: PropTypes.bool,
     isAdmin: PropTypes.bool,
     logout: PropTypes.func,
@@ -275,4 +283,4 @@ const mapStateToProps = state => ({
     isAdmin: state.user.details.roleId === 1
 });
 
-export default withRouter(connect(mapStateToProps, { logout })(Navbar));
+export default withRouter(connect(mapStateToProps, { logout })(Header));

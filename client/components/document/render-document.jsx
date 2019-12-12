@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Swal from 'sweetalert2';
-// import 'froala-editor/js/froala_editor.pkgd.min';
+import { makeStyles } from '@material-ui/core/styles';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'font-awesome/css/font-awesome.css';
@@ -13,144 +13,150 @@ import './index.scss';
 import TextFieldGroup from '../base/text-field-group';
 import { saveDocument, updateDocument } from '../../actions';
 
-class RenderDocument extends React.Component {
-    state = {
+const useStyles = makeStyles({
+    root: {
+        marginTop: '2rem',
+        padding: '2rem',
+        backgroundColor: '#CDCDCD',
+        height: '70%',
+        oveeflow: 'scroll'
+    },
+    readOnly: {
+        margin: '0 auto',
+        fontStyle: 'italic',
+        fontSize: '0.8rem',
+        color: 'rgb(49, 150, 175)'
+    }
+});
+
+const RenderDocument = ({
+    match,
+    document,
+    user,
+    history,
+    saveDocument,
+    updateDocument
+}) => {
+    const classes = useStyles();
+
+    const [state, setState] = useState({
         errors: {},
-        document: this.props.document || {},
+        document: document || {},
         editable: true,
         documentId: ''
-    };
+    });
 
-    componentDidMount() {
-        if (this.props.match.params.id) {
-            const {
-                match: {
-                    params: { id: documentId }
-                },
-                user
-            } = this.props;
-            this.setState({
-                documentId,
-                editable:
-                    this.props.document &&
-                    this.props.document.ownerId === user.id
+    useEffect(() => {
+        if (match.params.id) {
+            setState({
+                ...state,
+                documentId: match.params.id,
+                editable: document && document.ownerId === user.id
             });
         }
-    }
+    }, []);
 
-    handleInputChange = event => {
-        const { id: ownerId, roleId } = this.props.user;
+    const handleInputChange = event => {
+        const { id: ownerId, roleId } = user;
         const { name: field, value } = event.target;
         const role = String(roleId);
-        this.setState(state => {
-            const document = {
+        setState({
+            ...state,
+            document: {
                 ...state.document,
                 [field]: value,
-                ownerId,
-                role
-            };
-            return { document };
+                ownerId
+            },
+            role
         });
     };
 
-    handleModelChange = model => {
-        this.setState(state => {
-            const document = { ...state.document, content: model };
-            return { document };
+    const handleModelChange = model => {
+        setState({
+            ...state,
+            document: { ...state.document, content: model }
         });
     };
 
-    createDocument = async e => {
+    const createDocument = async e => {
         e.preventDefault();
         try {
-            await this.props.saveDocument(
-                this.state.document,
-                this.props.user.id
-            );
+            await saveDocument(state.document, user.id);
             Swal.fire({
                 icon: 'success',
                 title: 'Document created',
                 showConfirmButton: false,
                 timer: 1500
             });
-            this.props.history.push('/dashboard');
+            history.push('/dashboard');
         } catch (error) {
             console.log('Error', error);
         }
     };
 
-    editDocument = async e => {
+    const editDocument = async e => {
         e.preventDefault();
         try {
-            await this.props.updateDocument(
-                this.state.document,
-                this.props.user.id
-            );
+            await updateDocument(state.document, user.id);
             Swal.fire({
                 icon: 'success',
                 title: 'Document created',
                 showConfirmButton: false,
                 timer: 1500
             });
-            this.props.history.push('/dashboard');
+            history.push('/dashboard');
         } catch (error) {
             console.log('Update Error', error);
         }
     };
 
-    render() {
-        const {
-            state: {
-                document: { title = '', content = '', access },
-                documentId,
-                editable
-            },
-            handleInputChange,
-            handleModelChange,
-            editDocument,
-            createDocument
-        } = this;
+    const {
+        documentId,
+        editable,
+        document: { title = '', content = '', access }
+    } = state;
 
-        return (
-            <div className="document-root">
-                <form className="document-form">
-                    <TextFieldGroup
-                        icon={<TitleIcon />}
-                        field="title"
-                        label="Title"
-                        value={title}
+    return (
+        <div className={classes.root}>
+            <form className="document-form">
+                <TextFieldGroup
+                    icon={<TitleIcon />}
+                    field="title"
+                    label="Title"
+                    value={title}
+                    onChange={handleInputChange}
+                    type="text"
+                    placeholder="Document Title"
+                    inputClass="document-form-input"
+                    disabled={!editable}
+                />
+
+                <FroalaEditor
+                    tag="textarea"
+                    model={content}
+                    onModelChange={handleModelChange}
+                    contenteditable={editable}
+                />
+
+                <div className="document-form__select__wrapper">
+                    <select
+                        name="access"
+                        id="accessDropdown"
+                        value={access}
+                        className="document-form__select"
                         onChange={handleInputChange}
-                        type="text"
-                        placeholder="Document Title"
-                        inputClass="document-form-input"
                         disabled={!editable}
-                    />
+                    >
+                        <option value="" disabled>
+                            Document Visibility Access
+                        </option>
+                        <option value="public">PUBLIC</option>
+                        <option value="private">PRIVATE</option>
+                        <option value="role">FOR USERS WITH MY ROLE</option>
+                    </select>
+                </div>
 
-                    <FroalaEditor
-                        tag="textarea"
-                        model={content}
-                        onModelChange={handleModelChange}
-                        contenteditable={!editable}
-                    />
-
-                    <div className="document-form__select__wrapper">
-                        <select
-                            name="access"
-                            id="accessDropdown"
-                            value={access}
-                            className="document-form__select"
-                            onChange={handleInputChange}
-                            disabled={!editable}
-                        >
-                            <option value="" disabled>
-                                Document Visibility Access
-                            </option>
-                            <option value="public">PUBLIC</option>
-                            <option value="private">PRIVATE</option>
-                            <option value="role">FOR USERS WITH MY ROLE</option>
-                        </select>
-                    </div>
-
+                {editable ? (
                     <button
                         type="button"
                         className="btn-default document-form__button"
@@ -158,11 +164,15 @@ class RenderDocument extends React.Component {
                     >
                         {documentId ? 'UPDATE' : 'SAVE DOCUMENT'}
                     </button>
-                </form>
-            </div>
-        );
-    }
-}
+                ) : (
+                    <p className={classes.readOnly}>
+                        This Document is Read Only
+                    </p>
+                )}
+            </form>
+        </div>
+    );
+};
 
 RenderDocument.propTypes = {
     auth: PropTypes.object,
@@ -178,7 +188,7 @@ RenderDocument.propTypes = {
 const mapStateToProps = (state, ownProps) => {
     return {
         user: state.user.details,
-        document: state.user.documents.find(
+        document: state.documents.find(
             item => item.id === Number(ownProps.match.params.id)
         )
     };

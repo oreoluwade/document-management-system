@@ -108,12 +108,14 @@ const DocumentCard = ({ document, deleteDocument, userId }) => {
                     {`Created ${formatDate(document)}`}
                 </Typography>
                 <div className={classes.action}>
-                    <Tooltip title="Delete Document">
-                        <DeleteIcon
-                            className={classes.delete}
-                            onClick={() => discardDocument(document.id)}
-                        />
-                    </Tooltip>
+                    {userId === document.ownerId && (
+                        <Tooltip title="Delete Document">
+                            <DeleteIcon
+                                className={classes.delete}
+                                onClick={() => discardDocument(document.id)}
+                            />
+                        </Tooltip>
+                    )}
                     <Link to={`/document/${document.id}`}>
                         <Tooltip title="View Document">
                             <VisibilityIcon className={classes.view} />

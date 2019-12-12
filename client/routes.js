@@ -2,7 +2,7 @@ import Home from './components/home';
 import About from './components/about';
 import Signup from './components/signup';
 import Login from './components/login';
-import RenderDocument from './components/document/render-document';
+import { RenderDocument, Documents } from './components/document';
 import Dashboard from './components/dashboard';
 import { Users, Roles } from './components/adminComponents';
 import Profile from './components/profile';
@@ -29,11 +29,11 @@ const routes = [
         component: Signup,
         exact: true
     },
-    // {
-    //   path: '/documents',
-    //   component: requireAuth(DocumentPage),
-    //   exact: true
-    // },
+    {
+        path: '/documents',
+        component: RequireAuth(Documents),
+        exact: true
+    },
     {
         path: '/document',
         component: RequireAuth(RenderDocument),

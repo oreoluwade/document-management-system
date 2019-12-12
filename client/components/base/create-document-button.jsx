@@ -6,7 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const CreateDocumentButton = ({ location }) => {
-    const unincludedPaths = ['/document', '/documents', '/'];
+    const unincludedPaths = ['/document', '/'];
 
     const isVisible = !unincludedPaths.includes(location.pathname);
 
@@ -20,7 +20,8 @@ const CreateDocumentButton = ({ location }) => {
 };
 
 CreateDocumentButton.propTypes = {
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
+    location: PropTypes.object
 };
 
 const mapStateToProps = state => {
