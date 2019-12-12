@@ -45,13 +45,6 @@
   }
 
   &-card {
-      &__body {
-          max-height: 5rem;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-style: italic;
-          font-size: 0.8rem;
-      }
 
       &__title {
         overflow: hidden;

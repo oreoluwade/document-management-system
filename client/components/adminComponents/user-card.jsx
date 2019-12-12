@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,12 +12,13 @@ import { deleteUser } from '../../actions';
 
 const useStyles = makeStyles({
     cardRoot: {
-        minWidth: 275
+        minWidth: 275,
+        backgroundColor: '#CDCDCD'
     },
     name: {
         fontSize: 14
     },
-    email: {
+    role: {
         fontSize: 14,
         color: 'rgb(49, 150, 175)'
     },
@@ -39,7 +41,25 @@ const UserCard = ({ user, deleteUser }) => {
     const classes = useStyles();
 
     const destroyUser = async userId => {
-        await deleteUser(userId);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'rgb(80, 143, 202)',
+            cancelButtonColor: '#8B0000',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async result => {
+            if (result.value) {
+                await deleteUser(userId);
+                Swal.fire({
+                    title: 'User deleted',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
     };
 
     return (
@@ -48,7 +68,9 @@ const UserCard = ({ user, deleteUser }) => {
                 <Typography className={classes.name} color="textSecondary">
                     {user.firstname} {user.lastname}
                 </Typography>
-                <Typography className={classes.email}>{user.email}</Typography>
+                <Typography className={classes.role}>
+                    {user.Role.title}
+                </Typography>
             </CardContent>
             <CardContent className={classes.action}>
                 <Tooltip title={`Delete ${user.firstname} ${user.lastname}`}>

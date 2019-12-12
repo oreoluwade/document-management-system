@@ -128,6 +128,7 @@
     "sequelize": "^5.21.2",
     "sequelize-cli": "^5.5.1",
     "shortid": "^2.2.8",
+    "sweetalert2": "^9.5.3",
     "toastr": "2.1.4",
     "validator": "^12.1.0",
     "webpack": "^4.41.2"

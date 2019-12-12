@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 import { saveRole } from '../../actions';
 
 const useStyles = makeStyles({
@@ -35,9 +36,16 @@ const CreateRole = ({ saveRole }) => {
         setTitle(e.target.value);
     };
 
-    const makeNewRole = e => {
+    const makeNewRole = async e => {
         e.preventDefault();
-        saveRole({ title });
+        await saveRole({ title });
+        Swal.fire({
+            icon: 'success',
+            title: 'New role created',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        setTitle('');
     };
 
     return (

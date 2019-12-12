@@ -1,7 +1,6 @@
 .profile {
     &-root {
         display: grid;
-        // grid-template-columns: 1fr 1fr 1fr 1fr;
 
         height: 80%;
         width: 100%;
@@ -9,23 +8,24 @@
         margin-top: 1rem;
 
         overflow: scroll;
-        background-color: #CDCDCD;
     }
 
     &-form {
         display: flex;
         flex-direction: column;
-        width: 30%;
+        width: 40%;
         justify-self: center;
         align-self: center;
         justify-content: center;
+        background-color: whitesmoke;
+        height: 60%;
 
         &-input {
             &-box {
-                width: 100%;
+                width: 70%;
                 outline: none;
                 border-radius: 2rem;
-                border: none;
+                border: 2px solid #3196af;
                 font-size: 1rem;
                 padding-left: 0.8rem;
                 height: 2.5rem;

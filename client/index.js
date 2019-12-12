@@ -10,6 +10,7 @@ import App from './components/App';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 import './styles/index.scss';
 import { retrieveUserFromToken } from './utils';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const store = configureStore();
 
