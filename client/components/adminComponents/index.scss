@@ -11,3 +11,20 @@
     height: 80%;
   }
 }
+
+.role {
+    &-date {
+        color: rgb(80, 143, 202);
+        font-style: italic;
+        font-size: 0.8rem !important;
+    }
+
+    &-title {
+        font-weight: bold !important;
+        text-transform: uppercase;
+
+        &__wrapper {
+            font-size: 1.5rem !important;
+        }
+    }
+}

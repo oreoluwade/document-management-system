@@ -34,7 +34,7 @@ class Roles extends React.Component {
                 <h4 className="center">Manage Role Details and Permissions</h4>
                 <Grid container spacing={3}>
                     {roles.map(role => (
-                        <Grid item xs={6} sm={4} key={role.id}>
+                        <Grid item xs={6} sm={3} key={role.id}>
                             <RoleCard role={role} />
                         </Grid>
                     ))}

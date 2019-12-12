@@ -40,8 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             hooks: {
                 beforeCreate: user => user.password && user.hashPassword(),
                 beforeUpdate: user => {
-                    if (user.password) {
-                        console.group('ABOLUWAGESINDE');
+                    if (user.changed('password')) {
                         return user.hashPassword();
                     }
                 }

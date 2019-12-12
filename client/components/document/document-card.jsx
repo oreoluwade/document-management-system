@@ -8,9 +8,8 @@ import { Link } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
-
-import { formatRelative } from 'date-fns';
 import stripHtmlTags from '../../utils/stripHtmlTags';
+import { formatDate } from '../../utils';
 
 const useStyles = makeStyles({
     card: {
@@ -23,21 +22,10 @@ const useStyles = makeStyles({
         paddingRight: '0.4rem',
         paddingTop: '0.4rem'
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
     date: {
         color: 'rgb(49, 150, 175)',
         fontSize: 14,
         fontStyle: 'italic'
-    },
-    titleContent: {
-        display: 'flex'
-    },
-    docContent: {
-        fontStyle: 'italic',
-        fontSize: '0.8rem'
     },
     footerConent: {
         display: 'flex',
@@ -65,26 +53,20 @@ const useStyles = makeStyles({
 const DocumentCard = ({ document }) => {
     const classes = useStyles();
 
-    const getDate = document => {
-        return formatRelative(new Date(document.createdAt), new Date());
-    };
-
     return (
         <Card className={classes.card}>
-            <CardContent className={classes.titleContent}>
-                <Typography className={classes.title}>
+            <CardContent className="document-card__title">
+                <Typography className="document-card__title__text">
                     {document.title}
                 </Typography>
             </CardContent>
-            <CardContent>
-                <Typography className={classes.docContent}>
-                    {stripHtmlTags(document.content)}
-                </Typography>
+            <CardContent className="document-card__body">
+                <Typography>{stripHtmlTags(document.content)}</Typography>
             </CardContent>
             <CardContent className={classes.footerConent}>
-                <Typography className={classes.date}>{`Created ${getDate(
-                    document
-                )}`}</Typography>
+                <Typography className={classes.date}>
+                    {`Created ${formatDate(document)}`}
+                </Typography>
                 <div className={classes.action}>
                     <Tooltip title="Delete Document">
                         <DeleteIcon className={classes.delete} />
