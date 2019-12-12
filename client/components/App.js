@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Navbar from './Common/Navbar';
+import { Header } from './base';
 import routes from '../routes';
-import CreateDocumentButton from './Common/create-document-button';
+import CreateDocumentButton from './base/create-document-button';
 
 class App extends React.Component {
   render() {
