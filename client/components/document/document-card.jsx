@@ -64,7 +64,7 @@ const useStyles = makeStyles({
         height: '1.5rem',
         width: '2rem',
         color: '#8B0000',
-        marginBottom: '0.7rem'
+        marginBottom: '0.4rem'
     }
 });
 
