@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { logout } from '../../actions';
+import { logout, searchForAllDocuments, loadAllDocuments } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -82,12 +82,21 @@ const Header = props => {
     const {
         isAuthenticated,
         isAdmin,
-        location: { pathname }
+        location: { pathname },
+        searchForAllDocuments,
+        loadAllDocuments
     } = props;
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        if (!searchQuery.trim().length) {
+            loadAllDocuments();
+        }
+    }, []);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -114,7 +123,15 @@ const Header = props => {
         props.history.push('/');
     };
 
-    const isOnDashboard = isAuthenticated && pathname === '/dashboard';
+    const searchDisplayAllowed =
+        isAuthenticated && ['/documents', '/dashboard'].includes(pathname);
+
+    const handleDocumentsSearch = e => {
+        setSearchQuery(e.target.value.trim());
+        setTimeout(() => {
+            searchForAllDocuments(searchQuery);
+        }, 700);
+    };
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -167,7 +184,7 @@ const Header = props => {
                     <Link to="/" className="navbar-link">
                         <HomeIcon />
                     </Link>
-                    {isOnDashboard && (
+                    {searchDisplayAllowed && (
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
@@ -179,6 +196,7 @@ const Header = props => {
                                     input: classes.inputInput
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
+                                onChange={handleDocumentsSearch}
                             />
                         </div>
                     )}
@@ -275,7 +293,9 @@ Header.propTypes = {
     isAdmin: PropTypes.bool,
     logout: PropTypes.func,
     location: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
+    searchForAllDocuments: PropTypes.func,
+    loadAllDocuments: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -283,4 +303,10 @@ const mapStateToProps = state => ({
     isAdmin: state.user.details.roleId === 1
 });
 
-export default withRouter(connect(mapStateToProps, { logout })(Header));
+export default withRouter(
+    connect(mapStateToProps, {
+        logout,
+        searchForAllDocuments,
+        loadAllDocuments
+    })(Header)
+);

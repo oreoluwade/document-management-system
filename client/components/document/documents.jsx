@@ -47,7 +47,7 @@ const filterDocuments = (checkedState, documents) => {
     }
 };
 
-const Documents = ({ allDocuments }) => {
+const Documents = ({ allDocuments, loadAllDocuments }) => {
     const classes = useStyles();
     const [documents, setDocuments] = useState([]);
     const [checkedState, setCheckedState] = useState({
@@ -66,6 +66,10 @@ const Documents = ({ allDocuments }) => {
         const filteredDocuments = filterDocuments(checkedState, allDocuments);
         setDocuments(filteredDocuments);
     }, [checkedState]);
+
+    useEffect(() => {
+        setDocuments(allDocuments);
+    }, [allDocuments]);
 
     const handleChecked = event => {
         setCheckedState({

@@ -13,7 +13,9 @@ export {
     loadAllDocuments,
     loadUserDocuments,
     deleteDocument,
-    updateDocument
+    updateDocument,
+    searchForAllDocuments,
+    retrieveAllDocuments
 } from './documentActions';
 export {
     getUserInfo,
