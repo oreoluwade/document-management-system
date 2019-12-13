@@ -1,0 +1,62 @@
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600]
+    }
+  },
+  checked: {}
+})(props => <Checkbox color="default" {...props} />);
+
+export default function SelectAccess({
+  publicChecked,
+  privateChecked,
+  roleChecked,
+  handleChecked
+}) {
+  return (
+    <FormGroup row>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={publicChecked}
+            onChange={handleChecked}
+            value="public"
+            name="public"
+          />
+        }
+        label="Public"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={privateChecked}
+            onChange={handleChecked}
+            value="private"
+            color="primary"
+            name="private"
+          />
+        }
+        label="Private"
+      />
+      <FormControlLabel
+        control={
+          <GreenCheckbox
+            checked={roleChecked}
+            onChange={handleChecked}
+            value="role"
+            name="role"
+          />
+        }
+        label="Role"
+      />
+    </FormGroup>
+  );
+}
