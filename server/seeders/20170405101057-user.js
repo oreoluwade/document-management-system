@@ -16,9 +16,9 @@ module.exports = {
             'User',
             [
                 {
-                    userName: 'admin',
-                    firstName: 'admin',
-                    lastName: 'admin',
+                    username: 'admin',
+                    firstname: 'admin',
+                    lastname: 'admin',
                     email: 'admin@admin.com',
                     password: hashP('adminkey'),
                     roleId: 1,
@@ -26,9 +26,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'oreoluwade',
-                    firstName: 'oreoluwa',
-                    lastName: 'aboluwarin',
+                    username: 'oreoluwade',
+                    firstname: 'oreoluwa',
+                    lastname: 'aboluwarin',
                     email: 'oreoluwade@gmail.com',
                     password: hashP('oreoluwade'),
                     roleId: 1,
@@ -36,9 +36,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'pelumiy',
-                    firstName: 'pelumi',
-                    lastName: 'aboluwarin',
+                    username: 'pelumiy',
+                    firstname: 'pelumi',
+                    lastname: 'aboluwarin',
                     email: 'pelumi@gmail.com',
                     password: hashP('pelumi'),
                     roleId: 2,
@@ -46,9 +46,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'funmi',
-                    firstName: 'funmi',
-                    lastName: 'olukanni',
+                    username: 'funmi',
+                    firstname: 'funmi',
+                    lastname: 'olukanni',
                     email: 'funmi@gmail.com',
                     password: hashP('olufunmi'),
                     roleId: 4,
@@ -56,9 +56,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'thequeeness',
-                    firstName: 'eseohe',
-                    lastName: 'ojo',
+                    username: 'thequeeness',
+                    firstname: 'eseohe',
+                    lastname: 'ojo',
                     email: 'eseohe@gmail.com',
                     password: hashP('thequeeness'),
                     roleId: 2,
@@ -66,9 +66,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'emmanuel',
-                    firstName: 'emmanuel',
-                    lastName: 'akinyele',
+                    username: 'emmanuel',
+                    firstname: 'emmanuel',
+                    lastname: 'akinyele',
                     email: 'lanre_rd@yahoo.com',
                     password: hashP('emmanuel'),
                     roleId: 1,
@@ -76,9 +76,9 @@ module.exports = {
                     updatedAt: new Date()
                 },
                 {
-                    userName: 'tosyne',
-                    firstName: 'oluwatosin',
-                    lastName: 'akingbulu',
+                    username: 'tosyne',
+                    firstname: 'oluwatosin',
+                    lastname: 'akingbulu',
                     email: 'tosinakingbulu@gmail.com',
                     password: hashP('oluwatosin'),
                     roleId: 3,
