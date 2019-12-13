@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { loadAllDocuments } from '../../actions';
 import DocumentCard from './document-card';
 import SelectAccess from './select-access';
+import Search from './search';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -55,6 +56,7 @@ const Documents = ({ allDocuments, loadAllDocuments }) => {
         private: false,
         role: false
     });
+    const [query, setQuery] = useState('');
 
     useEffect(() => {
         loadAllDocuments().then(() => {
@@ -78,9 +80,23 @@ const Documents = ({ allDocuments, loadAllDocuments }) => {
         });
     };
 
+    // Needs fixing
+    const handleQueryChange = e => {
+        e.persist();
+        setQuery(e.target.value.trim().toLowerCase());
+        const queriedDocs = allDocuments.filter(
+            doc =>
+                doc.title.toLowerCase().includes(query) ||
+                doc.content.toLowerCase().includes(query)
+        );
+        const filteredDocuments = filterDocuments(checkedState, queriedDocs);
+        setDocuments(filteredDocuments);
+    };
+
     return (
         <div className={classes.root}>
             <div className={classes.accessFilter}>
+                <Search query={query} handleQueryChange={handleQueryChange} />
                 <h4 className={classes.filterText}>Filter: </h4>
                 <SelectAccess
                     publicChecked={checkedState.public}

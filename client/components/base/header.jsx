@@ -124,7 +124,7 @@ const Header = props => {
     };
 
     const searchDisplayAllowed =
-        isAuthenticated && ['/documents', '/dashboard'].includes(pathname);
+        isAuthenticated && ['/dashboard'].includes(pathname);
 
     const handleDocumentsSearch = e => {
         setSearchQuery(e.target.value.trim());
