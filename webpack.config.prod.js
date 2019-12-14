@@ -26,9 +26,11 @@ export default {
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
-    new webpack.DefinePlugin(GLOBALS),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.DefinePlugin(GLOBALS)
   ],
+  optimization: {
+    minimize: true
+  },
 
   module: {
     loaders: [
