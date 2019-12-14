@@ -1,19 +1,20 @@
-import isEmpty from 'lodash/isEmpty';
-import { SET_CURRENT_USER } from '../actions/actionTypes';
+import { SET_CURRENT_USER, RESET } from '../actions';
 import initialState from './initialState';
 
-export default (state = initialState, action = {}) => {
-  let returnValue;
+export default (state = initialState.auth, action) => {
   switch (action.type) {
     case SET_CURRENT_USER:
-      returnValue = {
-        isAuthenticated: !isEmpty(action.user),
-        user: action.user
+      return {
+        ...state,
+        isAuthenticated: Object.values(action.payload.user).every(
+          item => !!item
+        )
       };
-      break;
+
+    case RESET:
+      return initialState.auth;
+
     default:
-      returnValue = state;
-      break;
+      return state;
   }
-  return returnValue;
 };

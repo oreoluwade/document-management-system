@@ -1,11 +1,10 @@
 {
-  "presets": ["react", "env"],
-  "plugins": [
-    "transform-class-properties"
-  ],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    }
-  }
+  "presets": [[
+        "@babel/preset-env", {
+            "targets": {
+                "node": "current"
+            }
+        }],
+        "@babel/preset-react"
+    ]
 }

@@ -1,34 +1,30 @@
 import jwt from 'jsonwebtoken';
 import models from '../models';
 
-const Role = models.Role;
+const { Role } = models;
 const secret = process.env.SECRET || 'secretconfirmation';
 
-module.exports = {
-  validateToken: (request, response, next) => {
+export default {
+  validateToken(request, response, next) {
     const token = request.headers.authorization;
     if (!token) {
-      return response.status(401)
-        .send({ message: 'No token provided!' });
+      return response.status(401).send({ error: 'No token provided!' });
     }
     jwt.verify(token, secret, (error, decoded) => {
       if (error) {
-        return response.status(401)
-          .send({ message: 'No response!' });
+        return response.status(401).send({ error: 'Token invalid' });
       }
       request.decoded = decoded;
-      next();
+      return next();
     });
   },
 
-  validateAdmin: (request, response, next) => {
-    Role.findById(request.decoded.userRoleId)
-      .then((role) => {
-        if (role.title.toLowerCase() === 'admin') {
-          next();
-        } else {
-          return response.status(403).send({ message: 'User unauthorized' });
-        }
-      });
+  async validateAdmin(request, response, next) {
+    const role = await Role.findByPk(request.decoded.roleId);
+    if (role.title.toLowerCase() === 'admin') {
+      return next();
+    } else {
+      return response.status(403).send({ error: 'Unauthorized' });
+    }
   }
 };

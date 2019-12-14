@@ -1,0 +1,12 @@
+.dashboard {
+  &-root {
+    overflow: scroll;
+    height: 80%;
+  }
+}
+
+.tab {
+  &-header {
+    background-color: rgb(107, 113, 114) !important;
+  }
+}

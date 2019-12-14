@@ -1,179 +1,173 @@
-// import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import models from '../models';
 
-const Role = models.Role;
-const User = models.User;
+const { Role, User, Document } = models;
 const secret = process.env.SECRET || 'secretconfirmation';
 
-module.exports = {
-  createUser: (request, response) => {
-    const newUser = request.body;
-    // Find user with the aid of role ID
-    Role.find({ where: { id: newUser.roleId } })
-      .then((userFound) => {
-        if (!userFound) {
-          response.status(400).json({ error: 'The role ID is invalid' });
-        }
+export default {
+  async createUser(req, res) {
+    const { email, username, firstname, lastname, password, roleId } = req.body;
 
-        User.findOrCreate({
-          where: {
-            email: newUser.email
-          },
-          defaults: {
-            userName: newUser.userName,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            email: newUser.email,
-            password: newUser.password,
-            roleId: newUser.roleId
-          },
-        })
-          .spread((user, created) => {
-            if (created) {
-              const token = jwt.sign({
-                id: user.id,
-                userName: user.userName,
-                userRoleId: user.roleId
-              }, secret);
-              return response.status(201).json({
-                user: {
-                  id: user.id,
-                  userName: user.userName,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  userRoleId: user.roleId,
-                  email: user.email
-                },
-                token
-              });
-            }
-            return response.status(409).send({ message: 'User Already Exists!' });
-          });
-      });
-  },
+    const user = await User.create({
+      username,
+      firstname,
+      lastname,
+      email,
+      password,
+      roleId
+    });
 
-  getUser: (request, response) => {
-    User.findById(request.params.id)
-      .then((userFound) => {
-        if (userFound) {
-          return response.status(200).json(userFound);
-        }
-        response.status(404).json({ error: 'User Not Found' });
-      });
-  },
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        roleId: user.roleId
+      },
+      secret
+    );
 
-  getAllUsers: (request, response) => {
-    User.findAll({ include: [{ model: Role }] }).then((usersFound) => {
-      if (usersFound) {
-        return response.status(200).json({ usersFound });
-      }
-      response.status(404).json({ message: 'No Users Found' });
+    return res.status(201).send({
+      id: user.id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      roleId: user.roleId,
+      email: user.email,
+      token
     });
   },
 
-  updateUserDetails: (request, response) => {
-    User.findById(request.params.id)
-      .then((user) => {
-        if (!user) {
-          response.status(404).json({ error: 'User not found' });
+  async getUser(req, res) {
+    const user = await User.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: Document
         }
-        user.update(request.body)
-          .then((updatedUser) => {
-            const token = jwt.sign({
-              id: updatedUser.id,
-              userName: updatedUser.userName,
-              userRoleId: updatedUser.roleId
-            }, secret);
-            return response.status(200).json({
-              user: {
-                id: updatedUser.id,
-                userName: updatedUser.userName,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                userRoleId: updatedUser.userId,
-                email: updatedUser.email
-              },
-              token
-            });
-          });
-      });
+      ],
+      attributes: [
+        'id',
+        'username',
+        'firstname',
+        'lastname',
+        'roleId',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
+    return res.send(user);
   },
 
-  deleteUser: (request, response) => {
-    User.destroy({
+  async getAllUsers(req, res) {
+    const users = await User.findAll({
+      include: [{ model: Role }],
+      attributes: [
+        'id',
+        'username',
+        'firstname',
+        'lastname',
+        'email',
+        'roleId',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
+
+    return res.send(users);
+  },
+
+  async updateUserDetails(req, res) {
+    const user = await User.findByPk(req.params.id);
+    const updatedUser = await user.update(req.body);
+
+    const { id, username, roleId, firstname, lastname, email } = updatedUser;
+
+    const token = jwt.sign(
+      {
+        id,
+        username,
+        roleId
+      },
+      secret
+    );
+
+    return res.send({
+      id,
+      username,
+      firstname,
+      lastname,
+      roleId,
+      email,
+      token
+    });
+  },
+
+  async deleteUser(req, res) {
+    await User.destroy({
       where: {
-        id: request.params.id
+        id: req.params.id
       }
-    })
-      .then((userFound) => {
-        if (userFound === 1) {
-          return response.status(200).send({ message: 'User Removed' });
-        }
-        return response.status(404).send({ message: 'User Not found' });
-      });
+    });
+
+    return res.send({ message: 'User deleted!' });
   },
 
-  userLogin: (request, response) => {
-    const { identifier, password } = request.body;
-    User.find({
+  async userLogin(req, res) {
+    const { identifier, password } = req.body;
+    const user = await User.findOne({
       where: {
-        $or: [
-          { email: identifier },
-          { userName: identifier }
+        [Op.or]: [{ email: identifier }, { username: identifier }]
+      }
+    });
+
+    if (!user) {
+      return res.status(404).send({ error: 'Invalid Credentials' });
+    }
+    const passwordIsValid = await user.validPassword(password);
+
+    if (!passwordIsValid) {
+      return res.status(401).send({ error: 'Invalid Credentials' });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        roleId: user.roleId
+      },
+      secret
+    );
+
+    return res.send({
+      id: user.id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      roleId: user.roleId,
+      email: user.email,
+      token,
+      message: 'Login Successful! Token expires in one day.'
+    });
+  },
+
+  logout(req, res) {
+    return res.send({ message: 'User successfully logged out!' });
+  },
+
+  fetchExistingUser(req, res) {
+    User.findOne({
+      where: {
+        [Op.or]: [
+          { email: req.params.identifier },
+          { username: req.params.identifier }
         ]
       }
-    })
-      .then((user) => {
-        if (!user) {
-          return response.status(401)
-            .json({ errors: { form: 'Invalid Credentials' } });
-        }
-        if (!user.validPassword(password)) {
-          return response.status(401)
-            .json({ errors: { form: 'Invalid Credentials' } });
-        }
-        const token = jwt.sign({
-          id: user.id,
-          userName: user.userName,
-          userRoleId: user.roleId
-        }, secret);
-        return response.status(200).send({
-          user: {
-            id: user.id,
-            userName: user.userName,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            userRoleId: user.roleId,
-            email: user.email
-          },
-          token,
-          message: 'Login Successful! Token expires in one day.'
-        });
-      });
-  },
-
-  userLogout: (request, response) => {
-    response.status(200).send({ message: 'User Successfully logged out!' });
-  },
-
-  fetchExistingUser: (request, response) =>
-    User
-      .find({
-        where: {
-          $or: [
-            { email: request.params.identifier },
-            { userName: request.params.identifier }
-          ]
-        }
-      })
-      .then((user) => {
-        if (!user) {
-          return response.status(200).json({ message: 'User can be created' });
-        }
-        return response.status(400).json({ error: 'User already exists' });
-      })
-      .catch(error => response.status(501).json({
-        error, err: 'An error occurred while retrieving the user'
-      }))
+    }).then(user => {
+      if (!user) {
+        return res.send({ message: 'User can be created' });
+      }
+      return res.status(409).send({ error: 'User already exists' });
+    });
+  }
 };

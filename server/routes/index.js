@@ -1,72 +1,91 @@
-// import express from 'express';
 import roleController from '../controllers/role';
 import userController from '../controllers/user';
 import documentController from '../controllers/document';
-import authorization from '../middlewares/authorization';
+import {
+  Authorization,
+  RoleValidation,
+  UserValidation,
+  DocumentValidation
+} from '../middlewares';
 
-// const app = express.app();
+const { validateAdmin, validateToken } = Authorization;
+const { roleExists } = RoleValidation;
+const { userAlreadyExists, userIdExists } = UserValidation;
+const {
+  isDocumentOwner,
+  documentExists,
+  documentIsRetrievable,
+  fieldsRequired,
+  emptyFields
+} = DocumentValidation;
 
-const Routes = (app) => {
+const apiUrlPrefix = '/api';
+
+const Routes = app => {
   // Role route to create and get multiple roles
-  app.route('/role')
-    .all(authorization.validateToken, authorization.validateAdmin)
-    .get(roleController.getAllRoles)
-    .post(roleController.createRole);
+  app
+    .route(`${apiUrlPrefix}/role`)
+    .post(roleController.createRole)
+    .all(validateToken, validateAdmin)
+    .get(roleController.getAllRoles);
 
   // Role route for single user data sending and getting
-  app.route('/role/:id')
-    .all(authorization.validateToken, authorization.validateAdmin)
+  app
+    .route(`${apiUrlPrefix}/role/:id`)
+    .all(validateToken, validateAdmin)
     .get(roleController.getRole)
     .put(roleController.updateRole)
     .delete(roleController.deleteRole);
 
-
   // All purpose User route
-  app.route('/user')
-    .get(authorization.validateToken, authorization.validateAdmin, userController.getAllUsers)
-    .post(userController.createUser);
+  app
+    .route(`${apiUrlPrefix}/user`)
+    .get(validateToken, validateAdmin, userController.getAllUsers)
+    .post(roleExists, userAlreadyExists, userController.createUser);
 
   // Route for early information that user exists
-  app.route('/user/findUser/:identifier')
+  app
+    .route(`${apiUrlPrefix}/user/findUser/:identifier`)
     .get(userController.fetchExistingUser);
 
+  // login
+  app.route(`${apiUrlPrefix}/user/login`).post(userController.userLogin);
+
+  // logout
+  app.route(`${apiUrlPrefix}/user/logout`).post(userController.logout);
+
   // Route for single user
-  app.route('/user/:id')
-    .get(authorization.validateToken, userController.getUser)
-    .put(authorization.validateToken, userController.updateUserDetails)
-    .delete(authorization.validateToken, userController.deleteUser);
+  app
+    .route(`${apiUrlPrefix}/user/:id`)
+    .all(validateToken, userIdExists)
+    .get(userController.getUser)
+    .put(userController.updateUserDetails)
+    .delete(userController.deleteUser);
 
   // Route for single user documents
-  app.route('/user/:id/document')
-    .get(authorization.validateToken, documentController.findUserDocuments);
-
-  // Route for user login
-  app.route('/user/login')
-    .post(userController.userLogin);
-
-  // route for user logout
-  app.route('/user/logout')
-    .post(userController.userLogout);
-
+  app
+    .route(`${apiUrlPrefix}/user/:id/document`)
+    .get(validateToken, documentController.findUserDocuments);
 
   // All-purpose Document route
-  app.route('/document')
-    .all(authorization.validateToken)
+  app
+    .route(`${apiUrlPrefix}/document`)
+    .all(validateToken)
     .get(documentController.getDocuments)
-    .post(documentController.createDocument);
+    .post(fieldsRequired, emptyFields, documentController.createDocument);
 
   // Document search route
-  app.route('/documents/search')
-    .get(authorization.validateToken, documentController.searchDocuments);
+  app
+    .route(`${apiUrlPrefix}/documents/search`)
+    .get(validateToken, documentController.searchDocuments);
 
-  // Single-user route
-  app.route('/document/:id')
-    .all(authorization.validateToken)
-    .get(documentController.getDocument)
-    .put(documentController.editDocument)
-    .delete(documentController.deleteDocument);
-
-
+  // Document actions
+  app
+    .route(`${apiUrlPrefix}/document/:id`)
+    .all(validateToken)
+    .get(documentExists, documentIsRetrievable, documentController.getDocument)
+    .put(documentExists, isDocumentOwner, documentController.editDocument)
+    .delete(documentExists, isDocumentOwner, documentController.deleteDocument);
 };
 
 export default Routes;
