@@ -1,73 +1,86 @@
 import webpack from 'webpack';
 import path from 'path';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const GLOBALS = {
-    'process.env.NODE_ENV': JSON.stringify('production')
+  'process.env.NODE_ENV': JSON.stringify('production')
 };
 
 export default {
-    devtool: 'source-map',
-    entry: {
-        bundle: path.resolve(__dirname, 'client/index')
-    },
-    target: 'web',
-    output: {
-        path: `${__dirname}/dist/`,
-        filename: '[name].js',
-        publicPath: '/'
-    },
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    },
-    plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.DefinePlugin(GLOBALS),
-        new webpack.optimize.UglifyJsPlugin()
-    ],
+  devtool: 'source-map',
+  entry: {
+    bundle: path.resolve(__dirname, 'client/index')
+  },
+  target: 'web',
+  output: {
+    path: `${__dirname}/dist/`,
+    filename: '[name].js',
+    publicPath: '/'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
+  plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    }),
+    new webpack.DefinePlugin(GLOBALS),
+    new webpack.optimize.UglifyJsPlugin()
+  ],
 
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loaders: ['babel']
-            },
-            {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file-loader'
-            },
-            {
-                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
-            },
-            {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
-            },
-            {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/octet-stream'
-            },
-            {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=image/svg+xml'
-            },
-            {
-                test: /\.(jpg|png|svg)$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 25000
-                }
-            },
-            {
-                test: /materialize-css\/bin\//,
-                loader: 'imports?jQuery=jquery,$=jquery,hammerjs'
-            },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('css?sourceMap')
-            }
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: [
+            '@babel/plugin-syntax-dynamic-import',
+            '@babel/plugin-proposal-class-properties'
+          ]
+        }
+      },
+      {
+        // Apply rule for .sass, .scss or .css files
+        test: /\.(sa|sc|c)ss$/,
+
+        // Set loaders to transform files.
+        // Loaders are applying from right to left(!)
+        // The first loader will be applied after others
+        loader: [
+          'style-loader',
+          'css-loader',
+          // MiniCssExtractPlugin.loader,
+          'sass-loader'
         ]
-    }
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader'
+      },
+      {
+        test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.(jpe?g|png|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 25000
+        }
+      }
+    ]
+  }
 };
