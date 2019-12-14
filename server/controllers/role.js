@@ -12,36 +12,36 @@ export default {
         await Role.create({ title: title.trim() });
         return res.status(201).send({ message: 'Success' });
       } catch (error) {
-        return res.status(409).send({ message: 'Role already exists!' });
+        return res.status(409).send({ error: 'Role already exists!' });
       }
     }
   },
 
   async updateRole(req, res) {
-    try {
-      const role = await Role.findByPk(req.params.id);
+    const role = await Role.findByPk(req.params.id);
+    if (role) {
       const updatedRole = await role.update(req.body);
       return res.send(updatedRole);
-    } catch (error) {
+    } else {
       return res.status(404).send({ error: 'Role does not exist' });
     }
   },
 
   async deleteRole(req, res) {
-    try {
-      const role = await Role.findByPk(req.params.id);
+    const role = await Role.findByPk(req.params.id);
+    if (role) {
       await role.destroy();
       return res.send({ message: 'Role deleted!' });
-    } catch (error) {
+    } else {
       return res.status(404).send({ error: 'Role does not exist' });
     }
   },
 
   async getRole(req, res) {
-    try {
-      const role = await Role.findByPk(req.params.id);
-      return res.status(200).send(role);
-    } catch (error) {
+    const role = await Role.findByPk(req.params.id);
+    if (role) {
+      return res.send(role);
+    } else {
       return res.status(404).send({ error: 'Role does not exist' });
     }
   },

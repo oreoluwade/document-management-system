@@ -6,186 +6,168 @@ const { Role, User, Document } = models;
 const secret = process.env.SECRET || 'secretconfirmation';
 
 export default {
-    async createUser(req, res) {
-        const {
-            email,
-            username,
-            firstname,
-            lastname,
-            password,
-            roleId
-        } = req.body;
+  async createUser(req, res) {
+    const { email, username, firstname, lastname, password, roleId } = req.body;
 
-        const user = await User.create({
-            username,
-            firstname,
-            lastname,
-            email,
-            password,
-            roleId
-        });
+    const user = await User.create({
+      username,
+      firstname,
+      lastname,
+      email,
+      password,
+      roleId
+    });
 
-        const token = jwt.sign(
-            {
-                id: user.id,
-                username: user.username,
-                roleId: user.roleId
-            },
-            secret
-        );
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        roleId: user.roleId
+      },
+      secret
+    );
 
-        return res.status(201).send({
-            id: user.id,
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            roleId: user.roleId,
-            email: user.email,
-            token
-        });
-    },
+    return res.status(201).send({
+      id: user.id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      roleId: user.roleId,
+      email: user.email,
+      token
+    });
+  },
 
-    async getUser(req, res) {
-        const user = await User.findOne({
-            where: { id: req.params.id },
-            include: [
-                {
-                    model: Document
-                }
-            ],
-            attributes: [
-                'id',
-                'username',
-                'firstname',
-                'lastname',
-                'roleId',
-                'createdAt',
-                'updatedAt'
-            ]
-        });
-        return res.send(user);
-    },
-
-    async getAllUsers(req, res) {
-        const users = await User.findAll({
-            include: [{ model: Role }],
-            attributes: [
-                'id',
-                'username',
-                'firstname',
-                'lastname',
-                'email',
-                'roleId',
-                'createdAt',
-                'updatedAt'
-            ]
-        });
-
-        return res.send(users);
-    },
-
-    async updateUserDetails(req, res) {
-        const user = await User.findByPk(req.params.id);
-        const updatedUser = await user.update(req.body);
-
-        const {
-            id,
-            username,
-            roleId,
-            firstname,
-            lastname,
-            email
-        } = updatedUser;
-
-        const token = jwt.sign(
-            {
-                id,
-                username,
-                roleId
-            },
-            secret
-        );
-
-        return res.send({
-            id,
-            username,
-            firstname,
-            lastname,
-            roleId,
-            email,
-            token
-        });
-    },
-
-    async deleteUser(req, res) {
-        await User.destroy({
-            where: {
-                id: req.params.id
-            }
-        });
-
-        return res.send({ message: 'User deleted!' });
-    },
-
-    async userLogin(req, res) {
-        const { identifier, password } = req.body;
-        const user = await User.findOne({
-            where: {
-                [Op.or]: [{ email: identifier }, { username: identifier }]
-            }
-        });
-
-        if (!user) {
-            return res.status(404).send({ error: 'Invalid Credentials' });
+  async getUser(req, res) {
+    const user = await User.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: Document
         }
-        const passwordIsValid = await user.validPassword(password);
+      ],
+      attributes: [
+        'id',
+        'username',
+        'firstname',
+        'lastname',
+        'roleId',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
+    return res.send(user);
+  },
 
-        console.log(password);
+  async getAllUsers(req, res) {
+    const users = await User.findAll({
+      include: [{ model: Role }],
+      attributes: [
+        'id',
+        'username',
+        'firstname',
+        'lastname',
+        'email',
+        'roleId',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
 
-        if (!passwordIsValid) {
-            return res.status(401).send({ error: 'Invalid Credentials' });
-        }
+    return res.send(users);
+  },
 
-        const token = jwt.sign(
-            {
-                id: user.id,
-                username: user.username,
-                roleId: user.roleId
-            },
-            secret
-        );
+  async updateUserDetails(req, res) {
+    const user = await User.findByPk(req.params.id);
+    const updatedUser = await user.update(req.body);
 
-        return res.send({
-            id: user.id,
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            roleId: user.roleId,
-            email: user.email,
-            token,
-            message: 'Login Successful! Token expires in one day.'
-        });
-    },
+    const { id, username, roleId, firstname, lastname, email } = updatedUser;
 
-    userLogout(req, res) {
-        res.send({ message: 'User Successfully logged out!' });
-    },
+    const token = jwt.sign(
+      {
+        id,
+        username,
+        roleId
+      },
+      secret
+    );
 
-    fetchExistingUser(req, res) {
-        User.findOne({
-            where: {
-                [Op.or]: [
-                    { email: req.params.identifier },
-                    { username: req.params.identifier }
-                ]
-            }
-        })
-            .then(user => {
-                if (!user) {
-                    return res.send({ message: 'User can be created' });
-                }
-                return res.status(409).send({ error: 'User already exists' });
-            })
-            .catch(error => res.status(501).send({ error }));
+    return res.send({
+      id,
+      username,
+      firstname,
+      lastname,
+      roleId,
+      email,
+      token
+    });
+  },
+
+  async deleteUser(req, res) {
+    await User.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    return res.send({ message: 'User deleted!' });
+  },
+
+  async userLogin(req, res) {
+    const { identifier, password } = req.body;
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: identifier }, { username: identifier }]
+      }
+    });
+
+    if (!user) {
+      return res.status(404).send({ error: 'Invalid Credentials' });
     }
+    const passwordIsValid = await user.validPassword(password);
+
+    if (!passwordIsValid) {
+      return res.status(401).send({ error: 'Invalid Credentials' });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        roleId: user.roleId
+      },
+      secret
+    );
+
+    return res.send({
+      id: user.id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      roleId: user.roleId,
+      email: user.email,
+      token,
+      message: 'Login Successful! Token expires in one day.'
+    });
+  },
+
+  logout(req, res) {
+    return res.send({ message: 'User successfully logged out!' });
+  },
+
+  fetchExistingUser(req, res) {
+    User.findOne({
+      where: {
+        [Op.or]: [
+          { email: req.params.identifier },
+          { username: req.params.identifier }
+        ]
+      }
+    }).then(user => {
+      if (!user) {
+        return res.send({ message: 'User can be created' });
+      }
+      return res.status(409).send({ error: 'User already exists' });
+    });
+  }
 };

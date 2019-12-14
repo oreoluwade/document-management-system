@@ -9,7 +9,7 @@
     "dev": "npm-run-all dev:start open:src",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
     "open:src": "babel-node tools/srcServer.js",
-    "test": "jest ./server/test/models/*.spec.js --runInBand --coverage --forceExit",
+    "test": "jest ./server/test/*/*.spec.js --runInBand --coverage --forceExit",
     "test:watch": "npm run test -- --watch",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:seed": "node_modules/.bin/sequelize db:seed:all",
