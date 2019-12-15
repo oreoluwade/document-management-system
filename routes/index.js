@@ -23,6 +23,10 @@ const apiUrlPrefix = '/api';
 
 const Routes = app => {
   // Role route to create and get multiple roles
+  app.route(`${apiUrlPrefix}`).get((req, res) => {
+    return res.json({ message: 'Welcome to the Document Management System!' });
+  });
+
   app
     .route(`${apiUrlPrefix}/role`)
     .post(roleController.createRole)
