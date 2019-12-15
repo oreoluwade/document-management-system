@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "index.js",
+  "engines": {
+    "node": "12.0.0"
+  },
   "scripts": {
     "start": "node tools/distServer",
     "dev:start": "babel-node tools/startLog.js",
