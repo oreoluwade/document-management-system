@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const express = require('express');
 const open = require('open');
-const compression = require('compression');
 const app = require('../server/app');
 const config = require('../webpack.config.dev');
 
@@ -22,7 +21,6 @@ if (env) {
   app.use(require('webpack-hot-middleware')(compiler));
 } else {
   app.use(express.static('dist'));
-  app.use(compression());
 }
 
 app.get('*', (request, response) => {
