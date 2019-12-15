@@ -37,14 +37,7 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
-          plugins: [
-            '@babel/plugin-syntax-dynamic-import',
-            '@babel/plugin-proposal-class-properties'
-          ]
-        }
+        loader: 'babel-loader'
       },
       {
         // Apply rule for .sass, .scss or .css files
