@@ -1,4 +1,5 @@
-/* eslint no-console: "off" */
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import express from 'express';
 import dotenv from 'dotenv';
 import Routes from './routes';
