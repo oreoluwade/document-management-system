@@ -1,12 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
-// This is the application entry point. server is set up here.
-import webpack from 'webpack';
-import path from 'path';
-import express from 'express';
-import open from 'open';
-import compression from 'compression';
-import app from '../server/app';
-import config from '../webpack.config.dev';
+const webpack = require('webpack');
+const path = require('path');
+const express = require('express');
+const open = require('open');
+const compression = require('compression');
+const app = require('../server/app');
+const config = require('../webpack.config.dev');
 
 const port = process.env.PORT || 7070;
 
