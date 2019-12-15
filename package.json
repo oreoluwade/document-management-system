@@ -7,7 +7,7 @@
     "node": "10.15.3"
   },
   "scripts": {
-    "start": "babel-node tools/distServer",
+    "start": "node ./build/server.js",
     "dev": "babel-node ./server.js",
     "test": "jest ./test/*/*.spec.js --runInBand --coverage --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
@@ -15,7 +15,9 @@
     "db:migrate:testdb": "NODE_ENV=test node_modules/.bin/sequelize db:migrate",
     "undo:migrations": "node_modules/.bin/sequelize db:migrate:undo:all",
     "undo:migrations:testdb": "NODE_ENV=test npm run undo:migrations",
-    "build": "babel-node tools/build.js"
+    "prebuild": "yarn clean && mkdir build && cp -r config build",
+    "build": "babel ./ --ignore 'node_modules,build,.github,.vscode,test' -s -d build",
+    "clean": "rm -rf build"
   },
   "repository": {
     "type": "git",
@@ -45,14 +47,12 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.4",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "@babel/preset-react": "^7.7.4",
-    "@material-ui/core": "^4.7.1",
-    "@material-ui/icons": "^4.5.1",
     "babel-eslint": "^10.0.3",
     "bcrypt": "^3.0.7",
     "dotenv": "^8.2.0",
