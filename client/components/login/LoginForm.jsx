@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import toastr from 'toastr';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Lock from '@material-ui/icons/Lock';
 import TextFieldGroup from '../base/text-field-group';
@@ -33,7 +32,6 @@ class LoginForm extends React.Component {
         .login({ identifier, password })
         .then(() => {
           this.props.history.push('/dashboard');
-          toastr.success('Logged in Successfully!');
         })
         .catch(err => {
           this.setState({

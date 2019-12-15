@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -17,17 +16,17 @@ const store = configureStore();
 const persistor = persistStore(store);
 
 if (localStorage.jwtToken) {
-    setAuthorizationToken(localStorage.jwtToken);
-    retrieveUserFromToken(localStorage.jwtToken).then(decodedUser => {
-        store.dispatch(setCurrentUser(decodedUser));
-    });
+  setAuthorizationToken(localStorage.jwtToken);
+  retrieveUserFromToken(localStorage.jwtToken).then(decodedUser => {
+    store.dispatch(setCurrentUser(decodedUser));
+  });
 }
 
 render(
-    <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <App />
-        </PersistGate>
-    </Provider>,
-    document.getElementById('app')
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>,
+  document.getElementById('app')
 );
