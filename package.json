@@ -7,7 +7,7 @@
     "node": "10.15.3"
   },
   "scripts": {
-    "start": "node tools/distServer",
+    "start": "babel-node tools/distServer",
     "dev:start": "babel-node tools/startLog.js",
     "dev": "npm-run-all dev:start open:src",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
