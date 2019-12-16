@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./build/server.js",
     "dev": "babel-node ./server.js",
-    "test": "jest ./test/*/*.spec.js --runInBand --coverage --forceExit",
+    "test": "jest ./src/test/*/*.spec.js --runInBand --coverage --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:seed": "node_modules/.bin/sequelize db:seed:all",
     "db:migrate:testdb": "NODE_ENV=test node_modules/.bin/sequelize db:migrate",
