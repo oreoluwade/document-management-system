@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "A document management system that defines roles, privileges and access rights of users",
   "main": "index.js",
-  "engines": {
-    "node": "10.15.3"
-  },
   "scripts": {
     "start": "node ./build/server.js",
     "dev": "babel-node ./server.js",
@@ -16,7 +13,7 @@
     "undo:migrations": "node_modules/.bin/sequelize db:migrate:undo:all",
     "undo:migrations:testdb": "NODE_ENV=test npm run undo:migrations",
     "prebuild": "yarn clean && mkdir build && cp -r config build",
-    "build": "babel ./ --ignore 'node_modules,build,.github,.vscode,test' -s -d build",
+    "build": "babel ./ --ignore 'build,node_modules,test,coverage,seeders' -s -d build",
     "clean": "rm -rf build"
   },
   "repository": {
