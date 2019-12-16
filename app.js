@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime';
 import express from 'express';
 import dotenv from 'dotenv';
 import logger from 'morgan';
-import Routes from './routes';
+import { roleRoutes, userRoutes, documentRoutes } from './routes';
 
 dotenv.config();
 
@@ -20,6 +20,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'));
 
 // Requiring the routes into the application
-Routes(app);
+app.use('/api/role', roleRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/document', documentRoutes);
+
+app.get('/', (req, res) => {
+    return res.json({
+        message: 'Welcome to the Document management application'
+    });
+});
 
 export default app;
