@@ -13,7 +13,7 @@
     "undo:migrations": "node_modules/.bin/sequelize db:migrate:undo:all",
     "undo:migrations:testdb": "NODE_ENV=test npm run undo:migrations",
     "prebuild": "yarn clean && mkdir build && cp -r config build",
-    "build": "babel ./ --ignore 'build,node_modules,test,coverage,seeders' -s -d build",
+    "build": "babel ./ --ignore 'build,node_modules,test,coverage,seeders,tmp' -s -d build",
     "clean": "rm -rf build"
   },
   "repository": {
