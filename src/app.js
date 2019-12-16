@@ -1,9 +1,7 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import express from 'express';
 import dotenv from 'dotenv';
 import logger from 'morgan';
-import { roleRoutes, userRoutes, documentRoutes } from './src/routes';
+import { roleRoutes, userRoutes, documentRoutes } from './routes';
 
 dotenv.config();
 
