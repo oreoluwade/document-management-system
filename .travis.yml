@@ -6,9 +6,9 @@ node_js:
 services:
   - postgresql
 
-addons:
-  artifacts: true
-
 before_script:
   - psql -c 'create database testdb;' -U postgres
   - yarn db:migrate
+
+after_success:
+  - coveralls < coveralls/lcov.info
