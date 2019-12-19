@@ -5,7 +5,7 @@ import { Authorization, RoleValidation } from '../middlewares';
 const router = express.Router();
 
 const { validateAdmin, validateToken } = Authorization;
-const { roleExists } = RoleValidation;
+const { roleFromParamExists } = RoleValidation;
 
 router
     .route('/')
@@ -17,7 +17,7 @@ router
     .route('/:id')
     .all(validateToken, validateAdmin)
     .get(roleController.getRole)
-    .put(roleExists, roleController.updateRole)
-    .delete(roleExists, roleController.deleteRole);
+    .put(roleFromParamExists, roleController.updateRole)
+    .delete(roleFromParamExists, roleController.deleteRole);
 
 export default router;
