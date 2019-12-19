@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./build/server.js",
     "dev": "babel-node ./src/server.js",
-    "test": "jest ./src/test/*/*.spec.js --runInBand --coverage --forceExit",
+    "test": "jest ./src/test/*/*.spec.js --runInBand --forceExit --coverage --coverageReporters=text-lcov | coveralls",
+    "test:dev": "jest ./src/test/*/*.spec.js --runInBand --forceExit --coverage",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:seed": "node_modules/.bin/sequelize db:seed:all",
     "db:migrate:testdb": "NODE_ENV=test node_modules/.bin/sequelize db:migrate",
@@ -18,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andela-oaboluwarin/document-management-system.git"
+    "url": "git+https://github.com/oreoluwade/document-management-system.git"
   },
   "keywords": [
     "babel",
@@ -29,9 +30,9 @@
   "author": "oreoluwa aboluwarin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andela-oaboluwarin/document-management-system/issues"
+    "url": "https://github.com/oreoluwade/document-management-system/issues"
   },
-  "homepage": "https://github.com/andela-oaboluwarin/document-management-system#readme",
+  "homepage": "https://github.com/oreoluwade/document-management-system#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
